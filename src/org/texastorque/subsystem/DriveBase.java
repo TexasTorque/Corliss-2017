@@ -5,6 +5,10 @@ import org.texastorque.interfaces.TorqueSubsystem;
 // instanced, include pertinent methods (remove this header before first commit)
 public class DriveBase implements TorqueSubsystem{
 
+	public DriveBase() {
+		init();
+	}
+	
 	@Override
 	public void autoInit() {
 		init();
