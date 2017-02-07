@@ -33,7 +33,10 @@ public class RobotOutput {
 	 * @param rightSpeed  - The speed the rightside motors should be set to.
 	 */
 	public void setDriveBaseSpeed(double leftSpeed, double rightSpeed) {
-		
+		DB_leftFore.set(leftSpeed);
+		DB_leftRear.set(leftSpeed);
+		DB_rightFore.set(rightSpeed);
+		DB_rightRear.set(rightSpeed);
 	}
 	
 	public static RobotOutput getInstance() {

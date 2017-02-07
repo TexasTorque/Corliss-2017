@@ -15,9 +15,17 @@ public class Input implements TorqueClass {
 		DB_leftSpeed = 0.0;
 		DB_rightSpeed = 0.0;
 	}
+
+	public void setDB_leftSpeed(double leftSpeed) {
+		DB_leftSpeed = leftSpeed;
+	}
 	
 	public double getDB_leftSpeed() {
 		return DB_leftSpeed;
+	}
+
+	public void setDB_rightSpeed(double rightSpeed) {
+		DB_rightSpeed = rightSpeed;
 	}
 	
 	public double getDB_rightSpeed() {
