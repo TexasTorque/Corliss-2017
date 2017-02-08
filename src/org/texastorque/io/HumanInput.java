@@ -9,7 +9,6 @@ public class HumanInput extends Input {
 	private GenericController driver;
 	private GenericController operator;
 	
-	
 	public HumanInput() {
 		init();
 	}
