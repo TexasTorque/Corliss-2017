@@ -15,9 +15,13 @@ public class RobotOutput {
 	
 	private TorqueMotor FW_leftSole;
 	private TorqueMotor FW_rightSole;
+
+	private TorqueMotor IN_lowerSole;
+	private TorqueMotor IN_upperSole;
 	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
+	private boolean flipIntake = false;
 	
 	public RobotOutput() {
 		DB_leftFore = new TorqueMotor(new VictorSP(0), flipDriveTrain);
@@ -27,6 +31,9 @@ public class RobotOutput {
 		
 		FW_leftSole = new TorqueMotor(new VictorSP(0), flipShooter);
 		FW_rightSole = new TorqueMotor(new VictorSP(0), flipShooter);
+		
+		IN_lowerSole = new TorqueMotor(new VictorSP(0), flipIntake);
+		IN_upperSole = new TorqueMotor(new VictorSP(0), flipIntake);
 	}
 	
 	/**
@@ -48,9 +55,20 @@ public class RobotOutput {
 	 * @param leftSpeed - The speed the leftside motor should be set to.
 	 * @param rightSpeed  - The speed the rightside motor should be set to.
 	 */
-	public void setDriveFlyWheelSpeed(double leftSpeed, double rightSpeed) {
+	public void setFlyWheelSpeed(double leftSpeed, double rightSpeed) {
 		FW_leftSole.set(leftSpeed);
 		FW_rightSole.set(rightSpeed);
+	}
+
+	/**
+	 * Set the motor speeds of the Robot's flywheel.  Both input numbers should range from
+	 * 1 => -1.
+	 * @param upperSpeed - The speed the leftside motor should be set to.
+	 * @param lowerSpeed  - The speed the rightside motor should be set to.
+	 */
+	public void setIntakeSpeed(double upperSpeed, double lowerSpeed) {
+		IN_lowerSole.set(lowerSpeed);
+		IN_upperSole.set(upperSpeed);
 	}
 	
 	public static RobotOutput getInstance() {

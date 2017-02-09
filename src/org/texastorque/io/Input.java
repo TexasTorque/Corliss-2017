@@ -10,6 +10,9 @@ public class Input {
 	protected double FW_leftSpeed;
 	protected double FW_rightSpeed;
 	
+	protected double IN_lowerSpeed;
+	protected double IN_upperSpeed;
+	
 	public Input() {
 		DB_leftSpeed = 0.0;
 		DB_rightSpeed = 0.0;
@@ -45,6 +48,22 @@ public class Input {
 	
 	public double getFW_rightSpeed() {
 		return FW_rightSpeed;
+	}
+	
+	public void setIN_lowerSpeed(double lowerSpeed) {
+		IN_lowerSpeed = lowerSpeed;
+	}
+	
+	public double getIN_lowerSpeed() {
+		return IN_lowerSpeed;
+	}
+	
+	public void setIN_upperSpeed(double upperSpeed) {
+		IN_upperSpeed = upperSpeed;
+	}
+	
+	public double getIN_upperSpeed() {
+		return IN_upperSpeed;
 	}
 	
 	public static Input getInstance() {
