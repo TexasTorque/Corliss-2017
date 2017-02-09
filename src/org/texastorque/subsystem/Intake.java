@@ -1,11 +1,19 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.io.HumanInput;
+import org.texastorque.io.RobotOutput;
+
 public class Intake extends Subsystem {
 
 	private static Intake instance;
 	
+	private double lowerSpeed;
+	private double upperSpeed;
+	
 	@Override
 	public void autoInit() {
+		lowerSpeed = 0d;
+		upperSpeed = 0d;
 		init();
 	}
 
@@ -15,7 +23,7 @@ public class Intake extends Subsystem {
 	}
 
 	private void init() {
-		
+		i = HumanInput.getInstance();
 	}
 	
 	@Override
@@ -29,11 +37,13 @@ public class Intake extends Subsystem {
 	}
 
 	private void run() {
+		lowerSpeed = i.getIN_lowerSpeed();
+		upperSpeed = i.getIN_upperSpeed();
 		output();
 	}
 	
 	private void output() {
-		
+		RobotOutput.getInstance().setIntakeSpeed(upperSpeed, lowerSpeed);
 	}
 	
 	@Override

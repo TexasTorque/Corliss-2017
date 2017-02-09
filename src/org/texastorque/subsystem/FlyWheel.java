@@ -49,7 +49,7 @@ public class FlyWheel extends Subsystem {
 	}
 
 	private void output() {
-		RobotOutput.getInstance().setDriveFlyWheelSpeed(leftSpeed, rightSpeed);
+		RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
 	}
 	
 	@Override
