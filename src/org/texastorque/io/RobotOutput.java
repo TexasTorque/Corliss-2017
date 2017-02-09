@@ -1,5 +1,6 @@
 package org.texastorque.io;
 
+import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueMotor;
 
 import edu.wpi.first.wpilibj.VictorSP;
@@ -25,7 +26,8 @@ public class RobotOutput {
 	private TorqueMotor TW_rightSole;
 	private TorqueMotor TW_leftSole;
 	
-	private TorqueMotor CL_sole;
+	private TorqueMotor CL_left;
+	private TorqueMotor CL_right;
 	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
@@ -35,24 +37,25 @@ public class RobotOutput {
 	private boolean flipClimber = false;
 	
 	public RobotOutput() {
-		DB_leftFore = new TorqueMotor(new VictorSP(0), flipDriveTrain);
-		DB_leftRear = new TorqueMotor(new VictorSP(0), flipDriveTrain);
-		DB_leftRear = new TorqueMotor(new VictorSP(0), !flipDriveTrain);
-		DB_leftRear = new TorqueMotor(new VictorSP(0), !flipDriveTrain);
+		DB_leftFore = new TorqueMotor(new VictorSP(Ports.DB_LEFTFORE), flipDriveTrain);
+		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_LEFTREAR), flipDriveTrain);
+		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_RIGHTFORE), !flipDriveTrain);
+		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_RIGHTREAR), !flipDriveTrain);
 		
-		FW_leftSole = new TorqueMotor(new VictorSP(0), flipShooter);
-		FW_rightSole = new TorqueMotor(new VictorSP(0), flipShooter);
+		FW_leftSole = new TorqueMotor(new VictorSP(Ports.FW_LEFT), flipShooter);
+		FW_rightSole = new TorqueMotor(new VictorSP(Ports.FW_RIGHT), flipShooter);
 		
-		IN_lowerSole = new TorqueMotor(new VictorSP(0), flipIntake);
-		IN_upperSole = new TorqueMotor(new VictorSP(0), flipIntake);
+		IN_lowerSole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
+		IN_upperSole = new TorqueMotor(new VictorSP(Ports.IN_UPPER), flipIntake);
 		
-		CN_rightSole = new TorqueMotor(new VictorSP(0), flipConveyor);
-		CN_leftSole = new TorqueMotor(new VictorSP(0), flipConveyor);
+		CN_leftSole = new TorqueMotor(new VictorSP(Ports.CN_LEFT), flipConveyor);
+		CN_rightSole = new TorqueMotor(new VictorSP(Ports.CN_RIGHT), flipConveyor);
 		
-		TW_rightSole = new TorqueMotor(new VictorSP(0), flipTwinsters);
-		TW_leftSole = new TorqueMotor(new VictorSP(0), flipTwinsters);
+		TW_leftSole = new TorqueMotor(new VictorSP(Ports.TW_LEFT), flipTwinsters);
+		TW_rightSole = new TorqueMotor(new VictorSP(Ports.TW_RIGHT), flipTwinsters);
 		
-		CL_sole = new TorqueMotor(new VictorSP(0), flipClimber);
+		CL_left = new TorqueMotor(new VictorSP(Ports.CL_LEFT), flipClimber);
+		CL_right = new TorqueMotor(new VictorSP(Ports.CL_RIGHT), flipClimber);
 	}
 	
 	/**
@@ -118,7 +121,8 @@ public class RobotOutput {
 	 * @param leftSpeed - The speed the leftside motor should be set to.
 	 */
 	public void setTwinstersSpeed(double speed) {
-		CL_sole.set(speed);
+		CL_left.set(speed);
+		CL_right.set(speed);
 	}
 	
 	public static RobotOutput getInstance() {
