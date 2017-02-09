@@ -1,8 +1,12 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.io.HumanInput;
+
 public class Climber extends Subsystem {
 
 	private static Climber instance;
+	
+	private double speed;
 	
 	@Override
 	public void autoInit() {
@@ -15,7 +19,7 @@ public class Climber extends Subsystem {
 	}
 
 	private void init() {
-		
+		i = HumanInput.getInstance();
 	}
 	
 	@Override
@@ -29,6 +33,8 @@ public class Climber extends Subsystem {
 	}
 	
 	private void run() {
+		speed = i.getCL_speed();
+		
 		output();
 	}
 	
