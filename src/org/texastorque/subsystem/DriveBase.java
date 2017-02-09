@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // instanced, include pertinent methods (remove this header before first commit)
 public class DriveBase extends Subsystem {
 
+	private static DriveBase instance;
+	
 	private double leftSpeed;
 	private double rightSpeed;
 	
@@ -60,6 +62,10 @@ public class DriveBase extends Subsystem {
 	public void smartDashboard() {
 		SmartDashboard.putNumber("DB_LEFTSPEED", leftSpeed);
 		SmartDashboard.putNumber("DB_RIGHTSPEED", rightSpeed);
+	}
+	
+	public static DriveBase getInstance() {
+		return instance == null ? instance = new DriveBase() : instance;
 	}
 	
 }
