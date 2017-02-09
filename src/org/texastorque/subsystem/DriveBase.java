@@ -1,16 +1,14 @@
 package org.texastorque.subsystem;
 
-import org.texastorque.interfaces.TorqueSubsystem;
 import org.texastorque.io.HumanInput;
-import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
-// instanced, include pertinent methods (remove this header before first commit)
-public class DriveBase implements TorqueSubsystem{
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-	private Input i;
-	
+// instanced, include pertinent methods (remove this header before first commit)
+public class DriveBase extends Subsystem {
+
 	private double leftSpeed;
 	private double rightSpeed;
 	
@@ -60,7 +58,8 @@ public class DriveBase implements TorqueSubsystem{
 	
 	@Override
 	public void smartDashboard() {
-
+		SmartDashboard.putNumber("DB_LEFTSPEED", leftSpeed);
+		SmartDashboard.putNumber("DB_RIGHTSPEED", rightSpeed);
 	}
 	
 }
