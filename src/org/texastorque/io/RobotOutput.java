@@ -25,11 +25,14 @@ public class RobotOutput {
 	private TorqueMotor TW_rightSole;
 	private TorqueMotor TW_leftSole;
 	
+	private TorqueMotor CL_sole;
+	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
 	private boolean flipIntake = false;
 	private boolean flipConveyor = false;
 	private boolean flipTwinsters = false;
+	private boolean flipClimber = false;
 	
 	public RobotOutput() {
 		DB_leftFore = new TorqueMotor(new VictorSP(0), flipDriveTrain);
@@ -48,6 +51,8 @@ public class RobotOutput {
 		
 		TW_rightSole = new TorqueMotor(new VictorSP(0), flipTwinsters);
 		TW_leftSole = new TorqueMotor(new VictorSP(0), flipTwinsters);
+		
+		CL_sole = new TorqueMotor(new VictorSP(0), flipClimber);
 	}
 	
 	/**
@@ -105,6 +110,15 @@ public class RobotOutput {
 	public void setTwinstersSpeed(double leftSpeed, double rightSpeed) {
 		TW_rightSole.set(rightSpeed);
 		TW_leftSole.set(leftSpeed);
+	}
+	
+	/**
+	 * Set the motor speeds of the Robot's cimber.  The input numbers should range from
+	 * 1 => -1.
+	 * @param leftSpeed - The speed the leftside motor should be set to.
+	 */
+	public void setTwinstersSpeed(double speed) {
+		CL_sole.set(speed);
 	}
 	
 	public static RobotOutput getInstance() {

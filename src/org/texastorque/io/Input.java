@@ -19,6 +19,8 @@ public class Input {
 	protected double TW_leftSpeed;
 	protected double TW_rightSpeed;
 	
+	protected double CL_speed;
+	
 	public Input() {
 		DB_leftSpeed = 0.0;
 		DB_rightSpeed = 0.0;
@@ -102,6 +104,14 @@ public class Input {
 	
 	public double getTW_leftSpeed() {
 		return TW_leftSpeed;
+	}
+	
+	public void setCL_speed(double speed) {
+		CL_speed = speed;
+	}
+	
+	public double getCL_speed() {
+		return CL_speed;
 	}
 	
 	public static Input getInstance() {

@@ -14,6 +14,7 @@ public class HumanInput extends Input {
 	private GenericController operator;
 
 	private TorqueToggle switchShooter;
+	private TorqueToggle climber;
 
 	private double dT;
 	private double lT;
@@ -27,6 +28,7 @@ public class HumanInput extends Input {
 		operator = new GenericController(-1, .1);
 
 		switchShooter = new TorqueToggle(false);
+		climber = new TorqueToggle(false);
 	}
 
 	public void update() {
@@ -110,6 +112,15 @@ public class HumanInput extends Input {
 		} else {
 			TW_leftSpeed = 0d;
 			TW_rightSpeed = 0d;
+		}
+		
+		// operator climber control
+		
+		climber.calc(operator.getAButton());
+		if(climber.get()) {
+			CL_speed = 1d;
+		} else {
+			CL_speed = 0d;
 		}
 		
 	}
