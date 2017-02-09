@@ -15,8 +15,6 @@ public class HumanInput extends Input {
 
 	private TorqueToggle switchShooter;
 
-	private boolean intakeRunning = false;
-
 	private double dT;
 	private double lT;
 
@@ -80,19 +78,27 @@ public class HumanInput extends Input {
 		if (operator.getYButton()) {
 			IN_lowerSpeed = 1d;
 			IN_upperSpeed = 1d;
-			intakeRunning = true;
-		}
-		if (operator.getAButton()) {
-			IN_lowerSpeed = 1d;
-			IN_upperSpeed = 1d;
-			intakeRunning = true;
-		}
-		if (!intakeRunning) {
+		} else if (operator.getAButton()) {
+			IN_lowerSpeed = -1d;
+			IN_upperSpeed = -1d;
+		} else {
 			IN_lowerSpeed = 0d;
 			IN_upperSpeed = 0d;
 		}
-		intakeRunning = false;
 
+		// operator feed / conveyor control
+		
+		if (operator.getLeftBumper()) {
+			CN_leftSpeed = 1d;
+			CN_rightSpeed = 1d;
+		} else if(operator.getRightBumper()) {
+			CN_leftSpeed = -1d;
+			CN_rightSpeed = -1d;
+		} else {
+			CN_leftSpeed = 0d;
+			CN_rightSpeed = 0d;
+		}
+		
 	}
 
 	public static HumanInput getInstance() {

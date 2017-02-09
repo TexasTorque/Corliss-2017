@@ -13,6 +13,9 @@ public class Input {
 	protected double IN_lowerSpeed;
 	protected double IN_upperSpeed;
 	
+	protected double CN_rightSpeed;
+	protected double CN_leftSpeed;
+	
 	public Input() {
 		DB_leftSpeed = 0.0;
 		DB_rightSpeed = 0.0;
@@ -64,6 +67,22 @@ public class Input {
 	
 	public double getIN_upperSpeed() {
 		return IN_upperSpeed;
+	}
+	
+	public void setCN_rightSpeed(double rightSpeed) {
+		CN_rightSpeed = rightSpeed;
+	}
+	
+	public double getCN_rightSpeed() {
+		return CN_rightSpeed;
+	}
+	
+	public void setCN_leftSpeed(double leftSpeed) {
+		CN_leftSpeed = leftSpeed;
+	}
+	
+	public double getCN_leftSpeed() {
+		return CN_leftSpeed;
 	}
 	
 	public static Input getInstance() {
