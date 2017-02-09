@@ -1,15 +1,14 @@
 package org.texastorque.io;
 
-import org.texastorque.torquelib.base.TorqueClass;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-public class Input implements TorqueClass {
+public class Input {
 
 	private static Input instance;
 	
-	private double DB_leftSpeed;
-	private double DB_rightSpeed;
+	protected double DB_leftSpeed;
+	protected double DB_rightSpeed;
+	
+	protected double FW_leftSpeed;
+	protected double FW_rightSpeed;
 	
 	public Input() {
 		DB_leftSpeed = 0.0;
@@ -32,10 +31,20 @@ public class Input implements TorqueClass {
 		return DB_rightSpeed;
 	}
 	
-	@Override
-	public void smartDashboard() {
-		SmartDashboard.putNumber("DB_LeftSpeed", DB_leftSpeed);
-		SmartDashboard.putNumber("DB_RightSpeed", DB_rightSpeed);
+	public void setFW_leftSpeed(double leftSpeed) {
+		FW_leftSpeed = leftSpeed;
+	}
+	
+	public double getFW_leftSpeed() {
+		return FW_leftSpeed;
+	}
+	
+	public void setFW_rightSpeed(double rightSpeed) {
+		FW_rightSpeed = rightSpeed;
+	}
+	
+	public double getFW_rightSpeed() {
+		return FW_rightSpeed;
 	}
 	
 	public static Input getInstance() {
