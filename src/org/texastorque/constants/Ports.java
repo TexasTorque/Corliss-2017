@@ -10,5 +10,17 @@ public class Ports {
 //	shooter ports
 	public static final int FW_LEFT = -1;
 	public static final int FW_RIGHT = -1;
+//	intake ports
+	public static final int IN_UPPER = -1;
+	public static final int IN_LOWER = -1;
+//	conveyor ports
+	public static final int CN_LEFT = -1;
+	public static final int CN_RIGHT = -1;
+//	twinsters ports
+	public static final int TW_LEFT = -1;
+	public static final int TW_RIGHT = -1;
+//	climber ports
+	public static final int CL_LEFT = -1;
+	public static final int CL_RIGHT = -1;
 
 }
