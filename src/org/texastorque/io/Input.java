@@ -13,8 +13,11 @@ public class Input {
 	protected double IN_lowerSpeed;
 	protected double IN_upperSpeed;
 	
-	protected double CN_rightSpeed;
 	protected double CN_leftSpeed;
+	protected double CN_rightSpeed;
+	
+	protected double TW_leftSpeed;
+	protected double TW_rightSpeed;
 	
 	public Input() {
 		DB_leftSpeed = 0.0;
@@ -83,6 +86,22 @@ public class Input {
 	
 	public double getCN_leftSpeed() {
 		return CN_leftSpeed;
+	}
+	
+	public void setTW_rightSpeed(double rightSpeed) {
+		TW_rightSpeed = rightSpeed;
+	}
+	
+	public double getTW_rightSpeed() {
+		return TW_rightSpeed;
+	}
+	
+	public void setTW_leftSpeed(double leftSpeed) {
+		TW_leftSpeed = leftSpeed;
+	}
+	
+	public double getTW_leftSpeed() {
+		return TW_leftSpeed;
 	}
 	
 	public static Input getInstance() {

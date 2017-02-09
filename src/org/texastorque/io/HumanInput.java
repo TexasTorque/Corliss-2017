@@ -43,31 +43,31 @@ public class HumanInput extends Input {
 
 		if (dT >= Constants.HI_DBDT.getDouble()) {
 			if (operator.getDPADUp()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
 					FW_leftSpeed += Constants.FW_LS.getDouble();
 				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && !switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
 					FW_rightSpeed += Constants.FW_LS.getDouble();
 				}
 			} else if (operator.getDPADDown()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
 					FW_leftSpeed -= Constants.FW_LS.getDouble();
 				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && !switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
 					FW_rightSpeed -= Constants.FW_LS.getDouble();
 				}
 			} else if (operator.getDPADRight()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
 					FW_leftSpeed += Constants.FW_SS.getDouble();
 				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && !switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
 					FW_rightSpeed += Constants.FW_SS.getDouble();
 				}
 			} else if (operator.getDPADLeft()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
 					FW_leftSpeed -= Constants.FW_SS.getDouble();
 				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() && !switchShooter.get()) {
+				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
 					FW_rightSpeed -= Constants.FW_SS.getDouble();
 				}
 			}
@@ -97,6 +97,19 @@ public class HumanInput extends Input {
 		} else {
 			CN_leftSpeed = 0d;
 			CN_rightSpeed = 0d;
+		}
+		
+		// operator twinsters control
+		
+		if (operator.getLeftTrigger()) {
+			TW_leftSpeed = 1d;
+			TW_rightSpeed = 1d;
+		} else if(operator.getRightTrigger()) {
+			TW_leftSpeed = -1d;
+			TW_rightSpeed = -1d;
+		} else {
+			TW_leftSpeed = 0d;
+			TW_rightSpeed = 0d;
 		}
 		
 	}
