@@ -1,0 +1,47 @@
+package org.texastorque.subsystem;
+
+public class Bin extends Subsystem {
+
+	private static Bin instance;
+	
+	@Override
+	public void autoInit() {
+		init();
+	}
+
+	@Override
+	public void teleopInit() {
+		init();
+	}
+
+	private void init() {
+		
+	}
+	
+	@Override
+	public void autoContinuous() {
+		run();
+	}
+
+	@Override
+	public void teleopContinuous() {
+		run();
+	}
+
+	private void run() {
+		output();
+	}
+	
+	private void output() {
+		
+	}
+	
+	@Override
+	public void smartDashboard() {
+	}
+	
+	public static Bin getInstance() {
+		return instance == null ? instance = new Bin() : instance;
+	}
+	
+}
