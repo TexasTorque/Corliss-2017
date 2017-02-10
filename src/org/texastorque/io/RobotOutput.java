@@ -1,10 +1,12 @@
 package org.texastorque.io;
 
 import org.texastorque.constants.Ports;
-
 import org.texastorque.torquelib.component.TorqueMotor;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
 
 public class RobotOutput {
 	
@@ -30,9 +32,11 @@ public class RobotOutput {
 	private TorqueMotor CL_left;
 	private TorqueMotor CL_right;
 	
-	//i have no idea what to put here
-	/*private 
-	*/
+	private Solenoid GH_sole;
+	
+	private Solenoid GR_right;
+	private Solenoid GR_left;
+	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
 	private boolean flipIntake = false;
@@ -60,6 +64,11 @@ public class RobotOutput {
 		
 		CL_left = new TorqueMotor(new VictorSP(Ports.CL_LEFT), flipClimber);
 		CL_right = new TorqueMotor(new VictorSP(Ports.CL_RIGHT), flipClimber);
+		
+		GR_left=new Solenoid(Ports.GR_LEFT);
+		GR_right=new Solenoid(Ports.GR_RIGHT);
+		
+		GH_sole=new Solenoid(Ports.GH_SOLE);
 	}
 	
 	/**
@@ -129,12 +138,13 @@ public class RobotOutput {
 		CL_right.set(speed);
 	}
 	
-	public void openGearIntake(boolean open){
-		
+	public void openGearRamp(boolean open){
+		GR_right.set(open);
+		GR_left.set(open);
 	}
 	
-	public void extendGearArm(boolean extended){
-		
+	public void extendGearHolder(boolean extended){
+		GH_sole.set(extended);
 	}
 	
 	public static RobotOutput getInstance() {

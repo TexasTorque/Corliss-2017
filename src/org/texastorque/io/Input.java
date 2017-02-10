@@ -21,8 +21,8 @@ public class Input {
 	
 	protected double CL_speed;
 	
-	protected boolean GI_open;
-	protected boolean GA_extended;
+	protected boolean GR_open;
+	protected boolean GH_extended;
 	
 	public Input() {
 		DB_leftSpeed = 0.0;
@@ -117,21 +117,21 @@ public class Input {
 		return CL_speed;
 	}
 	
-	public boolean getGI_open(){
-		return GI_open;
+	public boolean getGR_open(){
+		return GR_open;
 	}
 	
 
-	public void setGI_open(boolean open){
-		GI_open=open;
+	public void setGR_open(boolean open){
+		GR_open=open;
 	}
 	
-	public boolean getGA_extended(){
-		return GA_extended;
+	public boolean getGH_extended(){
+		return GH_extended;
 	}
 	
-	public void setGA_extended(boolean extended){
-		GA_extended=extended;
+	public void setGH_extended(boolean extended){
+		GH_extended=extended;
 	}
 	
 	public static Input getInstance() {

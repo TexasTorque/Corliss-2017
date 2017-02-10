@@ -42,7 +42,6 @@ public class HumanInput extends Input {
 		shooter=operator.getLeftStickClick();
 		
 		// operator shooter control
-		if(shooter){
 			switchShooter.calc(operator.getXButton());
 			dT = lT - Timer.getFPGATimestamp();
 		
@@ -116,8 +115,7 @@ public class HumanInput extends Input {
 				TW_leftSpeed = 0d;
 				TW_rightSpeed = 0d;
 			}
-		}//if shooter
-		else {	
+		
 			
 			// operator climber control
 		
@@ -129,22 +127,26 @@ public class HumanInput extends Input {
 		}
 		
 			//operator gear pneumatics thing control
-		if(operator.getYButton()){
-			GI_open=true;
-		}
-		else {
-			GI_open=false;
-		}
 		
-		if(operator.getAButton()){
-			GA_extended=true;
-		} else{
-			GA_extended=false;
-		}
 		
-	}//else shooter
+		
 }//update
 		
+public void updateGear(){
+	if(operator.getYButton()){
+		GR_open=true;
+	}
+	else {
+		GR_open=false;
+	}
+	
+	if(operator.getYButton()){
+		GH_extended=true;
+	} else{
+		GH_extended=false;
+	}
+	
+}//update gear
 
 	public static HumanInput getInstance() {
 		return instance == null ? instance = new HumanInput() : instance;
