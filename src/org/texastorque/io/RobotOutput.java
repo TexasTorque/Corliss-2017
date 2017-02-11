@@ -3,6 +3,8 @@ package org.texastorque.io;
 import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueMotor;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.VictorSP;
 
 public class RobotOutput {
@@ -28,6 +30,9 @@ public class RobotOutput {
 	
 	private TorqueMotor CL_left;
 	private TorqueMotor CL_right;
+	
+	private DoubleSolenoid BN_left;
+	private DoubleSolenoid BN_right;
 	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
@@ -56,6 +61,9 @@ public class RobotOutput {
 		
 		CL_left = new TorqueMotor(new VictorSP(Ports.CL_LEFT), flipClimber);
 		CL_right = new TorqueMotor(new VictorSP(Ports.CL_RIGHT), flipClimber);
+		
+		BN_left = new DoubleSolenoid(Ports.BN_LEFT_A, Ports.BN_LEFT_B);
+		BN_right = new DoubleSolenoid(Ports.BN_RIGHT_A, Ports.BN_RIGHT_B);
 	}
 	
 	/**
@@ -123,6 +131,15 @@ public class RobotOutput {
 	public void setTwinstersSpeed(double speed) {
 		CL_left.set(speed);
 		CL_right.set(speed);
+	}
+	
+	/**
+	 * Set the state of the bin pneumatics.
+	 * @param output - set the pneumatic in or out.
+	 */
+	public void setBinExtension(boolean extended) {
+		BN_left.set(extended ? Value.kForward : Value.kReverse);
+		BN_right.set(extended ? Value.kForward : Value.kReverse);
 	}
 	
 	public static RobotOutput getInstance() {
