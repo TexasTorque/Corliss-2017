@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.texastorque.io.HumanInput;
 import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
+import org.texastorque.subsystem.Bin;
 import org.texastorque.subsystem.Climber;
 import org.texastorque.subsystem.Conveyor;
 import org.texastorque.subsystem.DriveBase;
@@ -33,6 +34,7 @@ public class Robot extends TorqueIterative {
 			add(Intake.getInstance());
 			add(Twinsters.getInstance());
 			add(Pneumatics.getInstance());
+			add(Bin.getInstance());
 		}};
 	}
 

@@ -22,5 +22,10 @@ public class Ports {
 //	climber ports
 	public static final int CL_LEFT = -1;
 	public static final int CL_RIGHT = -1;
+//	bin ports
+	public static final int BN_LEFT_A = -1;
+	public static final int BN_LEFT_B = -1;
+	public static final int BN_RIGHT_A = -1;
+	public static final int BN_RIGHT_B = -1;
 
 }
