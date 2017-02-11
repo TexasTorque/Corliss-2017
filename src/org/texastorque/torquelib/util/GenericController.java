@@ -47,6 +47,9 @@ public final class GenericController extends Joystick {
 	 * @return The scaled joystick value.
 	 */
 	private double scaleInput(double input) {
+		if(deadband >= 1) {
+			deadband = .99;
+		}
 		if (Math.abs(input) > deadband) {
 			if (input > 0) {
 				return (input - deadband) / (1 - deadband);
