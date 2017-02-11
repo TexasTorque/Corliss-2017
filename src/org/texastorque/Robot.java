@@ -10,8 +10,8 @@ import org.texastorque.subsystem.Climber;
 import org.texastorque.subsystem.Conveyor;
 import org.texastorque.subsystem.DriveBase;
 import org.texastorque.subsystem.FlyWheel;
+import org.texastorque.subsystem.Gear;
 import org.texastorque.subsystem.Intake;
-import org.texastorque.subsystem.Pneumatics;
 import org.texastorque.subsystem.Subsystem;
 import org.texastorque.subsystem.Twinsters;
 import org.texastorque.torquelib.base.TorqueIterative;
@@ -33,8 +33,8 @@ public class Robot extends TorqueIterative {
 			add(FlyWheel.getInstance());
 			add(Intake.getInstance());
 			add(Twinsters.getInstance());
-			add(Pneumatics.getInstance());
 			add(Bin.getInstance());
+			add(Gear.getInstance());
 		}};
 	}
 

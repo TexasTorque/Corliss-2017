@@ -5,9 +5,9 @@ import org.texastorque.io.RobotOutput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Pneumatics extends Subsystem{
+public class Gear extends Subsystem{
 
-	private static Pneumatics instance;
+	private static Gear instance;
 	
 	private boolean open;
 	private boolean extended;
@@ -38,18 +38,18 @@ public class Pneumatics extends Subsystem{
 	}
 
 	public void run(){
-		open=i.getGI_open();
-		extended=i.getGA_extended();
+		open=i.getGR_open();
+		extended=i.getGH_extended();
 		output();
 	}
 	
 	public void output(){
-		RobotOutput.getInstance().openGearIntake(open);
-		RobotOutput.getInstance().extendGearArm(extended);
+		RobotOutput.getInstance().openGearRamp(open);
+		RobotOutput.getInstance().extendGearHolder(extended);
 	}
 	
-	public static Pneumatics getInstance() {
-		return instance == null ? instance = new Pneumatics() : instance;
+	public static Gear getInstance() {
+		return instance == null ? instance = new Gear() : instance;
 	}
 
 	@Override

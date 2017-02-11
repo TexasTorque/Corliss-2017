@@ -5,7 +5,9 @@ import org.texastorque.torquelib.component.TorqueMotor;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
+
 
 public class RobotOutput {
 	
@@ -33,6 +35,10 @@ public class RobotOutput {
 	
 	private DoubleSolenoid BN_left;
 	private DoubleSolenoid BN_right;
+
+	private Solenoid GH_sole;
+	private Solenoid GR_right;
+	private Solenoid GR_left;
 	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
@@ -64,6 +70,11 @@ public class RobotOutput {
 		
 		BN_left = new DoubleSolenoid(Ports.BN_LEFT_A, Ports.BN_LEFT_B);
 		BN_right = new DoubleSolenoid(Ports.BN_RIGHT_A, Ports.BN_RIGHT_B);
+
+		GR_left=new Solenoid(Ports.GR_LEFT);
+		GR_right=new Solenoid(Ports.GR_RIGHT);
+		
+		GH_sole=new Solenoid(Ports.GH_SOLE);
 	}
 	
 	/**
@@ -133,13 +144,11 @@ public class RobotOutput {
 		CL_right.set(speed);
 	}
 	
-	public void openGearIntake(boolean open){
-		
+	public void openGearRamp(boolean open){
+		GR_right.set(open);
+		GR_left.set(open);
 	}
 	
-	public void extendGearArm(boolean extended){
-	
-	}		
 	/**
 	 * Set the state of the bin pneumatics.
 	 * @param output - set the pneumatic in or out.
@@ -147,6 +156,10 @@ public class RobotOutput {
 	public void setBinExtension(boolean extended) {
 		BN_left.set(extended ? Value.kForward : Value.kReverse);
 		BN_right.set(extended ? Value.kForward : Value.kReverse);
+	}
+	
+	public void extendGearHolder(boolean extended){
+		GH_sole.set(extended);
 	}
 	
 	public static RobotOutput getInstance() {
