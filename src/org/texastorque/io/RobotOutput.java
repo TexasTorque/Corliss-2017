@@ -1,6 +1,7 @@
 package org.texastorque.io;
 
 import org.texastorque.constants.Ports;
+
 import org.texastorque.torquelib.component.TorqueMotor;
 
 import edu.wpi.first.wpilibj.VictorSP;
@@ -29,6 +30,9 @@ public class RobotOutput {
 	private TorqueMotor CL_left;
 	private TorqueMotor CL_right;
 	
+	//i have no idea what to put here
+	/*private 
+	*/
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
 	private boolean flipIntake = false;
@@ -123,6 +127,14 @@ public class RobotOutput {
 	public void setTwinstersSpeed(double speed) {
 		CL_left.set(speed);
 		CL_right.set(speed);
+	}
+	
+	public void openGearIntake(boolean open){
+		
+	}
+	
+	public void extendGearArm(boolean extended){
+		
 	}
 	
 	public static RobotOutput getInstance() {

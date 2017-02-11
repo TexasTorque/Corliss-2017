@@ -19,6 +19,8 @@ public class HumanInput extends Input {
 	private double dT;
 	private double lT;
 
+	public boolean shooter;
+
 	public HumanInput() {
 		init();
 	}
@@ -36,85 +38,88 @@ public class HumanInput extends Input {
 
 		DB_leftSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
 		DB_rightSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
-
+		
+		shooter=operator.getLeftStickClick();
+		
 		// operator shooter control
-
-		switchShooter.calc(operator.getXButton());
-
-		dT = lT - Timer.getFPGATimestamp();
-
-		if (dT >= Constants.HI_DBDT.getDouble()) {
-			if (operator.getDPADUp()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed += Constants.FW_LS.getDouble();
-				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed += Constants.FW_LS.getDouble();
-				}
-			} else if (operator.getDPADDown()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed -= Constants.FW_LS.getDouble();
-				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed -= Constants.FW_LS.getDouble();
-				}
-			} else if (operator.getDPADRight()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed += Constants.FW_SS.getDouble();
-				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed += Constants.FW_SS.getDouble();
-				}
-			} else if (operator.getDPADLeft()) {
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed -= Constants.FW_SS.getDouble();
-				}
-				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed -= Constants.FW_SS.getDouble();
+		if(shooter){
+			switchShooter.calc(operator.getXButton());
+			dT = lT - Timer.getFPGATimestamp();
+		
+			if (dT >= Constants.HI_DBDT.getDouble()) {
+				if (operator.getDPADUp()) {
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
+						FW_leftSpeed += Constants.FW_LS.getDouble();
+					}
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
+						FW_rightSpeed += Constants.FW_LS.getDouble();
+					}
+				} else if (operator.getDPADDown()) {
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
+						FW_leftSpeed -= Constants.FW_LS.getDouble();
+					}
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
+						FW_rightSpeed -= Constants.FW_LS.getDouble();
+					}
+				} else if (operator.getDPADRight()) {
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
+						FW_leftSpeed += Constants.FW_SS.getDouble();
+					}
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
+						FW_rightSpeed += Constants.FW_SS.getDouble();
+					}
+				} else if (operator.getDPADLeft()) {
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
+						FW_leftSpeed -= Constants.FW_SS.getDouble();
+					}
+					if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
+						FW_rightSpeed -= Constants.FW_SS.getDouble();
+					}
 				}
 			}
-		}
-
-		// operator intake control
-
-		if (operator.getYButton()) {
-			IN_lowerSpeed = 1d;
-			IN_upperSpeed = 1d;
-		} else if (operator.getAButton()) {
-			IN_lowerSpeed = -1d;
-			IN_upperSpeed = -1d;
-		} else {
-			IN_lowerSpeed = 0d;
-			IN_upperSpeed = 0d;
-		}
-
-		// operator feed / conveyor control
 		
-		if (operator.getLeftBumper()) {
-			CN_leftSpeed = 1d;
-			CN_rightSpeed = 1d;
-		} else if(operator.getRightBumper()) {
-			CN_leftSpeed = -1d;
-			CN_rightSpeed = -1d;
-		} else {
-			CN_leftSpeed = 0d;
-			CN_rightSpeed = 0d;
-		}
+			// operator intake control
 		
-		// operator twinsters control
+			if (operator.getYButton()) {
+				IN_lowerSpeed = 1d;
+				IN_upperSpeed = 1d;
+			} else if (operator.getAButton()) {
+				IN_lowerSpeed = -1d;
+				IN_upperSpeed = -1d;
+			} else {
+				IN_lowerSpeed = 0d;
+				IN_upperSpeed = 0d;
+			}
 		
-		if (operator.getLeftTrigger()) {
-			TW_leftSpeed = 1d;
-			TW_rightSpeed = 1d;
-		} else if(operator.getRightTrigger()) {
-			TW_leftSpeed = -1d;
-			TW_rightSpeed = -1d;
-		} else {
-			TW_leftSpeed = 0d;
-			TW_rightSpeed = 0d;
-		}
-		
-		// operator climber control
+			// operator feed / conveyor control
+			
+			if (operator.getLeftBumper()) {
+				CN_leftSpeed = 1d;
+				CN_rightSpeed = 1d;
+			} else if(operator.getRightBumper()) {
+				CN_leftSpeed = -1d;
+				CN_rightSpeed = -1d;
+			} else {
+				CN_leftSpeed = 0d;
+				CN_rightSpeed = 0d;
+			}
+			
+			// operator twinsters control
+			
+			if (operator.getLeftTrigger()) {
+				TW_leftSpeed = 1d;
+				TW_rightSpeed = 1d;
+			} else if(operator.getRightTrigger()) {
+				TW_leftSpeed = -1d;
+				TW_rightSpeed = -1d;
+			} else {
+				TW_leftSpeed = 0d;
+				TW_rightSpeed = 0d;
+			}
+		}//if shooter
+		else {	
+			
+			// operator climber control
 		
 		climber.calc(operator.getAButton());
 		if(climber.get()) {
@@ -123,7 +128,23 @@ public class HumanInput extends Input {
 			CL_speed = 0d;
 		}
 		
-	}
+			//operator gear pneumatics thing control
+		if(operator.getYButton()){
+			GI_open=true;
+		}
+		else {
+			GI_open=false;
+		}
+		
+		if(operator.getAButton()){
+			GA_extended=true;
+		} else{
+			GA_extended=false;
+		}
+		
+	}//else shooter
+}//update
+		
 
 	public static HumanInput getInstance() {
 		return instance == null ? instance = new HumanInput() : instance;
