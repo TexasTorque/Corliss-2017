@@ -1,5 +1,7 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.io.RobotOutput;
+
 public class Bin extends Subsystem {
 
 	private static Bin instance;
@@ -15,7 +17,6 @@ public class Bin extends Subsystem {
 	}
 
 	private void init() {
-		
 	}
 	
 	@Override
@@ -33,7 +34,7 @@ public class Bin extends Subsystem {
 	}
 	
 	private void output() {
-		
+		RobotOutput.getInstance().setBinExtension(true);
 	}
 	
 	@Override
