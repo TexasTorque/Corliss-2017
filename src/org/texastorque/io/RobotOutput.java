@@ -20,6 +20,7 @@ public class RobotOutput {
 	
 	private TorqueMotor FW_leftSole;
 	private TorqueMotor FW_rightSole;
+	private TorqueMotor FW_gateSole;
 
 	private TorqueMotor IN_lowerSole;
 	private TorqueMotor IN_upperSole;
@@ -55,6 +56,7 @@ public class RobotOutput {
 		
 		FW_leftSole = new TorqueMotor(new VictorSP(Ports.FW_LEFT), flipShooter);
 		FW_rightSole = new TorqueMotor(new VictorSP(Ports.FW_RIGHT), flipShooter);
+		FW_gateSole = new TorqueMotor(new VictorSP(Ports.FW_GATE), flipShooter);
 		
 		IN_lowerSole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
 		IN_upperSole = new TorqueMotor(new VictorSP(Ports.IN_UPPER), flipIntake);
@@ -91,14 +93,16 @@ public class RobotOutput {
 	}
 	
 	/**
-	 * Set the motor speeds of the Robot's flywheel.  Both input numbers should range from
+	 * Set the motor speeds of the Robot's flywheel & gate.  Both input numbers should range from
 	 * 1 => -1.
 	 * @param leftSpeed - The speed the leftside motor should be set to.
 	 * @param rightSpeed  - The speed the rightside motor should be set to.
+	 * @param gateSpeed  - The speed the gate motor should be set to.
 	 */
-	public void setFlyWheelSpeed(double leftSpeed, double rightSpeed) {
+	public void setFlyWheelSpeed(double leftSpeed, double rightSpeed, double gateSpeed) {
 		FW_leftSole.set(leftSpeed);
 		FW_rightSole.set(rightSpeed);
+		FW_gateSole.set(gateSpeed);
 	}
 
 	/**

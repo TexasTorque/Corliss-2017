@@ -9,6 +9,7 @@ public class Input {
 	
 	protected double FW_leftSpeed;
 	protected double FW_rightSpeed;
+	protected double FW_gateSpeed;
 	
 	protected double IN_lowerSpeed;
 	protected double IN_upperSpeed;
@@ -59,6 +60,14 @@ public class Input {
 	
 	public double getFW_rightSpeed() {
 		return FW_rightSpeed;
+	}
+
+	public void setFW_gateSpeed(double gateSpeed) {
+		FW_rightSpeed = gateSpeed;
+	}
+	
+	public double getFW_gateSpeed() {
+		return FW_gateSpeed;
 	}
 	
 	public void setIN_lowerSpeed(double lowerSpeed) {
@@ -121,7 +130,6 @@ public class Input {
 		return GR_open;
 	}
 	
-
 	public void setGR_open(boolean open){
 		GR_open=open;
 	}
