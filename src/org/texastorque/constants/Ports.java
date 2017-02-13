@@ -20,6 +20,7 @@ public class Ports {
 	// twinsters ports
 	public static final int TW_LEFT = -1;
 	public static final int TW_RIGHT = -1;
+	public static final int TW_FEEDER = -1;
 	// climber ports
 	public static final int CL_LEFT = -1;
 	public static final int CL_RIGHT = -1;

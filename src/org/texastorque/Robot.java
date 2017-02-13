@@ -7,7 +7,6 @@ import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
 import org.texastorque.subsystem.Bin;
 import org.texastorque.subsystem.Climber;
-import org.texastorque.subsystem.Conveyor;
 import org.texastorque.subsystem.DriveBase;
 import org.texastorque.subsystem.FlyWheel;
 import org.texastorque.subsystem.Gear;
@@ -28,7 +27,6 @@ public class Robot extends TorqueIterative {
 		RobotOutput.getInstance();
 		subsystems = new ArrayList<Subsystem>(){{
 			add(Climber.getInstance());
-			add(Conveyor.getInstance());
 			add(DriveBase.getInstance());
 			add(FlyWheel.getInstance());
 			add(Intake.getInstance());
@@ -42,6 +40,7 @@ public class Robot extends TorqueIterative {
 	public void autonomousInit() {
 		for(Subsystem system : subsystems ) {
 			system.autoInit();
+			system.setInput(HumanInput.getInstance());
 		}
 	}
 
@@ -49,6 +48,7 @@ public class Robot extends TorqueIterative {
 	public void teleopInit() {
 		for(Subsystem system : subsystems ) {
 			system.teleopInit();
+			system.setInput(HumanInput.getInstance());
 		}
 	}
 
