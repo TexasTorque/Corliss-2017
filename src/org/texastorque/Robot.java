@@ -2,6 +2,7 @@ package org.texastorque;
 
 import java.util.ArrayList;
 
+import org.texastorque.feedback.Feedback;
 import org.texastorque.io.HumanInput;
 import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
