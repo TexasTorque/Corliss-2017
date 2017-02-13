@@ -10,6 +10,7 @@ public class Ports {
 	// shooter ports
 	public static final int FW_LEFT = -1;
 	public static final int FW_RIGHT = -1;
+	public static final int FW_GATE = -1;
 	// intake ports
 	public static final int IN_UPPER = -1;
 	public static final int IN_LOWER = -1;
