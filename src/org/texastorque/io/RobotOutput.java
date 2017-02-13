@@ -22,12 +22,9 @@ public class RobotOutput {
 	private TorqueMotor FW_rightSole;
 	private TorqueMotor FW_gateSole;
 
-	private TorqueMotor IN_lowerSole;
-	private TorqueMotor IN_upperSole;
+	private TorqueMotor IN_sole;
 	
-	private TorqueMotor CN_rightSole;
-	private TorqueMotor CN_leftSole;
-	
+	private TorqueMotor TW_feederSole;
 	private TorqueMotor TW_rightSole;
 	private TorqueMotor TW_leftSole;
 	
@@ -44,7 +41,7 @@ public class RobotOutput {
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = false;
 	private boolean flipIntake = false;
-	private boolean flipConveyor = false;
+	private boolean flipFeeder = false;
 	private boolean flipTwinsters = false;
 	private boolean flipClimber = false;
 	
@@ -58,14 +55,11 @@ public class RobotOutput {
 		FW_rightSole = new TorqueMotor(new VictorSP(Ports.FW_RIGHT), flipShooter);
 		FW_gateSole = new TorqueMotor(new VictorSP(Ports.FW_GATE), flipShooter);
 		
-		IN_lowerSole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
-		IN_upperSole = new TorqueMotor(new VictorSP(Ports.IN_UPPER), flipIntake);
-		
-		CN_leftSole = new TorqueMotor(new VictorSP(Ports.CN_LEFT), flipConveyor);
-		CN_rightSole = new TorqueMotor(new VictorSP(Ports.CN_RIGHT), flipConveyor);
+		IN_sole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
 		
 		TW_leftSole = new TorqueMotor(new VictorSP(Ports.TW_LEFT), flipTwinsters);
 		TW_rightSole = new TorqueMotor(new VictorSP(Ports.TW_RIGHT), flipTwinsters);
+		TW_feederSole = new TorqueMotor(new VictorSP(Ports.TW_FEEDER), flipFeeder);
 		
 		CL_left = new TorqueMotor(new VictorSP(Ports.CL_LEFT), flipClimber);
 		CL_right = new TorqueMotor(new VictorSP(Ports.CL_RIGHT), flipClimber);
@@ -111,20 +105,8 @@ public class RobotOutput {
 	 * @param upperSpeed - The speed the leftside motor should be set to.
 	 * @param lowerSpeed  - The speed the rightside motor should be set to.
 	 */
-	public void setIntakeSpeed(double upperSpeed, double lowerSpeed) {
-		IN_lowerSole.set(lowerSpeed);
-		IN_upperSole.set(upperSpeed);
-	}
-	
-	/**
-	 * Set the motor speeds of the Robot's conveyor.  Both input numbers should range from
-	 * 1 => -1.
-	 * @param leftSpeed - The speed the leftside motor should be set to.
-	 * @param rightSpeed  - The speed the rightside motor should be set to.
-	 */
-	public void setConveyorSpeed(double leftSpeed, double rightSpeed) {
-		CN_rightSole.set(rightSpeed);
-		CN_leftSole.set(leftSpeed);
+	public void setIntakeSpeed(double speed) {
+		IN_sole.set(speed);
 	}
 	
 	/**
@@ -143,7 +125,7 @@ public class RobotOutput {
 	 * 1 => -1.
 	 * @param leftSpeed - The speed the leftside motor should be set to.
 	 */
-	public void setTwinstersSpeed(double speed) {
+	public void setClimberSpeed(double speed) {
 		CL_left.set(speed);
 		CL_right.set(speed);
 	}

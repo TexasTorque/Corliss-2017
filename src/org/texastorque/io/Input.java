@@ -11,11 +11,8 @@ public class Input {
 	protected double FW_rightSpeed;
 	protected double FW_gateSpeed;
 	
-	protected double IN_lowerSpeed;
-	protected double IN_upperSpeed;
-	
-	protected double CN_leftSpeed;
-	protected double CN_rightSpeed;
+	protected double IN_speed;
+	protected double TW_feederSpeed;
 	
 	protected double TW_leftSpeed;
 	protected double TW_rightSpeed;
@@ -70,36 +67,12 @@ public class Input {
 		return FW_gateSpeed;
 	}
 	
-	public void setIN_lowerSpeed(double lowerSpeed) {
-		IN_lowerSpeed = lowerSpeed;
+	public void setIN_speed(double speed) {
+		IN_speed = speed;
 	}
 	
-	public double getIN_lowerSpeed() {
-		return IN_lowerSpeed;
-	}
-	
-	public void setIN_upperSpeed(double upperSpeed) {
-		IN_upperSpeed = upperSpeed;
-	}
-	
-	public double getIN_upperSpeed() {
-		return IN_upperSpeed;
-	}
-	
-	public void setCN_rightSpeed(double rightSpeed) {
-		CN_rightSpeed = rightSpeed;
-	}
-	
-	public double getCN_rightSpeed() {
-		return CN_rightSpeed;
-	}
-	
-	public void setCN_leftSpeed(double leftSpeed) {
-		CN_leftSpeed = leftSpeed;
-	}
-	
-	public double getCN_leftSpeed() {
-		return CN_leftSpeed;
+	public double getIN_speed() {
+		return IN_speed;
 	}
 	
 	public void setTW_rightSpeed(double rightSpeed) {
@@ -116,6 +89,14 @@ public class Input {
 	
 	public double getTW_leftSpeed() {
 		return TW_leftSpeed;
+	}
+
+	public void setTW_feederSpeed(double feederSpeed) {
+		TW_feederSpeed = feederSpeed;
+	}
+	
+	public double getTW_feederSpeed() {
+		return TW_feederSpeed;
 	}
 	
 	public void setCL_speed(double speed) {

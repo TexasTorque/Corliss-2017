@@ -43,10 +43,7 @@ public class HumanInput extends Input {
 		// operator intake control
 		updateIntake();
 		
-		// operator feed / conveyor control
-		updateConveyor();
-		
-		// operator twinsters control
+		// operator twinsters / conveyor control
 		updateTwinsters();
 		
 		// operator climber control
@@ -102,27 +99,13 @@ public class HumanInput extends Input {
 	
 	public void updateIntake() {
 		if (operator.getYButton()) {
-			IN_lowerSpeed = 1d;
-			IN_upperSpeed = 1d;
+			IN_speed = 1d;
+			TW_feederSpeed = 1d;
 		} else if (operator.getAButton()) {
-			IN_lowerSpeed = -1d;
-			IN_upperSpeed = -1d;
+			IN_speed = -1d;
 		} else {
-			IN_lowerSpeed = 0d;
-			IN_upperSpeed = 0d;
-		}
-	}
-	
-	public void updateConveyor() {
-		if (operator.getLeftBumper()) {
-			CN_leftSpeed = 1d;
-			CN_rightSpeed = 1d;
-		} else if(operator.getRightBumper()) {
-			CN_leftSpeed = -1d;
-			CN_rightSpeed = -1d;
-		} else {
-			CN_leftSpeed = 0d;
-			CN_rightSpeed = 0d;
+			IN_speed = 0d;
+			TW_feederSpeed = 0d;
 		}
 	}
 	
@@ -130,12 +113,15 @@ public class HumanInput extends Input {
 		if (operator.getLeftTrigger()) {
 			TW_leftSpeed = 1d;
 			TW_rightSpeed = 1d;
+			TW_feederSpeed = 1d;
 		} else if(operator.getRightTrigger()) {
 			TW_leftSpeed = -1d;
 			TW_rightSpeed = -1d;
+			TW_feederSpeed = -1d;
 		} else {
 			TW_leftSpeed = 0d;
 			TW_rightSpeed = 0d;
+			TW_feederSpeed = 0d;
 		}
 	}
 	
