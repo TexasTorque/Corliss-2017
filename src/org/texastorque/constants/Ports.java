@@ -1,7 +1,9 @@
 package org.texastorque.constants;
 
 public class Ports {
-
+	// Motors
+	// ==================	
+	
 	// drivebase ports
 	public static final int DB_LEFTFORE = -1;
 	public static final int DB_LEFTREAR = -1;
@@ -34,4 +36,11 @@ public class Ports {
 	public static final int GH_SOLE = -1;
 	public static final int GR_LEFT = -1;
 	public static final int GR_RIGHT = -1;
+	
+	// Sensors
+	// ==================	
+	public static final int DB_LEFTENCODER_A = -1;
+	public static final int DB_LEFTENCODER_B = -1;
+	public static final int DB_RIGHTENCODER_A = -1;
+	public static final int DB_RIGHTENCODER_B = -1;
 }

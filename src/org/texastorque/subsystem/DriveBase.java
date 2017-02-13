@@ -1,8 +1,12 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.constants.Constants;
+import org.texastorque.feedback.Feedback;
 import org.texastorque.io.RobotOutput;
+import org.texastorque.torquelib.controlLoop.TorqueSMP;
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // instanced, include pertinent methods (remove this header before first commit)
@@ -12,6 +16,9 @@ public class DriveBase extends Subsystem {
 	
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
+	
+	private TorqueSMP smpL;
+	private TorqueSMP smpR;
 	
 	public DriveBase() {
 		init();
@@ -28,6 +35,8 @@ public class DriveBase extends Subsystem {
 	}
 
 	private void init() {
+		smpL = new TorqueSMP(Constants.DB_MVELOCITY.getDouble(), Constants.DB_MACCELERATION.getDouble());
+		smpR = new TorqueSMP(Constants.DB_MVELOCITY.getDouble(), Constants.DB_MACCELERATION.getDouble());
 	}
 	
 	@Override
@@ -43,11 +52,15 @@ public class DriveBase extends Subsystem {
 	}
 
 	private void run() {
-		leftSpeed = i.getDB_leftSpeed();
-		rightSpeed = i.getDB_rightSpeed();
+		smpL.generate(Feedback.getInstance().getDB_leftDistance());
+		smpR.generate(Feedback.getInstance().getDB_rightDistance());
+		
+		leftSpeed = smpL.getVelocity(Timer.getFPGATimestamp());
+		rightSpeed = smpR.getVelocity(Timer.getFPGATimestamp());
+		
 		output();
 	}
-
+	
 	private void output() {
 		leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
 		rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
