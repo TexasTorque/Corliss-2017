@@ -2,6 +2,7 @@ package org.texastorque;
 
 import java.util.ArrayList;
 
+import org.texastorque.feedback.Feedback;
 import org.texastorque.io.HumanInput;
 import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
@@ -25,6 +26,7 @@ public class Robot extends TorqueIterative {
 		Input.getInstance();
 		HumanInput.getInstance();
 		RobotOutput.getInstance();
+		Feedback.getInstance();
 		subsystems = new ArrayList<Subsystem>(){{
 			add(Climber.getInstance());
 			add(DriveBase.getInstance());
