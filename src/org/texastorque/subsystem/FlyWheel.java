@@ -1,6 +1,5 @@
 package org.texastorque.subsystem;
 
-import org.texastorque.io.HumanInput;
 import org.texastorque.io.RobotOutput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,14 +8,12 @@ public class FlyWheel extends Subsystem {
 
 	private static FlyWheel instance;
 	
-	private double leftSpeed;
-	private double rightSpeed;
+	private double leftSpeed = 0d;
+	private double rightSpeed = 0d;
 	
 	private double gateSpeed;
 	
 	public FlyWheel() {
-		leftSpeed = 0d;
-		rightSpeed = 0d;
 		init();
 	}
 	
@@ -31,7 +28,6 @@ public class FlyWheel extends Subsystem {
 	}
 	
 	private void init() {
-		i = HumanInput.getInstance();
 	}
 
 	@Override

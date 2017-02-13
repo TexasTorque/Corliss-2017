@@ -1,6 +1,5 @@
 package org.texastorque.subsystem;
 
-import org.texastorque.io.HumanInput;
 import org.texastorque.io.RobotOutput;
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
@@ -11,11 +10,10 @@ public class DriveBase extends Subsystem {
 
 	private static DriveBase instance;
 	
-	private double leftSpeed;
-	private double rightSpeed;
+	private double leftSpeed = 0d;
+	private double rightSpeed = 0d;
 	
 	public DriveBase() {
-		i = HumanInput.getInstance();
 		init();
 	}
 	
@@ -30,8 +28,6 @@ public class DriveBase extends Subsystem {
 	}
 
 	private void init() {
-		leftSpeed = 0.0;
-		rightSpeed = 0.0;
 	}
 	
 	@Override

@@ -1,12 +1,12 @@
 package org.texastorque.subsystem;
 
-import org.texastorque.io.HumanInput;
+import org.texastorque.io.RobotOutput;
 
 public class Climber extends Subsystem {
 
 	private static Climber instance;
 	
-	private double speed;
+	private double speed = 0d;
 	
 	@Override
 	public void autoInit() {
@@ -19,7 +19,6 @@ public class Climber extends Subsystem {
 	}
 
 	private void init() {
-		i = HumanInput.getInstance();
 	}
 	
 	@Override
@@ -39,7 +38,7 @@ public class Climber extends Subsystem {
 	}
 	
 	private void output() {
-		
+		RobotOutput.getInstance().setClimberSpeed(speed);
 	}
 
 	@Override

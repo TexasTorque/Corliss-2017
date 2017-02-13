@@ -1,6 +1,5 @@
 package org.texastorque.subsystem;
 
-import org.texastorque.io.HumanInput;
 import org.texastorque.io.RobotOutput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,8 +8,8 @@ public class Gear extends Subsystem{
 
 	private static Gear instance;
 	
-	private boolean open;
-	private boolean extended;
+	private boolean open = false;
+	private boolean extended = false;
 	
 	
 	@Override
@@ -24,17 +23,16 @@ public class Gear extends Subsystem{
 	}
 
 	public void init(){
-		i=HumanInput.getInstance();
 	}
 	
 	@Override
 	public void autoContinuous() {
-		
+		run();
 	}
 
 	@Override
 	public void teleopContinuous() {
-		
+		run();
 	}
 
 	public void run(){

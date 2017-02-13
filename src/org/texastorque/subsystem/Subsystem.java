@@ -7,4 +7,8 @@ public abstract class Subsystem implements TorqueSubsystem {
 
 	protected Input i;
 	
+	public void setInput(Input i) {
+		this.i = i;
+	}
+	
 }

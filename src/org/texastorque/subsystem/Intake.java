@@ -7,13 +7,11 @@ public class Intake extends Subsystem {
 
 	private static Intake instance;
 	
-	private double lowerSpeed;
-	private double upperSpeed;
+	private double speed = 0d;
 	
 	@Override
 	public void autoInit() {
-		lowerSpeed = 0d;
-		upperSpeed = 0d;
+		speed = 0d;
 		init();
 	}
 
@@ -37,13 +35,11 @@ public class Intake extends Subsystem {
 	}
 
 	private void run() {
-		lowerSpeed = i.getIN_lowerSpeed();
-		upperSpeed = i.getIN_upperSpeed();
 		output();
 	}
 	
 	private void output() {
-		RobotOutput.getInstance().setIntakeSpeed(upperSpeed, lowerSpeed);
+		RobotOutput.getInstance().setIntakeSpeed(speed);
 	}
 	
 	@Override
