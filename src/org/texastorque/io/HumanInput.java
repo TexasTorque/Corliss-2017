@@ -134,21 +134,21 @@ public class HumanInput extends Input {
 		}
 	}
 	
-	public void updateGear(){
-		if(operator.getYButton()){
-			GR_open=true;
+	public void updateGear() {
+		if (operator.getYButton()) {
+			GR_open = true;
 		}
 		else {
-			GR_open=false;
+			GR_open = false;
 		}
 		
-		if(operator.getYButton()){
-			GH_extended=true;
-		} else{
-			GH_extended=false;
+		if (operator.getYButton()) {
+			GH_extended = true;
+		} else {
+			GH_extended = false;
 		}
 		
-	}//update gear
+	}
 
 	public static HumanInput getInstance() {
 		return instance == null ? instance = new HumanInput() : instance;

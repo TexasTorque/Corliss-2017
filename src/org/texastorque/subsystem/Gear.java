@@ -35,13 +35,13 @@ public class Gear extends Subsystem{
 		run();
 	}
 
-	public void run(){
-		open=i.getGR_open();
-		extended=i.getGH_extended();
+	public void run() {
+		open = i.getGR_open();
+		extended = i.getGH_extended();
 		output();
 	}
 	
-	public void output(){
+	public void output() {
 		RobotOutput.getInstance().openGearRamp(open);
 		RobotOutput.getInstance().extendGearHolder(extended);
 	}

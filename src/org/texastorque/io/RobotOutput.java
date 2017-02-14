@@ -67,10 +67,10 @@ public class RobotOutput {
 		BN_left = new DoubleSolenoid(Ports.BN_LEFT_A, Ports.BN_LEFT_B);
 		BN_right = new DoubleSolenoid(Ports.BN_RIGHT_A, Ports.BN_RIGHT_B);
 
-		GR_left=new Solenoid(Ports.GR_LEFT);
-		GR_right=new Solenoid(Ports.GR_RIGHT);
+		GR_left = new Solenoid(Ports.GR_LEFT);
+		GR_right = new Solenoid(Ports.GR_RIGHT);
 		
-		GH_sole=new Solenoid(Ports.GH_SOLE);
+		GH_sole = new Solenoid(Ports.GH_SOLE);
 	}
 	
 	/**
@@ -121,7 +121,7 @@ public class RobotOutput {
 	}
 	
 	/**
-	 * Set the motor speeds of the Robot's cimber.  The input numbers should range from
+	 * Set the motor speeds of the Robot's climber. The input numbers should range from
 	 * 1 => -1.
 	 * @param leftSpeed - The speed the leftside motor should be set to.
 	 */
@@ -130,6 +130,10 @@ public class RobotOutput {
 		CL_right.set(speed);
 	}
 	
+	/**
+	 * Flip C channels to push gear out.
+	 * @param open - set pneumatics in or out.
+	 */
 	public void openGearRamp(boolean open){
 		GR_right.set(open);
 		GR_left.set(open);
@@ -144,7 +148,11 @@ public class RobotOutput {
 		BN_right.set(extended ? Value.kForward : Value.kReverse);
 	}
 	
-	public void extendGearHolder(boolean extended){
+	/**
+	 * Fold ramp down for gear loading.
+	 * @param extended - set pneumatics in or out.
+	 */
+	public void extendGearHolder(boolean extended) {
 		GH_sole.set(extended);
 	}
 	

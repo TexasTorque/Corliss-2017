@@ -107,20 +107,20 @@ public class Input {
 		return CL_speed;
 	}
 	
-	public boolean getGR_open(){
+	public boolean getGR_open() {
 		return GR_open;
 	}
 	
-	public void setGR_open(boolean open){
-		GR_open=open;
+	public void setGR_open(boolean open) {
+		GR_open = open;
 	}
 	
-	public boolean getGH_extended(){
+	public boolean getGH_extended() {
 		return GH_extended;
 	}
 	
-	public void setGH_extended(boolean extended){
-		GH_extended=extended;
+	public void setGH_extended(boolean extended) {
+		GH_extended = extended;
 	}
 	
 	public static Input getInstance() {
