@@ -131,7 +131,7 @@ public class RobotOutput {
 	}
 	
 	/**
-	 * Flip C channels to push gear out.
+	 * Open ramp for gear intake.
 	 * @param open - set pneumatics in or out.
 	 */
 	public void openGearRamp(boolean open){
@@ -149,7 +149,7 @@ public class RobotOutput {
 	}
 	
 	/**
-	 * Fold ramp down for gear loading.
+	 * Folds C channels to place gear onto lift
 	 * @param extended - set pneumatics in or out.
 	 */
 	public void extendGearHolder(boolean extended) {
