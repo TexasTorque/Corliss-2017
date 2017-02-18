@@ -57,6 +57,13 @@ public class HumanInput extends Input {
 		DB_leftSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
 		DB_rightSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
 		
+		if(driver.getLeftBumper()){
+			DB_gear=false;
+		}
+		if(driver.getRightBumper()){
+			DB_gear=true;
+		}
+		
 		shooter=operator.getLeftStickClick();
 	}
 	

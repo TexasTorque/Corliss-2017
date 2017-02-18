@@ -22,6 +22,8 @@ public class Input {
 	protected boolean GR_open;
 	protected boolean GH_extended;
 	
+	protected boolean DB_gear;
+	
 	public Input() {
 		DB_leftSpeed = 0.0;
 		DB_rightSpeed = 0.0;
@@ -121,6 +123,14 @@ public class Input {
 	
 	public void setGH_extended(boolean extended){
 		GH_extended=extended;
+	}
+	
+	public boolean getUpShift(){
+		return DB_gear;
+	}
+	
+	public void setUpShift(boolean upShifted){
+		DB_gear=upShifted;
 	}
 	
 	public static Input getInstance() {
