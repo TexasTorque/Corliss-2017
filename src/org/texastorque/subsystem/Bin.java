@@ -17,6 +17,7 @@ public class Bin extends Subsystem {
 	}
 
 	private void init() {
+		RobotOutput.getInstance().setBinExtension(false);
 	}
 	
 	@Override

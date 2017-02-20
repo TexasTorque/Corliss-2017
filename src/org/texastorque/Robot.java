@@ -61,6 +61,7 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void teleopContinuous() {
+		HumanInput.getInstance().update();
 		for(Subsystem system : subsystems ) {
 			system.teleopContinuous();
 		}
@@ -71,6 +72,7 @@ public class Robot extends TorqueIterative {
 		for(Subsystem system : subsystems) {
 			system.smartDashboard();
 		}
+		HumanInput.getInstance().SmartDashboard();
 	}
 
 }
