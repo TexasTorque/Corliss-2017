@@ -63,6 +63,18 @@ public class HumanInput extends Input {
 	public void updateDrive() {
 		DB_leftSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
 		DB_rightSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
+<<<<<<< HEAD
+=======
+		
+		if(driver.getLeftBumper()){
+			DB_gear=false;
+		}
+		if(driver.getRightBumper()){
+			DB_gear=true;
+		}
+		
+		shooter=operator.getLeftStickClick();
+>>>>>>> 05728e65f26b972a314cba83a4c9cc7c273dfdee
 	}
 	
 	public void updateShooter() {

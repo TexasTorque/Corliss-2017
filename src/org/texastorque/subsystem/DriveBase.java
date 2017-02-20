@@ -13,6 +13,8 @@ public class DriveBase extends Subsystem {
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
 	
+	private boolean upShift=false;
+	
 	public DriveBase() {
 		init();
 	}
@@ -45,12 +47,14 @@ public class DriveBase extends Subsystem {
 	private void run() {
 		leftSpeed = i.getDB_leftSpeed();
 		rightSpeed = i.getDB_rightSpeed();
+		upShift=i.getUpShift();
 		output();
 	}
 
 	private void output() {
 		leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
 		rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
+		RobotOutput.getInstance().upShift(upShift);
 		RobotOutput.getInstance().setDriveBaseSpeed(leftSpeed, rightSpeed);
 	}
 	
@@ -58,6 +62,7 @@ public class DriveBase extends Subsystem {
 	public void smartDashboard() {
 		SmartDashboard.putNumber("DB_LEFTSPEED", leftSpeed);
 		SmartDashboard.putNumber("DB_RIGHTSPEED", rightSpeed);
+		SmartDashboard.putBoolean("UPSHIFTED", upShift);
 	}
 	
 	public static DriveBase getInstance() {
