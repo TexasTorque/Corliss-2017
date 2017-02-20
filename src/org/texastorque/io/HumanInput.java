@@ -185,7 +185,7 @@ public class HumanInput extends Input {
 		}	
 	}//update gear
 
-	public void SmartDashboard() {
+	public void smartDashboard() {
 		SmartDashboard.putNumber("HI_DT", dT);
 	}
 	

@@ -76,7 +76,8 @@ public class Robot extends TorqueIterative {
 		for(Subsystem system : subsystems) {
 			system.smartDashboard();
 		}
-		HumanInput.getInstance().SmartDashboard();
+		HumanInput.getInstance().smartDashboard();
+		Feedback.getInstance().smartDashboard();
 	}
 
 }
