@@ -6,6 +6,7 @@ public class Input {
 	
 	protected double DB_leftSpeed;
 	protected double DB_rightSpeed;
+	protected boolean DB_shiftSole;
 	
 	protected double FW_leftSpeed;
 	protected double FW_rightSpeed;
@@ -121,6 +122,14 @@ public class Input {
 	
 	public void setGH_extended(boolean extended){
 		GH_extended=extended;
+	}
+	
+	public boolean getUpShift(){
+		return DB_shiftSole;
+	}
+	
+	public void setUpShift(boolean upShifted){
+		DB_shiftSole=upShifted;
 	}
 	
 	public static Input getInstance() {

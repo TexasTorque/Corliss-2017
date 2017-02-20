@@ -44,7 +44,7 @@ public class Twinsters extends Subsystem {
 	}
 	
 	private void output() {
-		RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed);
+		RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed, feederSpeed);
 	}
 	
 	@Override
