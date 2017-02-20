@@ -6,6 +6,7 @@ public class Input {
 	
 	protected double DB_leftSpeed;
 	protected double DB_rightSpeed;
+	protected boolean DB_shiftSole;
 	
 	protected double FW_leftSpeed;
 	protected double FW_rightSpeed;
@@ -21,8 +22,6 @@ public class Input {
 	
 	protected boolean GR_open;
 	protected boolean GH_extended;
-	
-	protected boolean DB_gear;
 	
 	public Input() {
 		DB_leftSpeed = 0.0;
@@ -126,11 +125,11 @@ public class Input {
 	}
 	
 	public boolean getUpShift(){
-		return DB_gear;
+		return DB_shiftSole;
 	}
 	
 	public void setUpShift(boolean upShifted){
-		DB_gear=upShifted;
+		DB_shiftSole=upShifted;
 	}
 	
 	public static Input getInstance() {

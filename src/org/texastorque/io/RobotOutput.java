@@ -18,12 +18,8 @@ public class RobotOutput {
 	private TorqueMotor DB_leftRear;
 	private TorqueMotor DB_rightFore;
 	private TorqueMotor DB_rightRear;
-<<<<<<< HEAD
-
-=======
 	private DoubleSolenoid DB_shiftSole;
 	
->>>>>>> 05728e65f26b972a314cba83a4c9cc7c273dfdee
 	private TorqueMotor FW_leftSole;
 	private TorqueMotor FW_rightSole;
 	private TorqueMotor FW_gateLeft;
@@ -54,14 +50,9 @@ public class RobotOutput {
 	public RobotOutput() {
 		DB_leftFore = new TorqueMotor(new VictorSP(Ports.DB_LEFTFORE), flipDriveTrain);
 		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_LEFTREAR), flipDriveTrain);
-<<<<<<< HEAD
 		DB_rightFore = new TorqueMotor(new VictorSP(Ports.DB_RIGHTFORE), !flipDriveTrain);
 		DB_rightRear = new TorqueMotor(new VictorSP(Ports.DB_RIGHTREAR), !flipDriveTrain);
-=======
-		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_RIGHTFORE), !flipDriveTrain);
-		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_RIGHTREAR), !flipDriveTrain);
-		DB_shiftSole = new DoubleSolenoid(Ports.DB_GEAR_A, Ports.DB_GEAR_B);
->>>>>>> 05728e65f26b972a314cba83a4c9cc7c273dfdee
+		DB_shiftSole = new DoubleSolenoid(Ports.DB_SHIFT_A, Ports.DB_SHIFT_B);
 
 		FW_leftSole = new TorqueMotor(new VictorSP(Ports.FW_LEFT), flipShooter);
 		FW_rightSole = new TorqueMotor(new VictorSP(Ports.FW_RIGHT), !flipShooter);
@@ -77,21 +68,12 @@ public class RobotOutput {
 		CL_left = new TorqueMotor(new VictorSP(Ports.CL_LEFT), flipClimber);
 		CL_right = new TorqueMotor(new VictorSP(Ports.CL_RIGHT), flipClimber);
 
-<<<<<<< HEAD
 		BN_sole = new DoubleSolenoid(Ports.BN_B, Ports.BN_A);
 
 		GR_left = new Solenoid(Ports.GR_LEFT);
 		GR_right = new Solenoid(Ports.GR_RIGHT);
 
 		GH_sole = new Solenoid(Ports.GH_SOLE);
-=======
-		GR_left=new Solenoid(Ports.GR_LEFT);
-		GR_right=new Solenoid(Ports.GR_RIGHT);
-		
-		GH_sole=new Solenoid(Ports.GH_SOLE);
-		
-		
->>>>>>> 05728e65f26b972a314cba83a4c9cc7c273dfdee
 	}
 
 	/**
@@ -191,15 +173,11 @@ public class RobotOutput {
 	public void extendGearHolder(boolean extended) {
 		GH_sole.set(extended);
 	}
-<<<<<<< HEAD
-
-=======
 	
 	public void upShift(boolean upShift){
 		DB_shiftSole.set(upShift ? Value.kForward:Value.kReverse);
 	}
 	
->>>>>>> 05728e65f26b972a314cba83a4c9cc7c273dfdee
 	public static RobotOutput getInstance() {
 		return instance == null ? instance = new RobotOutput() : instance;
 	}
