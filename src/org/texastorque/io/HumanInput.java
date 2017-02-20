@@ -80,6 +80,8 @@ public class HumanInput extends Input {
 		dT = Timer.getFPGATimestamp() - lT;
 		if(hood.get()) {
 			FW_hood = true;
+		} else {
+			FW_hood = false;
 		}
 		
 		if (dT >= Constants.HI_DBDT.getDouble()) {

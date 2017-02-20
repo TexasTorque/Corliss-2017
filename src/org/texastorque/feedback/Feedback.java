@@ -63,6 +63,14 @@ public class Feedback {
 		return DB_rightDistance;
 	}
 	
+	public double getFW_leftRate() {
+		return FW_leftRate;
+	}
+	
+	public double getFW_rightRate() {
+		return FW_rightRate;
+	}
+	
 	public void smartDashboard() {
 		SmartDashboard.putNumber("DB_LEFTPOSITION", DB_leftDistance);
 		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_rightDistance);

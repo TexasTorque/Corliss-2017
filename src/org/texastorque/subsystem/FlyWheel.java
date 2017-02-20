@@ -1,6 +1,8 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.feedback.Feedback;
 import org.texastorque.io.RobotOutput;
+import org.texastorque.torquelib.controlLoop.TorquePID;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -10,6 +12,19 @@ public class FlyWheel extends Subsystem {
 	
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
+	
+	private TorquePID leftFlywheelControl;
+	private TorquePID rightFlywheelControl;
+	private double setpointLeft;
+	private double setpointRight;
+	
+	private double leftP = 1;
+	private double leftI = 1;
+	private double leftD = 1;
+	
+	private double rightP = 1;
+	private double rightI = 1;
+	private double rightD = 1;
 	
 	private boolean hood;
 	
@@ -30,6 +45,21 @@ public class FlyWheel extends Subsystem {
 	}
 	
 	private void init() {
+		SmartDashboard.putNumber("FW_PIDL_P", leftP);
+		SmartDashboard.putNumber("FW_PIDL_I", leftI);
+		SmartDashboard.putNumber("FW_PIDL_D", leftD);
+		
+		SmartDashboard.putNumber("FW_PIDR_P", rightP);
+		SmartDashboard.putNumber("FW_PIDR_I", rightI);
+		SmartDashboard.putNumber("FW_PIDR_D", rightD);
+		
+		leftFlywheelControl = new TorquePID(leftP, leftI, leftD);
+		leftFlywheelControl.setControllingSpeed(true);
+		leftFlywheelControl.setEpsilon(350);
+		
+		rightFlywheelControl = new TorquePID(rightP, rightI, rightD);
+		rightFlywheelControl.setControllingSpeed(true);
+		rightFlywheelControl.setEpsilon(350);
 	}
 
 	@Override
@@ -43,10 +73,26 @@ public class FlyWheel extends Subsystem {
 	}
 	
 	private void run() {
-		leftSpeed = i.getFW_leftSpeed();
-		rightSpeed = i.getFW_rightSpeed();
-		gateSpeed = i.getFW_gateSpeed();
-		hood = i.getFW_hood();	
+		setpointLeft = i.getFW_leftSpeed();
+		setpointRight = i.getFW_rightSpeed();
+		if (setpointLeft != 0) {
+			leftFlywheelControl.setSetpoint(1);
+			leftSpeed = leftFlywheelControl.calculate(Feedback.getInstance().getFW_leftRate() / setpointLeft);
+			if(leftSpeed < 0)
+				leftSpeed = 0;
+		} else {
+			leftFlywheelControl.reset();
+			leftSpeed = 0;
+		}
+		if (setpointRight != 0) {
+			rightFlywheelControl.setSetpoint(1);
+			rightSpeed = rightFlywheelControl.calculate(Feedback.getInstance().getFW_rightRate() / setpointRight);
+			if(rightSpeed < 0)
+				rightSpeed = 0;
+		} else {
+			rightFlywheelControl.reset();
+			rightSpeed = 0;
+		}
 		output();
 	}
 

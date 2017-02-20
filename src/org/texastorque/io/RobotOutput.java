@@ -19,7 +19,7 @@ public class RobotOutput {
 	private TorqueMotor DB_rightFore;
 	private TorqueMotor DB_rightRear;
 	private DoubleSolenoid DB_shiftSole;
-	
+
 	private TorqueMotor FW_leftSole;
 	private TorqueMotor FW_rightSole;
 	private TorqueMotor FW_gateLeft;
@@ -60,7 +60,7 @@ public class RobotOutput {
 		FW_gateLeft = new TorqueMotor(new VictorSP(Ports.FW_GATEL), flipShooter);
 		FW_gateRight = new TorqueMotor(new VictorSP(Ports.FW_GATER), !flipShooter);
 		FW_hood = new Solenoid(Ports.FW_HOOD);
-		
+
 		IN_sole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
 
 		TW_leftSole = new TorqueMotor(new VictorSP(Ports.TW_LEFT), flipTwinsters);
@@ -109,12 +109,12 @@ public class RobotOutput {
 		FW_leftSole.set(leftSpeed);
 		FW_rightSole.set(rightSpeed);
 	}
-	
+
 	public void setGateSpeed(double leftSpeed, double rightSpeed) {
 		FW_gateLeft.set(leftSpeed);
 		FW_gateRight.set(rightSpeed);
 	}
-	
+
 	public void setHoodSpeed(boolean hood) {
 		FW_hood.set(hood);
 	}
@@ -146,7 +146,7 @@ public class RobotOutput {
 		leftSpeed = TorqueMathUtil.constrain(leftSpeed, Constants.IN_LIMIT.getDouble());
 		rightSpeed = TorqueMathUtil.constrain(rightSpeed, Constants.IN_LIMIT.getDouble());
 		feederSpeed = TorqueMathUtil.constrain(feederSpeed, Constants.IN_LIMIT.getDouble());
-		
+
 		TW_feederSole.set(feederSpeed);
 		TW_rightSole.set(rightSpeed);
 		TW_leftSole.set(leftSpeed);
@@ -182,11 +182,11 @@ public class RobotOutput {
 	public void extendGearHolder(boolean extended) {
 		GH_sole.set(extended);
 	}
-	
-	public void upShift(boolean upShift){
-		DB_shiftSole.set(upShift ? Value.kForward:Value.kReverse);
+
+	public void upShift(boolean upShift) {
+		DB_shiftSole.set(upShift ? Value.kForward : Value.kReverse);
 	}
-	
+
 	public static RobotOutput getInstance() {
 		return instance == null ? instance = new RobotOutput() : instance;
 	}

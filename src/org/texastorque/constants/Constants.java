@@ -9,8 +9,8 @@ public class Constants {
 	public static final Constant HI_DOBOTHSHOOTERS = new Constant("HI_DOBOTHSHOOTERS", 1.0);
 	
 //	fly wheel
-	public static final Constant FW_SS = new Constant("FW_SMALLSHIFT",.01);
-	public static final Constant FW_LS = new Constant("FW_LARGESHIFT",.1);
+	public static final Constant FW_SS = new Constant("FW_SMALLSHIFT",10);
+	public static final Constant FW_LS = new Constant("FW_LARGESHIFT",100);
 	public static final Constant FW_LIMIT = new Constant("FW_LIMIT",.5);
 	
 //	intake
