@@ -35,6 +35,7 @@ public class Intake extends Subsystem {
 	}
 
 	private void run() {
+		speed = i.getIN_speed();
 		output();
 	}
 	
