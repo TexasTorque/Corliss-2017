@@ -9,14 +9,14 @@ public class Ports {
 	public static final int DB_LEFTREAR = 7;
 	public static final int DB_RIGHTFORE = 11;
 	public static final int DB_RIGHTREAR = 12;
-	public static final int DB_SHIFT_A = -1;
-	public static final int DB_SHIFT_B = -1;
+	public static final int DB_SHIFT_A = 0;
+	public static final int DB_SHIFT_B = 1;
 	// shooter ports
 	public static final int FW_LEFT = 3;
 	public static final int FW_RIGHT = 2;
 	public static final int FW_GATER = 1;
 	public static final int FW_GATEL = 0;
-	public static final int FW_HOOD = 1;
+	public static final int FW_HOOD = 6;
 	// intake ports
 	public static final int IN_LOWER = 8;
 	// twinsters ports
