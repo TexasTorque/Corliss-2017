@@ -17,7 +17,8 @@ public class HumanInput extends Input {
 	private TorqueToggle switchShooter;
 	private TorqueToggle doShooter;
 	private TorqueToggle climber;
-
+	private TorqueToggle hood;
+	
 	private double dT;
 	private double lT;
 
@@ -33,6 +34,7 @@ public class HumanInput extends Input {
 
 		switchShooter = new TorqueToggle(false);
 		climber = new TorqueToggle(false);
+		hood = new TorqueToggle(false);
 		System.out.println("INITED HUMAN INPUT");
 		intaking = false;
 	}
@@ -73,7 +75,13 @@ public class HumanInput extends Input {
 	
 	public void updateShooter() {
 		switchShooter.calc(operator.getXButton());
+		hood.calc(operator.getBButton());
+		
 		dT = Timer.getFPGATimestamp() - lT;
+		if(hood.get()) {
+			FW_hood = true;
+		}
+		
 		if (dT >= Constants.HI_DBDT.getDouble()) {
 			if (operator.getDPADUp()) {
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
@@ -168,13 +176,13 @@ public class HumanInput extends Input {
 		}
 		else {
 			GR_open=false;
-		}
-		if(operator.getBButton()){
+		}	
+		if(driver.getBButton()){
 			GH_extended=true;
-		} else{
-			GH_extended=false;
 		}
-		
+		else {
+			GH_extended=false;
+		}	
 	}//update gear
 
 	public void SmartDashboard() {

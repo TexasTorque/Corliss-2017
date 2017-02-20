@@ -11,6 +11,8 @@ public class FlyWheel extends Subsystem {
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
 	
+	private boolean hood;
+	
 	private double gateSpeed;
 	
 	public FlyWheel() {
@@ -44,11 +46,14 @@ public class FlyWheel extends Subsystem {
 		leftSpeed = i.getFW_leftSpeed();
 		rightSpeed = i.getFW_rightSpeed();
 		gateSpeed = i.getFW_gateSpeed();
+		hood = i.getFW_hood();	
 		output();
 	}
 
 	private void output() {
-		RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed, gateSpeed);
+		RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
+		RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
+		RobotOutput.getInstance().setHoodSpeed(hood);
 	}
 	
 	@Override

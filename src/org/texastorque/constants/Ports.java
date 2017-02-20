@@ -16,6 +16,7 @@ public class Ports {
 	public static final int FW_RIGHT = 2;
 	public static final int FW_GATER = 1;
 	public static final int FW_GATEL = 0;
+	public static final int FW_HOOD = 1;
 	// intake ports
 	public static final int IN_LOWER = 8;
 	// twinsters ports

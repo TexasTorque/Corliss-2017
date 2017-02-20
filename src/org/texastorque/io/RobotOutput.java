@@ -24,6 +24,7 @@ public class RobotOutput {
 	private TorqueMotor FW_rightSole;
 	private TorqueMotor FW_gateLeft;
 	private TorqueMotor FW_gateRight;
+	private Solenoid FW_hood;
 
 	private TorqueMotor IN_sole;
 
@@ -58,7 +59,8 @@ public class RobotOutput {
 		FW_rightSole = new TorqueMotor(new VictorSP(Ports.FW_RIGHT), !flipShooter);
 		FW_gateLeft = new TorqueMotor(new VictorSP(Ports.FW_GATEL), flipShooter);
 		FW_gateRight = new TorqueMotor(new VictorSP(Ports.FW_GATER), !flipShooter);
-
+		FW_hood = new Solenoid(Ports.FW_HOOD);
+		
 		IN_sole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
 
 		TW_leftSole = new TorqueMotor(new VictorSP(Ports.TW_LEFT), flipTwinsters);
@@ -103,11 +105,18 @@ public class RobotOutput {
 	 * @param gateSpeed
 	 *            - The speed the gate motor should be set to.
 	 */
-	public void setFlyWheelSpeed(double leftSpeed, double rightSpeed, double gateSpeed) {
+	public void setFlyWheelSpeed(double leftSpeed, double rightSpeed) {
 		FW_leftSole.set(leftSpeed);
 		FW_rightSole.set(rightSpeed);
-		FW_gateLeft.set(gateSpeed);
-		FW_gateRight.set(gateSpeed);
+	}
+	
+	public void setGateSpeed(double leftSpeed, double rightSpeed) {
+		FW_gateLeft.set(leftSpeed);
+		FW_gateRight.set(rightSpeed);
+	}
+	
+	public void setHoodSpeed(boolean hood) {
+		FW_hood.set(hood);
 	}
 
 	/**

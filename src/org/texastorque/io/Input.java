@@ -11,6 +11,7 @@ public class Input {
 	protected double FW_leftSpeed;
 	protected double FW_rightSpeed;
 	protected double FW_gateSpeed;
+	protected boolean FW_hood;
 	
 	protected double IN_speed;
 	protected double TW_feederSpeed;
@@ -130,6 +131,14 @@ public class Input {
 	
 	public void setUpShift(boolean upShifted){
 		DB_shiftSole=upShifted;
+	}
+	
+	public void setFW_hood(boolean hood) {
+		FW_hood = hood;
+	}
+	
+	public boolean getFW_hood() {
+		return FW_hood;
 	}
 	
 	public static Input getInstance() {
