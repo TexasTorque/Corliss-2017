@@ -19,12 +19,12 @@ public class FlyWheel extends Subsystem {
 	private double setpointRight;
 	
 	private double leftP = 1;
-	private double leftI = 1;
-	private double leftD = 1;
+	private double leftI = 0;
+	private double leftD = 0;
 	
 	private double rightP = 1;
-	private double rightI = 1;
-	private double rightD = 1;
+	private double rightI = 0;
+	private double rightD = 0;
 	
 	private boolean hood;
 	
@@ -106,6 +106,8 @@ public class FlyWheel extends Subsystem {
 	public void smartDashboard() {
 		SmartDashboard.putNumber("FW_LEFTSPEED", leftSpeed);
 		SmartDashboard.putNumber("FW_RIGHTSPEED", rightSpeed);
+		SmartDashboard.putNumber("FW_LEFTSETPOINT", setpointLeft);
+		SmartDashboard.putNumber("FW_RIGHTSETPOINT", setpointRight);
 	}
 	
 	public static FlyWheel getInstance() {

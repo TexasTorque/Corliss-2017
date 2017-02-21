@@ -10,6 +10,8 @@ public class Feedback {
 
 	private static Feedback instance;
 
+	private final double C_FLYWHEEL = .24;
+	
 //	sensors
 	private TorqueEncoder DB_leftEncoder;
 	private TorqueEncoder DB_rightEncoder;
@@ -51,8 +53,11 @@ public class Feedback {
 	public void update() {
 		DB_leftDistance = DB_leftEncoder.getDistance();
 		DB_rightDistance = DB_rightEncoder.getDistance();
+		
 		FW_leftDistance = FW_leftEncoder.getDistance();
 		FW_rightDistance = FW_rightEncoder.getDistance();
+		FW_leftRate = FW_leftEncoder.getRate() * C_FLYWHEEL;
+		FW_rightRate = FW_rightEncoder.getRate() * C_FLYWHEEL;
 	}
 	
 	public double getDB_leftDistance() {
@@ -76,6 +81,8 @@ public class Feedback {
 		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_rightDistance);
 		SmartDashboard.putNumber("FW_LEFTPOSITION", FW_leftDistance);
 		SmartDashboard.putNumber("FW_RIGHTPOSITION", FW_rightDistance);
+		SmartDashboard.putNumber("FW_LEFTRATE", FW_leftRate);
+		SmartDashboard.putNumber("FW_RIGHTRATE", FW_rightRate);
 	}
 	
 	public static Feedback getInstance() {
