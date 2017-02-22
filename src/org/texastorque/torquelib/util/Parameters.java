@@ -53,7 +53,7 @@ public class Parameters {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Messed up readin constants");
+			System.out.println("Messed up reading constants");
 		}
 	}
 

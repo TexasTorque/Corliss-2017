@@ -49,10 +49,10 @@ public class RobotOutput {
 	private boolean flipClimber = true;
 
 	public RobotOutput() {
-		DB_leftFore = new TorqueMotor(new VictorSP(Ports.DB_LEFTFORE), flipDriveTrain);
-		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_LEFTREAR), flipDriveTrain);
-		DB_rightFore = new TorqueMotor(new VictorSP(Ports.DB_RIGHTFORE), !flipDriveTrain);
-		DB_rightRear = new TorqueMotor(new VictorSP(Ports.DB_RIGHTREAR), !flipDriveTrain);
+		DB_leftFore = new TorqueMotor(new VictorSP(Ports.DB_LEFTFORE), !flipDriveTrain);
+		DB_leftRear = new TorqueMotor(new VictorSP(Ports.DB_LEFTREAR), !flipDriveTrain);
+		DB_rightFore = new TorqueMotor(new VictorSP(Ports.DB_RIGHTFORE), flipDriveTrain);
+		DB_rightRear = new TorqueMotor(new VictorSP(Ports.DB_RIGHTREAR), flipDriveTrain);
 		DB_shiftSole = new DoubleSolenoid(Ports.DB_SHIFT_A, Ports.DB_SHIFT_B);
 
 		FW_leftSole = new TorqueMotor(new VictorSP(Ports.FW_LEFT), flipShooter);

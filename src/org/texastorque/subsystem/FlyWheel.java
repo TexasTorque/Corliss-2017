@@ -102,12 +102,18 @@ public class FlyWheel extends Subsystem {
 		RobotOutput.getInstance().setHoodSpeed(hood);
 	}
 	
+	public void updatePID() {
+		leftFlywheelControl.setPIDGains(leftP, leftI, leftD);
+		rightFlywheelControl.setPIDGains(rightP, rightI, rightD);
+	}
+	
 	@Override
 	public void smartDashboard() {
 		SmartDashboard.putNumber("FW_LEFTSPEED", leftSpeed);
 		SmartDashboard.putNumber("FW_RIGHTSPEED", rightSpeed);
 		SmartDashboard.putNumber("FW_LEFTSETPOINT", setpointLeft);
 		SmartDashboard.putNumber("FW_RIGHTSETPOINT", setpointRight);
+		updatePID();
 	}
 	
 	public static FlyWheel getInstance() {

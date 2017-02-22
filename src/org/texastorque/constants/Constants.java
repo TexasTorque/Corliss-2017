@@ -13,6 +13,8 @@ public class Constants {
 	public static final Constant FW_LS = new Constant("FW_LARGESHIFT",100);
 	public static final Constant FW_LIMIT = new Constant("FW_LIMIT",.5);
 	
+	public static final Constant FW_R_P = new Constant("FW_R_P",0);
+	
 //	intake
 	public static final Constant IN_LIMIT = new Constant("IN_LIMIT", .75);
 	
