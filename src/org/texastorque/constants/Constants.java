@@ -5,6 +5,7 @@ import org.texastorque.torquelib.util.Parameters.Constant;
 public class Constants {
 
 //	human input
+	public static double HI_DBDBT = 1d;
 	public static final Constant HI_DBDT = new Constant("HI_DEADBANDDT", 0.2);
 	public static final Constant HI_DOBOTHSHOOTERS = new Constant("HI_DOBOTHSHOOTERS", 1.0);
 	

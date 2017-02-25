@@ -93,6 +93,8 @@ public class FlyWheel extends Subsystem {
 			rightFlywheelControl.reset();
 			rightSpeed = 0;
 		}
+		gateSpeed = i.getFW_gateSpeed();
+		hood = i.getFW_hood();
 		output();
 	}
 

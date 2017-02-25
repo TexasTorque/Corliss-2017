@@ -63,8 +63,8 @@ public class HumanInput extends Input {
 	}//update
 	
 	public void updateDrive() {
-		DB_leftSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
 		DB_rightSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
+		DB_leftSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
 		if(driver.getLeftBumper()){
 			DB_shiftSole=false;
 		}
