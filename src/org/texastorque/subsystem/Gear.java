@@ -1,5 +1,6 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.io.HumanInput;
 import org.texastorque.io.RobotOutput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,8 +43,10 @@ public class Gear extends Subsystem{
 	}
 	
 	public void output(){
-		RobotOutput.getInstance().openGearRamp(open);
-		RobotOutput.getInstance().extendGearHolder(extended);
+		if(i instanceof HumanInput) {
+			RobotOutput.getInstance().openGearRamp(open);
+			RobotOutput.getInstance().extendGearHolder(extended);
+		}
 	}
 	
 	public static Gear getInstance() {

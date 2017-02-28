@@ -7,6 +7,7 @@ import org.texastorque.torquelib.util.TorqueMathUtil;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.VictorSP;
 
@@ -26,6 +27,8 @@ public class RobotOutput {
 	private TorqueMotor FW_gateRight;
 	private Solenoid FW_hood;
 
+	private Relay FW_light;
+	
 	private TorqueMotor IN_sole;
 
 	private TorqueMotor TW_feederSole;
@@ -38,8 +41,7 @@ public class RobotOutput {
 	private DoubleSolenoid BN_sole;
 
 	private Solenoid GH_sole;
-	private Solenoid GR_right;
-	private Solenoid GR_left;
+	private Solenoid GR_sole;
 
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = true;
@@ -61,6 +63,8 @@ public class RobotOutput {
 		FW_gateRight = new TorqueMotor(new VictorSP(Ports.FW_GATER), !flipShooter);
 		FW_hood = new Solenoid(Ports.FW_HOOD);
 
+		FW_light = new Relay(Ports.FW_LIGHT, Relay.Direction.kBoth);
+		
 		IN_sole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
 
 		TW_leftSole = new TorqueMotor(new VictorSP(Ports.TW_LEFT), flipTwinsters);
@@ -72,8 +76,7 @@ public class RobotOutput {
 
 		BN_sole = new DoubleSolenoid(Ports.BN_B, Ports.BN_A);
 
-		GR_left = new Solenoid(Ports.GR_LEFT);
-		GR_right = new Solenoid(Ports.GR_RIGHT);
+		GR_sole = new Solenoid(Ports.GR_SOLE);
 
 		GH_sole = new Solenoid(Ports.GH_SOLE);
 	}
@@ -165,8 +168,7 @@ public class RobotOutput {
 	}
 
 	public void openGearRamp(boolean open) {
-		GR_right.set(open);
-		GR_left.set(open);
+		GR_sole.set(open);
 	}
 
 	/**
@@ -180,13 +182,19 @@ public class RobotOutput {
 	}
 
 	public void extendGearHolder(boolean extended) {
-		System.out.println("EXTENDED: " + extended);
 		GH_sole.set(extended);
 	}
 
 	public void upShift(boolean upShift) {
-		System.out.println("UPSHIFT:" + upShift);
 		DB_shiftSole.set(upShift ? Value.kForward : Value.kReverse);
+	}
+	
+	public void toggleLight() {
+		if(Relay.Value.kOn.compareTo(FW_light.get()) == 0) {
+			FW_light.set(Relay.Value.kOff);
+		} else {
+			FW_light.set(Relay.Value.kOn);
+		}
 	}
 
 	public static RobotOutput getInstance() {

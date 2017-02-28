@@ -23,7 +23,8 @@ public class HumanInput extends Input {
 	private double lT;
 
 	private boolean intaking;
-
+	private boolean shouldDoRumble = true;
+	
 	public HumanInput() {
 		init();
 	}
@@ -63,8 +64,8 @@ public class HumanInput extends Input {
 	}//update
 	
 	public void updateDrive() {
-		DB_rightSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
-		DB_leftSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
+		DB_rightSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
+		DB_leftSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
 		if(driver.getLeftBumper()){
 			DB_shiftSole=false;
 		}
@@ -87,40 +88,45 @@ public class HumanInput extends Input {
 		if (dT >= Constants.HI_DBDT.getDouble()) {
 			if (operator.getDPADUp()) {
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed += Constants.FW_LS.getDouble();
+					FW_leftSetpoint += Constants.FW_LS.getDouble();
 				}
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed += Constants.FW_LS.getDouble();
+					FW_rightSetpoint += Constants.FW_LS.getDouble();
 				}
 			} else if (operator.getDPADDown()) {
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed -= Constants.FW_LS.getDouble();
+					FW_leftSetpoint -= Constants.FW_LS.getDouble();
 				}
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed -= Constants.FW_LS.getDouble();
+					FW_rightSetpoint -= Constants.FW_LS.getDouble();
 				}
 			} else if (operator.getDPADRight()) {
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed += Constants.FW_SS.getDouble();
+					FW_leftSetpoint += Constants.FW_SS.getDouble();
 				}
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed += Constants.FW_SS.getDouble();
+					FW_rightSetpoint += Constants.FW_SS.getDouble();
 				}
 			} else if (operator.getDPADLeft()) {
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
-					FW_leftSpeed -= Constants.FW_SS.getDouble();
+					FW_leftSetpoint -= Constants.FW_SS.getDouble();
 				}
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || !switchShooter.get()) {
-					FW_rightSpeed -= Constants.FW_SS.getDouble();
+					FW_rightSetpoint -= Constants.FW_SS.getDouble();
 				}
 			}
-			if(FW_leftSpeed < 0) {
-				FW_leftSpeed = 0;
+			if(FW_leftSetpoint < 0) {
+				FW_leftSetpoint = 0;
 			}
-			if(FW_rightSpeed < 0) {
-				FW_rightSpeed = 0;
+			if(FW_rightSetpoint < 0) {
+				FW_rightSetpoint = 0;
 			}
 			lT = Timer.getFPGATimestamp();
+		}
+		if(shouldDoRumble && doRumble) {
+			operator.setRumble(true);
+		} else {
+			operator.setRumble(false);
 		}
 	}
 	

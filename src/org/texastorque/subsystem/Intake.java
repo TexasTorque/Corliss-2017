@@ -1,6 +1,5 @@
 package org.texastorque.subsystem;
 
-import org.texastorque.io.HumanInput;
 import org.texastorque.io.RobotOutput;
 
 public class Intake extends Subsystem {
@@ -11,7 +10,6 @@ public class Intake extends Subsystem {
 	
 	@Override
 	public void autoInit() {
-		speed = 0d;
 		init();
 	}
 
@@ -21,7 +19,6 @@ public class Intake extends Subsystem {
 	}
 
 	private void init() {
-		i = HumanInput.getInstance();
 	}
 	
 	@Override

@@ -6,10 +6,16 @@ public class Input {
 	
 	protected double DB_leftSpeed;
 	protected double DB_rightSpeed;
-	protected boolean DB_shiftSole;
+	protected boolean DB_shiftSole = true;
 	
-	protected double FW_leftSpeed;
-	protected double FW_rightSpeed;
+	protected boolean doRumble;
+	
+//	AUTO MODES
+	protected volatile double DB_setpoint;
+	protected volatile double DB_turnSetpoint;
+	
+	protected double FW_leftSetpoint;
+	protected double FW_rightSetpoint;
 	protected double FW_gateSpeed;
 	protected boolean FW_hood;
 	
@@ -24,85 +30,48 @@ public class Input {
 	protected boolean GR_open;
 	protected boolean GH_extended;
 	
+	protected boolean flipCheck;
+	
 	public Input() {
 		DB_leftSpeed = 0.0;
 		DB_rightSpeed = 0.0;
 	}
 
-	public void setDB_leftSpeed(double leftSpeed) {
-		DB_leftSpeed = leftSpeed;
-	}
-	
 	public double getDB_leftSpeed() {
 		return DB_leftSpeed;
 	}
 
-	public void setDB_rightSpeed(double rightSpeed) {
-		DB_rightSpeed = rightSpeed;
-	}
-	
 	public double getDB_rightSpeed() {
 		return DB_rightSpeed;
 	}
 	
-	public void setFW_leftSpeed(double leftSpeed) {
-		FW_leftSpeed = leftSpeed;
+	public double getFW_leftSetpoint() {
+		return FW_leftSetpoint;
 	}
 	
-	public double getFW_leftSpeed() {
-		return FW_leftSpeed;
-	}
-	
-	public void setFW_rightSpeed(double rightSpeed) {
-		FW_rightSpeed = rightSpeed;
-	}
-	
-	public double getFW_rightSpeed() {
-		return FW_rightSpeed;
-	}
-
-	public void setFW_gateSpeed(double gateSpeed) {
-		FW_rightSpeed = gateSpeed;
+	public double getFW_rightSetpoint() {
+		return FW_rightSetpoint;
 	}
 	
 	public double getFW_gateSpeed() {
 		return FW_gateSpeed;
 	}
 	
-	public void setIN_speed(double speed) {
-		IN_speed = speed;
-	}
-	
 	public double getIN_speed() {
 		return IN_speed;
 	}
 	
-	public void setTW_rightSpeed(double rightSpeed) {
-		TW_rightSpeed = rightSpeed;
-	}
 	
 	public double getTW_rightSpeed() {
 		return TW_rightSpeed;
-	}
-	
-	public void setTW_leftSpeed(double leftSpeed) {
-		TW_leftSpeed = leftSpeed;
 	}
 	
 	public double getTW_leftSpeed() {
 		return TW_leftSpeed;
 	}
 
-	public void setTW_feederSpeed(double feederSpeed) {
-		TW_feederSpeed = feederSpeed;
-	}
-	
 	public double getTW_feederSpeed() {
 		return TW_feederSpeed;
-	}
-	
-	public void setCL_speed(double speed) {
-		CL_speed = speed;
 	}
 	
 	public double getCL_speed() {
@@ -113,32 +82,40 @@ public class Input {
 		return GR_open;
 	}
 	
-	public void setGR_open(boolean open){
-		GR_open=open;
-	}
-	
 	public boolean getGH_extended(){
 		return GH_extended;
-	}
-	
-	public void setGH_extended(boolean extended){
-		GH_extended=extended;
 	}
 	
 	public boolean getUpShift(){
 		return DB_shiftSole;
 	}
-	
-	public void setUpShift(boolean upShifted){
-		DB_shiftSole=upShifted;
-	}
-	
-	public void setFW_hood(boolean hood) {
-		FW_hood = hood;
-	}
-	
+
 	public boolean getFW_hood() {
 		return FW_hood;
+	}
+	
+	public void setDB_driveSetpoint(double setpoint) {
+		DB_setpoint = setpoint;
+	}
+	
+	public double getDB_setpoint() {
+		return DB_setpoint;
+	}
+
+	public void setDB_turnSetpoint(double setpoint) {
+		DB_turnSetpoint = setpoint;
+	}
+	
+	public double getDB_turnSetpoint() {
+		return DB_turnSetpoint;
+	}
+	
+	public void setRumble(boolean rumble) {
+		doRumble = rumble;
+	}
+	
+	public boolean flipCheck() {
+		return flipCheck;
 	}
 	
 	public static Input getInstance() {

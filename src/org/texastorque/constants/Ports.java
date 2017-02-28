@@ -18,6 +18,7 @@ public class Ports {
 	public static final int FW_GATER = 1;
 	public static final int FW_GATEL = 0;
 	public static final int FW_HOOD = 6;
+	public static final int FW_LIGHT = 0;
 	// intake ports
 	public static final int IN_LOWER = 8;
 	// twinsters ports
@@ -33,17 +34,16 @@ public class Ports {
 
 	// gear ports
 	public static final int GH_SOLE = 4;
-	public static final int GR_LEFT = 5;
-	public static final int GR_RIGHT = 7;
+	public static final int GR_SOLE = 5;
 	// Sensors
 	// ==================
 	public static final int DB_LEFTENCODER_A = 0;
 	public static final int DB_LEFTENCODER_B = 1;
 	public static final int DB_RIGHTENCODER_A = 2;
 	public static final int DB_RIGHTENCODER_B = 3;
-	public static final int FW_LEFTENCODER_A = 4;
-	public static final int FW_LEFTENCODER_B = 5;
-	public static final int FW_RIGHTENCODER_A = 6;
-	public static final int FW_RIGHTENCODER_B = 7;
+	public static final int FW_LEFTENCODER_A = 6;
+	public static final int FW_LEFTENCODER_B = 7;
+	public static final int FW_RIGHTENCODER_A = 4;
+	public static final int FW_RIGHTENCODER_B = 5;
 
 }

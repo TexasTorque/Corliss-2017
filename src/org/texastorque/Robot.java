@@ -2,6 +2,7 @@ package org.texastorque;
 
 import java.util.ArrayList;
 
+import org.texastorque.auto.Auto;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.HumanInput;
 import org.texastorque.io.Input;
@@ -42,8 +43,9 @@ public class Robot extends TorqueIterative {
 	public void autonomousInit() {
 		for(Subsystem system : subsystems ) {
 			system.autoInit();
-			system.setInput(HumanInput.getInstance());
+			system.setInput(Input.getInstance());
 		}
+		Auto.getInstance().init();
 	}
 
 	@Override
@@ -80,6 +82,7 @@ public class Robot extends TorqueIterative {
 		
 		HumanInput.getInstance().smartDashboard();
 		Feedback.getInstance().smartDashboard();
+		Auto.getInstance().smartDashboard();
 	}
 
 }
