@@ -18,73 +18,145 @@ public class HumanInput extends Input {
 	private TorqueToggle doShooter;
 	private TorqueToggle climber;
 	private TorqueToggle hood;
-	
+	private TorqueToggle driverFineControl;
+
+	private TorqueToggle doLongShot;
+	private TorqueToggle doLayupShot;
+
 	private double dT;
 	private double lT;
 
 	private boolean intaking;
 	private boolean shouldDoRumble = true;
-	
+
 	public HumanInput() {
 		init();
 	}
 
 	private void init() {
+		FW_leftSetpoint = 0;
+		FW_rightSetpoint = 0;
 		driver = new GenericController(0, .1);
 		operator = new GenericController(1, .1);
 
 		switchShooter = new TorqueToggle(false);
 		climber = new TorqueToggle(false);
 		hood = new TorqueToggle(false);
+		doLayupShot = new TorqueToggle(false);
+		doLongShot = new TorqueToggle(false);
+		driverFineControl = new TorqueToggle(false);
 		System.out.println("INITED HUMAN INPUT");
 		intaking = false;
 	}
 
 	public void update() {
+
+		// operator hood control
+		updateHood();
+
 		// driver drive control
 		updateDrive();
-		
+
 		// operator shooter control
 		updateShooter();
 
 		// operator intake control
 		updateIntake();
-		
+
 		// operator twinsters / conveyor control
 		updateTwinsters();
-		
+
 		// operator climber control
 		updateClimber();
-		
-		//operator gear manipulation control
+
+		// operator gear manipulation control
 		updateGear();
-		
-		//operator gate speed control
+
+		// operator gate speed control
 		updateGates();
-	}//update
-	
+	}// update
+
 	public void updateDrive() {
 		DB_rightSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
 		DB_leftSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
-		if(driver.getLeftBumper()){
-			DB_shiftSole=false;
+
+		driverFineControl.calc(driver.getRightStickClick());
+		if (driverFineControl.get()) {
+			DB_rightSpeed *= .5;
+			DB_leftSpeed *= .5;
 		}
-		if(driver.getRightBumper()){
-			DB_shiftSole=true;
+
+		if (driver.getLeftBumper()) {
+			DB_shiftSole = false;
+		}
+		if (driver.getRightBumper()) {
+			DB_shiftSole = true;
 		}
 	}
-	
+
 	public void updateShooter() {
-		switchShooter.calc(operator.getXButton());
-		hood.calc(operator.getBButton());
-		
 		dT = Timer.getFPGATimestamp() - lT;
-		if(hood.get()) {
-			FW_hood = true;
-		} else {
-			FW_hood = false;
+		doLayupShot.calc(operator.getDPADDown());
+		doLongShot.calc(operator.getDPADUp());
+
+		if (doLongShot.get()) {
+			FW_setpointShift = Constants.FW_LONGSHOT.getDouble();
+			doLongShot.set(false);
+			hood.set(true);
+		} else if (doLayupShot.get()) {
+			FW_setpointShift = Constants.FW_LAYUPSHOT.getDouble();
+			doLayupShot.set(false);
+			hood.set(false);
+		} else if (dT >= Constants.HI_DBDT.getDouble()) {
+			if (operator.getDPADRight()) {
+				FW_setpointShift += Constants.FW_LS.getDouble();
+			} else if (operator.getDPADLeft()) {
+				FW_setpointShift -= Constants.FW_LS.getDouble();
+			}
+			lT = Timer.getFPGATimestamp();
 		}
-		
+		if (operator.getAButton()) {
+			FW_setpointShift = 0;
+		}
+		if(FW_setpointShift < 0) {
+			FW_setpointShift = 0;
+		}
+		FW_leftSetpoint = FW_setpointShift;
+		FW_rightSetpoint = FW_leftSetpoint;
+	}
+
+	public void updateShooterOverride() {
+		dT = Timer.getFPGATimestamp() - lT;
+		doLayupShot.calc(operator.getDPADDown());
+		doLongShot.calc(operator.getDPADUp());
+
+		if (doLongShot.get()) {
+			FW_setpointShift = .75;
+			doLongShot.set(false);
+			hood.set(true);
+		} else if (doLayupShot.get()) {
+			FW_setpointShift = .5;
+			doLayupShot.set(false);
+			hood.set(false);
+		} else if (dT >= Constants.HI_DBDT.getDouble()) {
+			if (operator.getDPADRight()) {
+				FW_setpointShift += .05;
+			} else if (operator.getDPADLeft()) {
+				FW_setpointShift -= .05;
+			}
+			lT = Timer.getFPGATimestamp();
+		}
+		if (operator.getAButton()) {
+			FW_setpointShift = 0;
+		}
+		if(FW_setpointShift < 0) {
+			FW_setpointShift = 0;
+		}
+		RobotOutput.getInstance().setFlyWheelSpeed(FW_setpointShift, FW_setpointShift);
+	}
+	
+	public void updateShooterDeprecated() {
+		dT = Timer.getFPGATimestamp() - lT;
 		if (dT >= Constants.HI_DBDT.getDouble()) {
 			if (operator.getDPADUp()) {
 				if (Constants.HI_DOBOTHSHOOTERS.getBoolean() || switchShooter.get()) {
@@ -115,21 +187,33 @@ public class HumanInput extends Input {
 					FW_rightSetpoint -= Constants.FW_SS.getDouble();
 				}
 			}
-			if(FW_leftSetpoint < 0) {
+			if (FW_leftSetpoint < 0) {
 				FW_leftSetpoint = 0;
 			}
-			if(FW_rightSetpoint < 0) {
+			if (FW_rightSetpoint < 0) {
 				FW_rightSetpoint = 0;
 			}
 			lT = Timer.getFPGATimestamp();
 		}
-		if(shouldDoRumble && doRumble) {
+		if (shouldDoRumble && doRumble) {
 			operator.setRumble(true);
 		} else {
 			operator.setRumble(false);
 		}
 	}
 	
+	public void updateHood() {
+		switchShooter.calc(operator.getXButton());
+		hood.calc(operator.getBButton());
+
+		if (hood.get()) {
+			FW_hood = true;
+		} else {
+			FW_hood = false;
+		}
+	}
+
+
 	public void updateIntake() {
 		if (operator.getLeftBumper()) {
 			IN_speed = 1d;
@@ -143,7 +227,7 @@ public class HumanInput extends Input {
 			TW_feederSpeed = 0d;
 		}
 	}
-	
+
 	public void updateGates() {
 		if (operator.getXButton()) {
 			FW_gateSpeed = Constants.FW_LIMIT.getDouble();
@@ -151,52 +235,50 @@ public class HumanInput extends Input {
 			FW_gateSpeed = 0d;
 		}
 	}
-	
+
 	public void updateTwinsters() {
 		if (operator.getLeftTrigger()) {
 			TW_leftSpeed = 1d;
 			TW_rightSpeed = 1d;
 			TW_feederSpeed = 1d;
-		} else if(operator.getRightTrigger()) {
+		} else if (operator.getRightTrigger()) {
 			TW_leftSpeed = -1d;
 			TW_rightSpeed = -1d;
 			TW_feederSpeed = -1d;
 		} else {
 			TW_leftSpeed = 0d;
 			TW_rightSpeed = 0d;
-			if(!intaking)
+			if (!intaking)
 				TW_feederSpeed = 0d;
 		}
 	}
-	
+
 	public void updateClimber() {
-		climber.calc(operator.getAButton());
-		if(climber.get()) {
+		climber.calc(driver.getXButton());
+		if (climber.get()) {
 			CL_speed = 1d;
 		} else {
 			CL_speed = 0d;
 		}
 	}
-	
-	public void updateGear(){
-		if(operator.getYButton()){
-			GR_open=true;
+
+	public void updateGear() {
+		if (operator.getYButton()) {
+			GR_open = true;
+		} else {
+			GR_open = false;
 		}
-		else {
-			GR_open=false;
-		}	
-		if(driver.getBButton()){
-			GH_extended=true;
+		if (driver.getBButton()) {
+			GH_extended = true;
+		} else {
+			GH_extended = false;
 		}
-		else {
-			GH_extended=false;
-		}	
-	}//update gear
+	}// update gear
 
 	public void smartDashboard() {
 		SmartDashboard.putNumber("HI_DT", dT);
 	}
-	
+
 	public static HumanInput getInstance() {
 		return instance == null ? instance = new HumanInput() : instance;
 	}

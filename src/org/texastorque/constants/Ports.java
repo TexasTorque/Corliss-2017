@@ -41,9 +41,9 @@ public class Ports {
 	public static final int DB_LEFTENCODER_B = 1;
 	public static final int DB_RIGHTENCODER_A = 2;
 	public static final int DB_RIGHTENCODER_B = 3;
-	public static final int FW_LEFTENCODER_A = 6;
-	public static final int FW_LEFTENCODER_B = 7;
-	public static final int FW_RIGHTENCODER_A = 4;
-	public static final int FW_RIGHTENCODER_B = 5;
+	public static final int FW_LEFTENCODER_A = 4;
+	public static final int FW_LEFTENCODER_B = 5;
+	public static final int FW_RIGHTENCODER_A = 6;
+	public static final int FW_RIGHTENCODER_B = 7;
 
 }

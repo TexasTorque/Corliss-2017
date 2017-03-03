@@ -16,6 +16,7 @@ public class Input {
 	
 	protected double FW_leftSetpoint;
 	protected double FW_rightSetpoint;
+	protected double FW_setpointShift;
 	protected double FW_gateSpeed;
 	protected boolean FW_hood;
 	

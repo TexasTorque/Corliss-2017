@@ -31,7 +31,8 @@ public class FlyWheel extends Subsystem {
 	private double lt = Timer.getFPGATimestamp();
 
 	private boolean hood;
-
+	private boolean doLight;
+	
 	private double gateSpeed;
 
 	public FlyWheel() {
@@ -80,6 +81,7 @@ public class FlyWheel extends Subsystem {
 		setpointLeft = i.getFW_leftSetpoint();
 		setpointRight = i.getFW_rightSetpoint();
 		if (setpointLeft != 0) {
+			doLight = true;
 			leftFlywheelControl.setSetpoint(1);
 			leftSpeed = leftFlywheelControl.calculate(Feedback.getInstance().getFW_leftRate() / setpointLeft);
 			if (leftSpeed < 0)
@@ -87,8 +89,10 @@ public class FlyWheel extends Subsystem {
 		} else {
 			leftFlywheelControl.reset();
 			leftSpeed = 0;
+			doLight = false;
 		}
 		if (setpointRight != 0) {
+			doLight = true;
 			rightFlywheelControl.setSetpoint(1);
 			rightSpeed = rightFlywheelControl.calculate(Feedback.getInstance().getFW_rightRate() / setpointRight);
 			if (rightSpeed < 0)
@@ -96,18 +100,20 @@ public class FlyWheel extends Subsystem {
 		} else {
 			rightFlywheelControl.reset();
 			rightSpeed = 0;
+			doLight = false;
 		}
 		if ((i.getFW_leftSetpoint() != 0 || i.getFW_rightSetpoint() != 0)
 				&& Math.abs(i.getFW_leftSetpoint() - Feedback.getInstance().getFW_leftRate()) < Constants.FW_ACCEPTABLE.getDouble()
 				&& Math.abs(i.getFW_rightSetpoint() - Feedback.getInstance().getFW_rightRate()) < Constants.FW_ACCEPTABLE.getDouble()) {
 			i.setRumble(true);
-			if (Timer.getFPGATimestamp() - lt > .5) {
-				lt = Timer.getFPGATimestamp();
-//				RobotOutput.getInstance().toggleLight();
-			}
+			doLight = false;
 		} else {
-			i.setRumble(false);
+			if(Timer.getFPGATimestamp() - lt > .5) {
+				i.setRumble(false);
+				lt = Timer.getFPGATimestamp();
+			}
 		}
+		RobotOutput.getInstance().setLight(doLight);
 		gateSpeed = i.getFW_gateSpeed();
 		hood = i.getFW_hood();
 		output();
@@ -130,6 +136,7 @@ public class FlyWheel extends Subsystem {
 		SmartDashboard.putNumber("FW_RIGHTSPEED", rightSpeed);
 		SmartDashboard.putNumber("FW_LEFTSETPOINT", setpointLeft);
 		SmartDashboard.putNumber("FW_RIGHTSETPOINT", setpointRight);
+		SmartDashboard.putBoolean("FW_HOODUP",hood);
 		updatePID();
 	}
 

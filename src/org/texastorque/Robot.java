@@ -37,10 +37,17 @@ public class Robot extends TorqueIterative {
 			add(Bin.getInstance());
 			add(Gear.getInstance());
 		}};
+		RobotOutput.getInstance().setLight(true);
 	}
 
 	@Override
+	public void disabledInit() {
+		RobotOutput.getInstance().setLight(true);
+	}
+	
+	@Override
 	public void autonomousInit() {
+		RobotOutput.getInstance().setLight(false);
 		for(Subsystem system : subsystems ) {
 			system.autoInit();
 			system.setInput(Input.getInstance());
@@ -50,6 +57,7 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void teleopInit() {
+		RobotOutput.getInstance().setLight(false);
 		for(Subsystem system : subsystems ) {
 			system.teleopInit();
 			system.setInput(HumanInput.getInstance());
@@ -75,11 +83,10 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void alwaysContinuous() {
+		Feedback.getInstance().update();
 		for(Subsystem system : subsystems) {
 			system.smartDashboard();
 		}
-		Feedback.getInstance().update();
-		
 		HumanInput.getInstance().smartDashboard();
 		Feedback.getInstance().smartDashboard();
 		Auto.getInstance().smartDashboard();

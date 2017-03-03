@@ -72,8 +72,8 @@ public class Feedback {
 		DB_leftRate = DB_leftEncoder.getRate() * DB_DISTANCE_CONVERSION;
 		DB_rightRate = DB_rightEncoder.getRate() * DB_DISTANCE_CONVERSION;
 		
-		DB_angle = DB_gyro.getAngle();
-		DB_angleRate = DB_gyro.getRate();
+		DB_angle = DB_gyro.getRawGyroX();
+		DB_angleRate = DB_gyro.getVelocityX();
 		
 		FW_leftDistance = FW_leftEncoder.getDistance();
 		FW_rightDistance = FW_rightEncoder.getDistance();
@@ -123,12 +123,15 @@ public class Feedback {
 	}
 	
 	public void smartDashboard() {
-		SmartDashboard.putNumber("DB_LEFTPOSITION", DB_leftDistance);
-		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_rightDistance);
-		SmartDashboard.putNumber("FW_LEFTPOSITION", FW_leftDistance);
-		SmartDashboard.putNumber("FW_RIGHTPOSITION", FW_rightDistance);
-		SmartDashboard.putNumber("FW_LEFTRATE", FW_leftRate);
-		SmartDashboard.putNumber("FW_RIGHTRATE", FW_rightRate);
+		SmartDashboard.putNumber("DB_LEFTPOSITION", DB_rightDistance);
+		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_leftDistance);
+		SmartDashboard.putNumber("FW_LEFTPOSITION", FW_rightDistance);
+		SmartDashboard.putNumber("FW_RIGHTPOSITION", FW_leftDistance);
+		SmartDashboard.putNumber("FW_LEFTRATE", FW_rightRate);
+		SmartDashboard.putNumber("FW_RIGHTRATE", FW_leftRate);
+		SmartDashboard.putNumber("DB_GYRO", DB_angle);
+		SmartDashboard.putNumber("DB_GYRORATE", DB_angleRate);
+		SmartDashboard.putNumber("GYROX", DB_gyro.getRawGyroX());
 	}
 	
 	public static Feedback getInstance() {

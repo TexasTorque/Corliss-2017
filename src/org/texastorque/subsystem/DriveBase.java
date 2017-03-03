@@ -30,7 +30,7 @@ public class DriveBase extends Subsystem {
 	private double targetVelocity;
 	private double targetAcceleration;
 
-	private double turnPreviousSetpoint;
+	private double turnPreviousSetpoint = 0;
 	private double turnSetpoint;
 	
 	private TorqueTMP turnProfile;
@@ -40,7 +40,8 @@ public class DriveBase extends Subsystem {
 	private double targetAngularVelocity;
 	
 	private boolean upShift = false;
-
+	private boolean kiddieMode = false;
+	
 	public enum DriveType {
 		TELEOP, AUTODRIVE, AUTOTURN;
 	}
@@ -120,6 +121,7 @@ public class DriveBase extends Subsystem {
 					Feedback.getInstance().getDB_leftRate());
 			rightSpeed = rightPV.calculate(tmp, Feedback.getInstance().getDB_rightDistance(),
 					Feedback.getInstance().getDB_rightRate());
+			upShift = false;
 			break;
 		case AUTOTURN:
 			turnSetpoint = i.getDB_turnSetpoint();
@@ -129,7 +131,6 @@ public class DriveBase extends Subsystem {
 				turnProfile.generateTrapezoid(turnSetpoint, 0.0, 0.0);
 				prevTime = Timer.getFPGATimestamp();
 			}
-
 			dt = Timer.getFPGATimestamp() - prevTime;
 			prevTime = Timer.getFPGATimestamp();
 			turnProfile.calculateNextSituation(dt);
@@ -139,6 +140,7 @@ public class DriveBase extends Subsystem {
 
 			leftSpeed = turnPV.calculate(turnProfile, Feedback.getInstance().getDB_angle(), Feedback.getInstance().getDB_angleRate());
 			rightSpeed = -leftSpeed;
+			upShift = false;
 			break;
 		case TELEOP:
 			leftSpeed = i.getDB_leftSpeed();
@@ -147,15 +149,20 @@ public class DriveBase extends Subsystem {
 					&& i.flipCheck()) {
 				leftSpeed = rightSpeed = 0.0;
 			}
+			upShift = i.getUpShift();
 			break;
 		}
-		upShift = i.getUpShift();
 		output();
 	}
 
 	private void output() {
-		leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
-		rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
+		if(kiddieMode) {
+			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .3);
+			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .3);
+		} else {
+			leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
+			rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
+		}
 		RobotOutput.getInstance().upShift(upShift);
 		RobotOutput.getInstance().setDriveBaseSpeed(leftSpeed, rightSpeed);
 	}

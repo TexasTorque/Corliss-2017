@@ -59,8 +59,8 @@ public class RobotOutput {
 
 		FW_leftSole = new TorqueMotor(new VictorSP(Ports.FW_LEFT), flipShooter);
 		FW_rightSole = new TorqueMotor(new VictorSP(Ports.FW_RIGHT), !flipShooter);
-		FW_gateLeft = new TorqueMotor(new VictorSP(Ports.FW_GATEL), flipShooter);
-		FW_gateRight = new TorqueMotor(new VictorSP(Ports.FW_GATER), !flipShooter);
+		FW_gateLeft = new TorqueMotor(new VictorSP(Ports.FW_GATEL), !flipShooter);
+		FW_gateRight = new TorqueMotor(new VictorSP(Ports.FW_GATER), flipShooter);
 		FW_hood = new Solenoid(Ports.FW_HOOD);
 
 		FW_light = new Relay(Ports.FW_LIGHT, Relay.Direction.kBoth);
@@ -189,8 +189,8 @@ public class RobotOutput {
 		DB_shiftSole.set(upShift ? Value.kForward : Value.kReverse);
 	}
 	
-	public void toggleLight() {
-		if(Relay.Value.kOn.compareTo(FW_light.get()) == 0) {
+	public void setLight(boolean light) {
+		if(!light) {
 			FW_light.set(Relay.Value.kOff);
 		} else {
 			FW_light.set(Relay.Value.kOn);

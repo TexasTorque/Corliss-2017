@@ -56,19 +56,22 @@ public class Auto {
 			int currentStep = autoComponents.remove(autoComponents.size()-1);
 			switch (currentStep) {
 			case 1:
+				drive(-72);
 				break;
 			case 2:
-				drive(-100);
+				drive(-72);
 				pause(3.0);
 				RobotOutput.getInstance().extendGearHolder(true);
 				pause(1.0);
-				RobotOutput.getInstance().extendGearHolder(false);
-				turn(30);
+				drive(10);
+				pause(.5);
 				break;
 			case 3:
 				break;
 			case 4:
 				break;
+			case 5:
+				turn(20);
 			default:
 				System.out.println("INVALID STEP OR NULL. . ." + currentStep);
 				break;
