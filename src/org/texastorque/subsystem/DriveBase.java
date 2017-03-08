@@ -43,7 +43,7 @@ public class DriveBase extends Subsystem {
 	private boolean kiddieMode = false;
 	
 	public enum DriveType {
-		TELEOP, AUTODRIVE, AUTOTURN;
+		TELEOP, AUTODRIVE, AUTOTURN, AUTOOVERRIDE;
 	}
 
 	private DriveType type = DriveType.TELEOP;
@@ -122,6 +122,7 @@ public class DriveBase extends Subsystem {
 			rightSpeed = rightPV.calculate(tmp, Feedback.getInstance().getDB_rightDistance(),
 					Feedback.getInstance().getDB_rightRate());
 			upShift = false;
+			output();
 			break;
 		case AUTOTURN:
 			turnSetpoint = i.getDB_turnSetpoint();
@@ -141,6 +142,7 @@ public class DriveBase extends Subsystem {
 			leftSpeed = turnPV.calculate(turnProfile, Feedback.getInstance().getDB_angle(), Feedback.getInstance().getDB_angleRate());
 			rightSpeed = -leftSpeed;
 			upShift = false;
+			output();
 			break;
 		case TELEOP:
 			leftSpeed = i.getDB_leftSpeed();
@@ -150,9 +152,9 @@ public class DriveBase extends Subsystem {
 				leftSpeed = rightSpeed = 0.0;
 			}
 			upShift = i.getUpShift();
+			output();
 			break;
 		}
-		output();
 	}
 
 	private void output() {

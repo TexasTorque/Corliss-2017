@@ -57,7 +57,7 @@ public class Feedback {
 		DB_gyro = new AHRS(SPI.Port.kMXP);
 
 		FW_leftEncoder = new TorqueEncoder(Ports.FW_LEFTENCODER_A, Ports.FW_LEFTENCODER_B, false, EncodingType.k4X);
-		FW_rightEncoder = new TorqueEncoder(Ports.FW_RIGHTENCODER_A, Ports.FW_RIGHTENCODER_B, false, EncodingType.k4X);
+		FW_rightEncoder = new TorqueEncoder(Ports.FW_RIGHTENCODER_B, Ports.FW_RIGHTENCODER_A, true, EncodingType.k4X);
 	}
 	
 	public void update() {
@@ -72,7 +72,7 @@ public class Feedback {
 		DB_leftRate = DB_leftEncoder.getRate() * DB_DISTANCE_CONVERSION;
 		DB_rightRate = DB_rightEncoder.getRate() * DB_DISTANCE_CONVERSION;
 		
-		DB_angle = DB_gyro.getRawGyroX();
+		DB_angle = DB_gyro.getAngle();
 		DB_angleRate = DB_gyro.getVelocityX();
 		
 		FW_leftDistance = FW_leftEncoder.getDistance();
@@ -131,7 +131,7 @@ public class Feedback {
 		SmartDashboard.putNumber("FW_RIGHTRATE", FW_leftRate);
 		SmartDashboard.putNumber("DB_GYRO", DB_angle);
 		SmartDashboard.putNumber("DB_GYRORATE", DB_angleRate);
-		SmartDashboard.putNumber("GYROX", DB_gyro.getRawGyroX());
+		SmartDashboard.putNumber("GYROX", DB_gyro.getAngle());
 	}
 	
 	public static Feedback getInstance() {
