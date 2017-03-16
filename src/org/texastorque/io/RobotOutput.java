@@ -149,7 +149,6 @@ public class RobotOutput {
 		leftSpeed = TorqueMathUtil.constrain(leftSpeed, Constants.IN_LIMIT.getDouble());
 		rightSpeed = TorqueMathUtil.constrain(rightSpeed, Constants.IN_LIMIT.getDouble());
 		feederSpeed = TorqueMathUtil.constrain(feederSpeed, Constants.IN_LIMIT.getDouble());
-
 		TW_feederSole.set(feederSpeed);
 		TW_rightSole.set(rightSpeed);
 		TW_leftSole.set(leftSpeed);

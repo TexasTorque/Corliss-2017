@@ -22,11 +22,11 @@ public class FlyWheel extends Subsystem {
 
 	private double leftP = 6;
 	private double leftI = 20; //20
-	private double leftD = 10;
+	private double leftD = 15;
 
 	private double rightP = 6;
 	private double rightI = 20;
-	private double rightD = 10;
+	private double rightD = 15;
 
 	private double lt = Timer.getFPGATimestamp();
 
@@ -116,6 +116,7 @@ public class FlyWheel extends Subsystem {
 		RobotOutput.getInstance().setLight(doLight);
 		gateSpeed = i.getFW_gateSpeed();
 		hood = i.getFW_hood();
+		Lights.getInstance().set(Feedback.getInstance().getFW_leftRate(), i.getFW_leftSetpoint());
 		output();
 	}
 

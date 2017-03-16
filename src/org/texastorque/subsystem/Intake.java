@@ -23,7 +23,7 @@ public class Intake extends Subsystem {
 	
 	@Override
 	public void autoContinuous() {
-		run();
+//		run();
 	}
 
 	@Override

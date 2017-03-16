@@ -27,7 +27,7 @@ public class Twinsters extends Subsystem {
 	
 	@Override
 	public void autoContinuous() {
-		run();
+//		run();
 	}
 
 	@Override

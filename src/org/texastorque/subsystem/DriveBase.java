@@ -1,9 +1,11 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.auto.Auto;
 import org.texastorque.constants.Constants;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.RobotOutput;
 import org.texastorque.torquelib.controlLoop.TorquePV;
+import org.texastorque.torquelib.controlLoop.TorqueRIMP;
 import org.texastorque.torquelib.controlLoop.TorqueTMP;
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
@@ -25,7 +27,10 @@ public class DriveBase extends Subsystem {
 	private TorqueTMP tmp;
 	private TorquePV leftPV;
 	private TorquePV rightPV;
-	
+	private TorqueRIMP leftRIMP;
+	private TorqueRIMP rightRIMP;
+	private double previousError;
+
 	private double targetPosition;
 	private double targetVelocity;
 	private double targetAcceleration;
@@ -43,7 +48,7 @@ public class DriveBase extends Subsystem {
 	private boolean kiddieMode = false;
 	
 	public enum DriveType {
-		TELEOP, AUTODRIVE, AUTOTURN, AUTOOVERRIDE;
+		TELEOP, TELEOPGEARPLACE, AUTODRIVE, AUTOTURN, AUTOOVERRIDE, AUTOIRDRIVE;
 	}
 
 	private DriveType type = DriveType.TELEOP;
@@ -82,6 +87,14 @@ public class DriveBase extends Subsystem {
 				Constants.DB_TURN_PV_ffV.getDouble(), Constants.DB_TURN_PV_ffA.getDouble());
 		turnPV.setTunedVoltage(Constants.TUNED_VOLTAGE.getDouble());
 		
+		rightRIMP = new TorqueRIMP(Constants.DB_MVELOCITY.getDouble(), Constants.DB_MACCELERATION.getDouble(), 0);
+		leftRIMP = new TorqueRIMP(Constants.DB_MVELOCITY.getDouble(), Constants.DB_MACCELERATION.getDouble(), 0);
+		
+		rightRIMP.setGains(Constants.DB_RIMP_P.getDouble(), Constants.DB_RIMP_V.getDouble(),
+				Constants.DB_RIMP_ffV.getDouble(), Constants.DB_RIMP_ffA.getDouble());
+		leftRIMP.setGains(Constants.DB_RIMP_P.getDouble(), Constants.DB_RIMP_V.getDouble(),
+				Constants.DB_RIMP_ffV.getDouble(), Constants.DB_RIMP_ffA.getDouble());
+		
 		prevTime = Timer.getFPGATimestamp();
 	}
 
@@ -98,61 +111,75 @@ public class DriveBase extends Subsystem {
 	}
 
 	private void run() {
-
 		switch (type) {
-		case AUTODRIVE:
-			setpoint = i.getDB_setpoint();
-			if (setpoint != previousSetpoint) {
-				previousSetpoint = setpoint;
-				Feedback.getInstance().resetDB_encoders();
-				tmp.generateTrapezoid(setpoint, 0d, 0d);
+			case TELEOPGEARPLACE:
+				break;
+			case AUTOIRDRIVE:
+				double error = Feedback.getInstance().getDB_distance() - 8;
+				if(error >= 6 && error - previousError < 0) {
+					leftSpeed = leftRIMP.calculate(-error, Feedback.getInstance().getDB_leftRate());
+					rightSpeed = rightRIMP.calculate(-error, Feedback.getInstance().getDB_rightRate());
+				} else {
+					leftSpeed = 0;
+					rightSpeed = 0;
+				}
+				previousError = error;
+				output();
+				break;
+			case AUTODRIVE:
+				setpoint = i.getDB_setpoint();
+				if (setpoint != previousSetpoint) {
+					previousSetpoint = setpoint;
+					tmp.generateTrapezoid(setpoint, 0d, 0d);
+					prevTime = Timer.getFPGATimestamp();
+				}
+				if (TorqueMathUtil.near(setpoint, Feedback.getInstance().getDB_leftDistance(), .5))
+					Auto.getInstance().setActionDone();
+				double dt = Timer.getFPGATimestamp() - prevTime;
 				prevTime = Timer.getFPGATimestamp();
-			}
-
-			double dt = Timer.getFPGATimestamp() - prevTime;
-			prevTime = Timer.getFPGATimestamp();
-			tmp.calculateNextSituation(dt);
-
-			targetPosition = tmp.getCurrentPosition();
-			targetVelocity = tmp.getCurrentVelocity();
-			targetAcceleration = tmp.getCurrentAcceleration();
-			
-			leftSpeed = leftPV.calculate(tmp, Feedback.getInstance().getDB_leftDistance(),
-					Feedback.getInstance().getDB_leftRate());
-			rightSpeed = rightPV.calculate(tmp, Feedback.getInstance().getDB_rightDistance(),
-					Feedback.getInstance().getDB_rightRate());
-			upShift = false;
-			output();
-			break;
-		case AUTOTURN:
-			turnSetpoint = i.getDB_turnSetpoint();
-			if (turnSetpoint != turnPreviousSetpoint) {
-				turnPreviousSetpoint = turnSetpoint;
-				Feedback.getInstance().resetDB_gyro();
-				turnProfile.generateTrapezoid(turnSetpoint, 0.0, 0.0);
+				tmp.calculateNextSituation(dt);
+	
+				targetPosition = tmp.getCurrentPosition();
+				targetVelocity = tmp.getCurrentVelocity();
+				targetAcceleration = tmp.getCurrentAcceleration();
+				
+				leftSpeed = leftPV.calculate(tmp, Feedback.getInstance().getDB_leftDistance(),
+						Feedback.getInstance().getDB_leftRate());
+				rightSpeed = rightPV.calculate(tmp, Feedback.getInstance().getDB_rightDistance(),
+						Feedback.getInstance().getDB_rightRate());
+				upShift = false;
+				output();
+				break;
+			case AUTOTURN:
+				turnSetpoint = i.getDB_turnSetpoint();
+				if (turnSetpoint != turnPreviousSetpoint) {
+					turnPreviousSetpoint = turnSetpoint;
+					turnProfile.generateTrapezoid(turnSetpoint, 0.0, 0.0);
+					prevTime = Timer.getFPGATimestamp();
+				}
+				if (TorqueMathUtil.near(turnSetpoint, Feedback.getInstance().getDB_angle(), .5))
+					Auto.getInstance().setActionDone();
+				dt = Timer.getFPGATimestamp() - prevTime;
 				prevTime = Timer.getFPGATimestamp();
-			}
-			dt = Timer.getFPGATimestamp() - prevTime;
-			prevTime = Timer.getFPGATimestamp();
-			turnProfile.calculateNextSituation(dt);
-
-			targetAngle = turnProfile.getCurrentPosition();
-			targetAngularVelocity = turnProfile.getCurrentVelocity();
-
-			leftSpeed = turnPV.calculate(turnProfile, Feedback.getInstance().getDB_angle(), Feedback.getInstance().getDB_angleRate());
-			rightSpeed = -leftSpeed;
-			upShift = false;
-			output();
-			break;
-		case TELEOP:
-			leftSpeed = i.getDB_leftSpeed();
-			rightSpeed = i.getDB_rightSpeed();
-			if (Feedback.getInstance().getDB_leftRate() < -20 && Feedback.getInstance().getDB_rightRate() < -20
-					&& i.flipCheck()) {
-				leftSpeed = rightSpeed = 0.0;
-			}
-			upShift = i.getUpShift();
-			output();
+				turnProfile.calculateNextSituation(dt);
+	
+				targetAngle = turnProfile.getCurrentPosition();
+				targetAngularVelocity = turnProfile.getCurrentVelocity();
+	
+				leftSpeed = turnPV.calculate(turnProfile, Feedback.getInstance().getDB_angle(), Feedback.getInstance().getDB_angleRate());
+				rightSpeed = -leftSpeed;
+				upShift = false;
+				output();
+				break;
+			case TELEOP:
+				leftSpeed = i.getDB_leftSpeed();
+				rightSpeed = i.getDB_rightSpeed();
+				if (Feedback.getInstance().getDB_leftRate() < -20 && Feedback.getInstance().getDB_rightRate() < -20
+						&& i.flipCheck()) {
+					leftSpeed = rightSpeed = 0.0;
+				}
+				upShift = i.getUpShift();
+				output();
 			break;
 		}
 	}

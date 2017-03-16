@@ -122,7 +122,10 @@ public class HumanInput extends Input {
 			FW_setpointShift = 0;
 		}
 		FW_leftSetpoint = FW_setpointShift;
-		FW_rightSetpoint = FW_leftSetpoint;
+		FW_rightSetpoint = FW_leftSetpoint-300;
+		if(FW_rightSetpoint < 0) {
+			FW_rightSetpoint = 0;
+		}
 	}
 
 	public void updateShooterOverride() {
@@ -204,7 +207,7 @@ public class HumanInput extends Input {
 	
 	public void updateHood() {
 		switchShooter.calc(operator.getXButton());
-		hood.calc(operator.getBButton());
+//		hood.calc(operator.getBButton());
 
 		if (hood.get()) {
 			FW_hood = true;
@@ -230,7 +233,7 @@ public class HumanInput extends Input {
 
 	public void updateGates() {
 		if (operator.getXButton()) {
-			FW_gateSpeed = Constants.FW_LIMIT.getDouble();
+			FW_gateSpeed = 1;
 		} else {
 			FW_gateSpeed = 0d;
 		}

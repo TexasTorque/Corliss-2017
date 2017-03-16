@@ -37,6 +37,7 @@ public class Ports {
 	public static final int GR_SOLE = 5;
 	// Sensors
 	// ==================
+	public static final int DB_ULTRASONIC = 0;
 	public static final int DB_LEFTENCODER_A = 0;
 	public static final int DB_LEFTENCODER_B = 1;
 	public static final int DB_RIGHTENCODER_A = 2;
@@ -45,5 +46,9 @@ public class Ports {
 	public static final int FW_LEFTENCODER_B = 5;
 	public static final int FW_RIGHTENCODER_A = 6;
 	public static final int FW_RIGHTENCODER_B = 7;
+	
+//	MISC
+	
+	public static final int LI_ARDUINO = 0;
 
 }

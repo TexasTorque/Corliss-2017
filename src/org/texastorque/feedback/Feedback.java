@@ -5,6 +5,7 @@ import org.texastorque.torquelib.component.TorqueEncoder;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +25,8 @@ public class Feedback {
 	
 	private TorqueEncoder FW_leftEncoder;
 	private TorqueEncoder FW_rightEncoder;
+
+	private AnalogInput DB_ultrasonic;
 	
 //	related values
 	private double DB_leftDistance;
@@ -38,6 +41,8 @@ public class Feedback {
 	private double DB_angle;
 	private double DB_angleRate;
 	
+	private double DB_distance;
+	
 	private double FW_leftDistance;
 	private double FW_rightDistance;
 	
@@ -46,6 +51,20 @@ public class Feedback {
 	
 	private double FW_leftAcceleration;
 	private double FW_rightAcceleration;
+	
+	private Pixy pixy;
+	
+	private double PX_x1;
+	private double PX_y1;
+	private double PX_surfaceArea1;
+	private double PX_x2;
+	private double PX_y2;
+	private double PX_surfaceArea2;
+	
+	private final double PX_CONVERSIONH = .234;
+	private final double PX_CONVERSIONV = .235;
+	
+	private boolean PX_goodPacket = false;
 	
 	public Feedback() {
 		init();
@@ -56,8 +75,12 @@ public class Feedback {
 		DB_rightEncoder = new TorqueEncoder(Ports.DB_RIGHTENCODER_A, Ports.DB_RIGHTENCODER_B, false, EncodingType.k4X);
 		DB_gyro = new AHRS(SPI.Port.kMXP);
 
+		DB_ultrasonic = new AnalogInput(Ports.DB_ULTRASONIC);
+		
 		FW_leftEncoder = new TorqueEncoder(Ports.FW_LEFTENCODER_A, Ports.FW_LEFTENCODER_B, false, EncodingType.k4X);
-		FW_rightEncoder = new TorqueEncoder(Ports.FW_RIGHTENCODER_B, Ports.FW_RIGHTENCODER_A, true, EncodingType.k4X);
+		FW_rightEncoder = new TorqueEncoder(Ports.FW_RIGHTENCODER_A, Ports.FW_RIGHTENCODER_B, false, EncodingType.k4X);
+		
+		pixy = new Pixy();
 	}
 	
 	public void update() {
@@ -75,10 +98,46 @@ public class Feedback {
 		DB_angle = DB_gyro.getAngle();
 		DB_angleRate = DB_gyro.getVelocityX();
 		
+		if(DB_ultrasonic.getAverageVoltage() >= .5) {
+			DB_distance = (26 / (DB_ultrasonic.getAverageVoltage() - .15))/2.54;
+			if(DB_distance >= 28 || DB_distance <= 4) {
+				DB_distance = -1;
+			}
+		} else {
+			DB_distance = -1;
+		}
+		
+		SmartDashboard.putNumber("DB_DISTANCE", DB_distance);
+		SmartDashboard.putNumber("DB_ULTRASONIC", DB_ultrasonic.getAverageVoltage());
+		
 		FW_leftDistance = FW_leftEncoder.getDistance();
 		FW_rightDistance = FW_rightEncoder.getDistance();
 		FW_leftRate = FW_leftEncoder.getRate() * C_FLYWHEEL;
 		FW_rightRate = FW_rightEncoder.getRate() * C_FLYWHEEL;
+		try {
+			PixyPacket one = pixy.readPacket(1);
+			PX_x1 = one.X - 160;
+			PX_y1 = one.Y - 100;
+			PixyPacket two = pixy.readPacket(1);
+			PX_y2 = two.Y - 100;
+			PX_x2 = two.X - 160;
+			PX_goodPacket = true;
+		} catch (Exception e) {
+			System.out.println("BAD PACKET");
+			PX_goodPacket = false;
+		}
+		
+	}
+	
+	private void PX_clearData() {
+		PX_x1 = -999;
+		PX_x2 = -999;
+		PX_y1 = -999;
+		PX_y2 = -999;
+	}
+	
+	public double getDB_distance() {
+		return DB_distance;
 	}
 	
 	public double getDB_leftDistance() {
@@ -113,6 +172,14 @@ public class Feedback {
 		return DB_angleRate;
 	}
 	
+	public boolean getPX_goodPacket() {
+		return PX_goodPacket;
+	}
+	
+	public double getPX_HorizontalDegreeOff() {
+		return ((PX_x1 + PX_x2) / 2)*PX_CONVERSIONH;
+	}
+	
 	public void resetDB_encoders() {
 		DB_leftEncoder.reset();
 		DB_rightEncoder.reset();
@@ -132,6 +199,12 @@ public class Feedback {
 		SmartDashboard.putNumber("DB_GYRO", DB_angle);
 		SmartDashboard.putNumber("DB_GYRORATE", DB_angleRate);
 		SmartDashboard.putNumber("GYROX", DB_gyro.getAngle());
+		
+		SmartDashboard.putNumber("PIXYX_1", PX_x1);
+		SmartDashboard.putNumber("PIXYY_1", PX_y1);
+
+		SmartDashboard.putNumber("PIXYX_2", PX_x2);
+		SmartDashboard.putNumber("PIXYY_2", PX_y2);
 	}
 	
 	public static Feedback getInstance() {

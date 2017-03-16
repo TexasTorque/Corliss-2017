@@ -23,9 +23,9 @@ public class Constants {
 	public static final Constant IN_LIMIT = new Constant("IN_LIMIT", .75);
 	
 //	drive base
-	public static final Constant DB_MVELOCITY = new Constant("DB_MVELOCITY",50d);
+	public static final Constant DB_MVELOCITY = new Constant("DB_MVELOCITY",150d);
 	public static final Constant DB_MACCELERATION = new Constant("DB_MACCELERATION",200d);
-	public static final Constant DB_MAVELOCITY = new Constant("DB_MAVELOCITY",50d);
+	public static final Constant DB_MAVELOCITY = new Constant("DB_MAVELOCITY",150d);
 	public static final Constant DB_MAACCELERATION = new Constant("DB_MAACCELERATION",200d);
 	
 	public static final Constant DB_RIGHT_PV_P = new Constant("DB_RIGHT_PV_P", .08);
@@ -38,10 +38,15 @@ public class Constants {
 	public static final Constant DB_LEFT_PV_ffV = new Constant("DB_LEFT_PV_ffV", 0.002);
 	public static final Constant DB_LEFT_PV_ffA = new Constant("DB_LEFT_PV_ffA", 0.0);
 	
-	public static final Constant DB_TURN_PV_P = new Constant("DB_TURN_PV_P", .08);
-	public static final Constant DB_TURN_PV_V = new Constant("DB_TURN_PV_V", .008);
-	public static final Constant DB_TURN_PV_ffV = new Constant("DB_TURN_PV_ffV", .002);
+	public static final Constant DB_TURN_PV_P = new Constant("DB_TURN_PV_P", .078);
+	public static final Constant DB_TURN_PV_V = new Constant("DB_TURN_PV_V", .006);
+	public static final Constant DB_TURN_PV_ffV = new Constant("DB_TURN_PV_ffV", .005);
 	public static final Constant DB_TURN_PV_ffA = new Constant("DB_TURN_PV_ffA", 0.0);
+	
+	public static final Constant DB_RIMP_P = new Constant("DB_RIMP_P", .078);
+	public static final Constant DB_RIMP_V = new Constant("DB_RIMP_V", 0);
+	public static final Constant DB_RIMP_ffV = new Constant("DB_RIMP_ffV", 0);
+	public static final Constant DB_RIMP_ffA = new Constant("DB_RIMP_ffA", 0);
 	
 	public static final Constant TUNED_VOLTAGE = new Constant("TUNED_VOLTAGE", 12.5);
 }
