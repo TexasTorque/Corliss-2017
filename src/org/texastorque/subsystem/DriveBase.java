@@ -13,9 +13,16 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // instanced, include pertinent methods (remove this header before first commit)
-public class DriveBase extends Subsystem {
+public class DriveBase extends Subsystem implements Runnable {
+	
+	private static final double SPEED_LIMIT_KIDDIE_MODE = 0.3;
+	private static final double SPEED_LIMIT_DEFAULT = 1.0;
 
-	private static DriveBase instance;
+	private static volatile DriveBase instance;
+	
+	private final RobotOutput robotOut = RobotOutput.getInstance();
+	private final Feedback feedback = Feedback.getInstance();
+	private final Auto autonomous = Auto.getInstance();
 
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
@@ -99,103 +106,130 @@ public class DriveBase extends Subsystem {
 	}
 
 	@Override
-
 	public void autoContinuous() {
 		run();
 	}
 
 	@Override
-
 	public void teleopContinuous() {
 		run();
 	}
 
-	private void run() {
+	@Override
+	public void run() {
 		switch (type) {
 		case TELEOPGEARPLACE:
 			break;
+			
 		case AUTOIRDRIVE:
-			double error = Feedback.getInstance().getDB_distance() - 8;
-			if (error >= 6 && error - previousError < 0) {
-				leftSpeed = leftRIMP.calculate(-error, Feedback.getInstance().getDB_leftRate());
-				rightSpeed = rightRIMP.calculate(-error, Feedback.getInstance().getDB_rightRate());
-			} else {
-				leftSpeed = 0;
-				rightSpeed = 0;
-			}
-			previousError = error;
-			output();
+			runAutoIRDrive();
 			break;
+			
 		case AUTODRIVE:
-			setpoint = i.getDB_setpoint();
-			if (setpoint != previousSetpoint) {
-				previousSetpoint = setpoint;
-				tmp.generateTrapezoid(setpoint, 0d, 0d);
-				prevTime = Timer.getFPGATimestamp();
-			}
-			if (TorqueMathUtil.near(setpoint, Feedback.getInstance().getDB_leftDistance(), .5)
-					&& TorqueMathUtil.near(setpoint, Feedback.getInstance().getDB_rightDistance(), .5))
-				Auto.getInstance().setActionDone();
-			double dt = Timer.getFPGATimestamp() - prevTime;
-			prevTime = Timer.getFPGATimestamp();
-			tmp.calculateNextSituation(dt);
-
-			targetPosition = tmp.getCurrentPosition();
-			targetVelocity = tmp.getCurrentVelocity();
-			targetAcceleration = tmp.getCurrentAcceleration();
-
-			leftSpeed = leftPV.calculate(tmp, Feedback.getInstance().getDB_leftDistance(),
-					Feedback.getInstance().getDB_leftRate());
-			rightSpeed = rightPV.calculate(tmp, Feedback.getInstance().getDB_rightDistance(),
-					Feedback.getInstance().getDB_rightRate());
-			upShift = false;
-			output();
+			runAutoDrive();
 			break;
+			
 		case AUTOTURN:
-			turnSetpoint = i.getDB_turnSetpoint();
-			if (turnSetpoint != turnPreviousSetpoint) {
-				turnPreviousSetpoint = turnSetpoint;
-				turnProfile.generateTrapezoid(turnSetpoint, 0.0, 0.0);
-				prevTime = Timer.getFPGATimestamp();
-			}
-			if (TorqueMathUtil.near(turnSetpoint, Feedback.getInstance().getDB_angle(), .5))
-				Auto.getInstance().setActionDone();
-			dt = Timer.getFPGATimestamp() - prevTime;
-			prevTime = Timer.getFPGATimestamp();
-			turnProfile.calculateNextSituation(dt);
-
-			targetAngle = turnProfile.getCurrentPosition();
-			targetAngularVelocity = turnProfile.getCurrentVelocity();
-
-			leftSpeed = turnPV.calculate(turnProfile, Feedback.getInstance().getDB_angle(),
-					Feedback.getInstance().getDB_angleRate());
-			rightSpeed = -leftSpeed;
-			upShift = false;
-			output();
+			runAutoTurn();
 			break;
+			
 		case TELEOP:
-			leftSpeed = i.getDB_leftSpeed();
-			rightSpeed = i.getDB_rightSpeed();
-			if (Feedback.getInstance().getDB_leftRate() < -20 && Feedback.getInstance().getDB_rightRate() < -20
-					&& i.flipCheck()) {
-				leftSpeed = rightSpeed = 0.0;
-			}
-			upShift = i.getUpShift();
-			output();
+			runTeleop();
+			break;
+			
+		default:
 			break;
 		}
+
+		output();
+	}
+	
+	private void runAutoIRDrive() {
+		double error = Feedback.getInstance().getDB_distance() - 8;
+		if (error >= 6 && error - previousError < 0) {
+			leftSpeed = leftRIMP.calculate(-error, feedback.getDB_leftRate());
+			rightSpeed = rightRIMP.calculate(-error, feedback.getDB_rightRate());
+		} else {
+			leftSpeed = 0;
+			rightSpeed = 0;
+		}
+		previousError = error;
+	}
+	
+	private void runAutoDrive() {
+		setpoint = in.getDB_setpoint();
+		if (setpoint != previousSetpoint) {
+			previousSetpoint = setpoint;
+			tmp.generateTrapezoid(setpoint, 0d, 0d);
+			prevTime = Timer.getFPGATimestamp();
+		}
+		
+		if (TorqueMathUtil.near(setpoint, feedback.getDB_leftDistance(), .5)
+				&& TorqueMathUtil.near(setpoint, feedback.getDB_rightDistance(), .5)) {
+			autonomous.setActionDone();
+		}
+		
+		double dt = Timer.getFPGATimestamp() - prevTime;
+		prevTime = Timer.getFPGATimestamp();
+		tmp.calculateNextSituation(dt);
+
+		targetPosition = tmp.getCurrentPosition();
+		targetVelocity = tmp.getCurrentVelocity();
+		targetAcceleration = tmp.getCurrentAcceleration();
+
+		leftSpeed = leftPV.calculate(tmp, feedback.getDB_leftDistance(), feedback.getDB_leftRate());
+		rightSpeed = rightPV.calculate(tmp, feedback.getDB_rightDistance(), feedback.getDB_rightRate());
+		
+		upShift = false;
+	}
+	
+	private void runAutoTurn() {
+		turnSetpoint = in.getDB_turnSetpoint();
+		if (turnSetpoint != turnPreviousSetpoint) {
+			turnPreviousSetpoint = turnSetpoint;
+			turnProfile.generateTrapezoid(turnSetpoint, 0.0, 0.0);
+			prevTime = Timer.getFPGATimestamp();
+		}
+		
+		if (TorqueMathUtil.near(turnSetpoint, feedback.getDB_angle(), .5)) {
+			autonomous.setActionDone();
+		}
+		
+		double dt = Timer.getFPGATimestamp() - prevTime;
+		prevTime = Timer.getFPGATimestamp();
+		turnProfile.calculateNextSituation(dt);
+
+		targetAngle = turnProfile.getCurrentPosition();
+		targetAngularVelocity = turnProfile.getCurrentVelocity();
+
+		leftSpeed = turnPV.calculate(turnProfile, feedback.getDB_angle(), feedback.getDB_angleRate());
+		rightSpeed = -leftSpeed;
+		
+		upShift = false;
+	}
+	
+	private void runTeleop() {
+		leftSpeed = in.getDB_leftSpeed();
+		rightSpeed = in.getDB_rightSpeed();
+		
+		if (feedback.getDB_leftRate() < -20 && feedback.getDB_rightRate() < -20 && in.flipCheck()) {
+			leftSpeed = rightSpeed = 0.0;
+		}
+		
+		upShift = in.getUpShift();
 	}
 
 	private void output() {
 		if (kiddieMode) {
-			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .3);
-			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .3);
+			leftSpeed = TorqueMathUtil.constrain(leftSpeed, SPEED_LIMIT_KIDDIE_MODE);
+			rightSpeed = TorqueMathUtil.constrain(rightSpeed, SPEED_LIMIT_KIDDIE_MODE);
 		} else {
-			leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
-			rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
+			leftSpeed = TorqueMathUtil.constrain(leftSpeed, SPEED_LIMIT_DEFAULT);
+			rightSpeed = TorqueMathUtil.constrain(rightSpeed, SPEED_LIMIT_DEFAULT);
 		}
-		RobotOutput.getInstance().upShift(upShift);
-		RobotOutput.getInstance().setDriveBaseSpeed(leftSpeed, rightSpeed);
+		
+		robotOut.upShift(upShift);
+		robotOut.setDriveBaseSpeed(leftSpeed, rightSpeed);
 	}
 
 	public void setType(DriveType type) {
@@ -216,8 +250,7 @@ public class DriveBase extends Subsystem {
 		SmartDashboard.putNumber("DB_TARGETANGULARVELOCITY", targetAngularVelocity);
 	}
 
-	public static DriveBase getInstance() {
+	public static synchronized DriveBase getInstance() {
 		return instance == null ? instance = new DriveBase() : instance;
 	}
-
 }

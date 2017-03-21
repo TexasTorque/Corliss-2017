@@ -4,26 +4,21 @@ import org.texastorque.io.RobotOutput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Twinsters extends Subsystem {
+public class Twinsters extends Subsystem implements Runnable {
 
-	private static Twinsters instance;
+	private static volatile Twinsters instance;
+	
+	private final RobotOutput robotOut = RobotOutput.getInstance();
 	
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
 	private double feederSpeed = 0d;
 	
 	@Override
-	public void autoInit() {
-		init();
-	}
+	public void autoInit() { }
 
 	@Override
-	public void teleopInit() {
-		init();
-	}
-
-	private void init() {
-	}
+	public void teleopInit() { }
 	
 	@Override
 	public void autoContinuous() {
@@ -35,16 +30,13 @@ public class Twinsters extends Subsystem {
 		run();
 	}
 
-	private void run() {
-		leftSpeed = i.getTW_leftSpeed();
-		rightSpeed = i.getTW_rightSpeed();
-		feederSpeed = i.getTW_feederSpeed();
-		
-		output();
-	}
-	
-	private void output() {
-		RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed, feederSpeed);
+	@Override
+	public void run() {
+		leftSpeed = in.getTW_leftSpeed();
+		rightSpeed = in.getTW_rightSpeed();
+		feederSpeed = in.getTW_feederSpeed();
+
+		robotOut.setTwinstersSpeed(leftSpeed, rightSpeed, feederSpeed);
 	}
 	
 	@Override
@@ -53,8 +45,7 @@ public class Twinsters extends Subsystem {
 		SmartDashboard.putNumber("TW_RIGHTSPEED", rightSpeed);
 	}
 	
-	public static Twinsters getInstance() {
+	public static synchronized Twinsters getInstance() {
 		return instance == null ? instance = new Twinsters() : instance;
 	}
-
 }

@@ -5,9 +5,11 @@ import org.texastorque.io.RobotOutput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Gear extends Subsystem{
+public class Gear extends Subsystem implements Runnable {
 
-	private static Gear instance;
+	private static volatile Gear instance;
+	
+	private final RobotOutput robotOut = RobotOutput.getInstance();
 	
 	private boolean open = false;
 	private boolean extended = false;
@@ -15,17 +17,10 @@ public class Gear extends Subsystem{
 	
 	
 	@Override
-	public void autoInit() {
-		init();
-	}
+	public void autoInit() { }
 
 	@Override
-	public void teleopInit() {
-		init();
-	}
-
-	public void init(){
-	}
+	public void teleopInit() { }
 	
 	@Override
 	public void autoContinuous() {
@@ -37,23 +32,21 @@ public class Gear extends Subsystem{
 		run();
 	}
 
-	public void run(){
-		open=i.getGR_open();
-		extended=i.getGH_extended();
-		scoopDown=i.getGC_down();
+	@Override
+	public void run() {
+		open = in.getGR_open();
+		extended = in.getGH_extended();
+		scoopDown = in.getGC_down();
+		
 		output();
 	}
 	
 	public void output(){
-		if(i instanceof HumanInput) {
-			RobotOutput.getInstance().openGearRamp(open);
-			RobotOutput.getInstance().extendGearHolder(extended);
-			RobotOutput.getInstance().deployGearCollector(scoopDown);
+		if(in instanceof HumanInput) {
+			robotOut.openGearRamp(open);
+			robotOut.extendGearHolder(extended);
+			robotOut.deployGearCollector(scoopDown);
 		}
-	}
-	
-	public static Gear getInstance() {
-		return instance == null ? instance = new Gear() : instance;
 	}
 
 	@Override
@@ -62,4 +55,7 @@ public class Gear extends Subsystem{
 		SmartDashboard.putBoolean("ARM_EXTENDED", extended);
 	}
 
+	public static synchronized Gear getInstance() {
+		return instance == null ? instance = new Gear() : instance;
+	}
 }

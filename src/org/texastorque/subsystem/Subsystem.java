@@ -5,10 +5,9 @@ import org.texastorque.io.Input;
 
 public abstract class Subsystem implements TorqueSubsystem {
 
-	protected Input i;
+	protected Input in;
 	
-	public void setInput(Input i) {
-		this.i = i;
+	public void setInput(Input in) {
+		this.in = in;
 	}
-	
 }

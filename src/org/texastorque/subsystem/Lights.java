@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lights {
 
-	private static Lights instance;
+	private static volatile Lights instance;
 	
 	public enum State {
 		DISABLED_RED(.625), DISABLED_BLUE(1.350), TELEOP_RED(1.875), TELEOP_BLUE(2.5), CLIMB_RED(3.125), CLIMB_BLUE(3.75), SHOOT_NO(4.375), SHOOT_YES(5); 
@@ -21,13 +21,14 @@ public class Lights {
 		}
 	}
 
+	private final Alliance alliance = DriverStation.getInstance().getAlliance();
 	private AnalogOutput arduino;
-	private DriverStation ds;
 	private State state;
+
+	private boolean first = true;
 
 	public Lights(double x) {
 		arduino = new AnalogOutput(Ports.LI_ARDUINO);
-		ds = DriverStation.getInstance();
 		off();
 	}
 
@@ -36,18 +37,18 @@ public class Lights {
 			if (value > setpoint && setpoint != 0.0) {
 				state = State.SHOOT_YES;
 			} else {
-				if (ds.getAlliance() == Alliance.Red) {
+				if (alliance == Alliance.Red) {
 					state = State.TELEOP_RED;
-				} else if (ds.getAlliance() == Alliance.Blue) {
+				} else if (alliance == Alliance.Blue) {
 					state = State.TELEOP_BLUE;
 				} else {
 					state = State.DISABLED_BLUE;
 				}
 			}
 		} else {
-			if(ds.getAlliance() == Alliance.Red) {
+			if(alliance == Alliance.Red) {
 				state = State.CLIMB_RED;
-			} else if(ds.getAlliance() == Alliance.Blue) {
+			} else if(alliance == Alliance.Blue) {
 				state = State.CLIMB_BLUE;
 			} else {
 				state = State.DISABLED_BLUE;
@@ -56,7 +57,7 @@ public class Lights {
 	}
 
 	public void off() {
-		switch(DriverStation.getInstance().getAlliance()) {
+		switch(alliance) {
 		case Red:
 			state = State.DISABLED_RED;
 			break;
@@ -69,8 +70,6 @@ public class Lights {
 		}
 	}
 
-	boolean first = true;
-
 	public void update() {
 		arduino.setVoltage(state.value);
 		SmartDashboard.putString("LightState", state.toString());
@@ -78,7 +77,7 @@ public class Lights {
 	}
 
 	// singleton
-	public static Lights getInstance() {
+	public static synchronized Lights getInstance() {
 		return instance == null ? instance = new Lights(0.0) : instance;
 	}
 }

@@ -2,24 +2,19 @@ package org.texastorque.subsystem;
 
 import org.texastorque.io.RobotOutput;
 
-public class Intake extends Subsystem {
+public class Intake extends Subsystem implements Runnable {
 
-	private static Intake instance;
+	private static volatile Intake instance;
+	
+	private final RobotOutput robotOut = RobotOutput.getInstance();
 	
 	private double speed = 0d;
 	
 	@Override
-	public void autoInit() {
-		init();
-	}
+	public void autoInit() { }
 
 	@Override
-	public void teleopInit() {
-		init();
-	}
-
-	private void init() {
-	}
+	public void teleopInit() { }
 	
 	@Override
 	public void autoContinuous() {
@@ -31,20 +26,16 @@ public class Intake extends Subsystem {
 		run();
 	}
 
-	private void run() {
-		speed = i.getIN_speed();
-		output();
-	}
-	
-	private void output() {
-		RobotOutput.getInstance().setIntakeSpeed(speed);
+	@Override
+	public void run() {
+		speed = in.getIN_speed();
+		robotOut.setIntakeSpeed(speed);
 	}
 	
 	@Override
-	public void smartDashboard() {
-	}
+	public void smartDashboard() { }
 	
-	public static Intake getInstance() {
+	public static synchronized Intake getInstance() {
 		return instance == null ? instance = new Intake() : instance;
 	}
 

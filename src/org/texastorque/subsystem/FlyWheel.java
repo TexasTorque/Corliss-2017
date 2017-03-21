@@ -8,9 +8,16 @@ import org.texastorque.torquelib.controlLoop.TorquePID;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class FlyWheel extends Subsystem {
+public class FlyWheel extends Subsystem implements Runnable {
 
-	private static FlyWheel instance;
+	private static volatile FlyWheel instance;
+	
+	private static final double ALLOWABLE_ERROR_FLYWHEEL = Constants.FW_ACCEPTABLE.getDouble();
+	
+	private final RobotOutput robotOut = RobotOutput.getInstance();
+	private final Feedback feedback = Feedback.getInstance();
+	private final Lights lights = Lights.getInstance();
+	private final Climber climber = Climber.getInstance();
 
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
@@ -21,7 +28,7 @@ public class FlyWheel extends Subsystem {
 	private double setpointRight;
 
 	private double leftP = 6;
-	private double leftI = 20; //20
+	private double leftI = 20;
 	private double leftD = 15;
 
 	private double rightP = 6;
@@ -77,24 +84,30 @@ public class FlyWheel extends Subsystem {
 		run();
 	}
 
-	private void run() {
-		setpointLeft = i.getFW_leftSetpoint();
-		setpointRight = i.getFW_rightSetpoint();
+	@Override
+	public void run() {
+		setpointLeft = in.getFW_leftSetpoint();
+		setpointRight = in.getFW_rightSetpoint();
+		
 		if (setpointLeft != 0) {
 			doLight = true;
 			leftFlywheelControl.setSetpoint(1);
-			leftSpeed = leftFlywheelControl.calculate(Feedback.getInstance().getFW_leftRate() / setpointLeft);
-			if (leftSpeed < 0)
+			leftSpeed = leftFlywheelControl.calculate(feedback.getFW_leftRate() / setpointLeft);
+			
+			if (leftSpeed < 0) {
 				leftSpeed = 0;
+			}
 		} else {
 			leftFlywheelControl.reset();
 			leftSpeed = 0;
 			doLight = false;
 		}
+		
 		if (setpointRight != 0) {
 			doLight = true;
 			rightFlywheelControl.setSetpoint(1);
-			rightSpeed = rightFlywheelControl.calculate(Feedback.getInstance().getFW_rightRate() / setpointRight);
+			rightSpeed = rightFlywheelControl.calculate(feedback.getFW_rightRate() / setpointRight);
+			
 			if (rightSpeed < 0)
 				rightSpeed = 0;
 		} else {
@@ -102,28 +115,35 @@ public class FlyWheel extends Subsystem {
 			rightSpeed = 0;
 			doLight = false;
 		}
-		if ((i.getFW_leftSetpoint() != 0 || i.getFW_rightSetpoint() != 0)
-				&& Math.abs(i.getFW_leftSetpoint() - Feedback.getInstance().getFW_leftRate()) < Constants.FW_ACCEPTABLE.getDouble()
-				&& Math.abs(i.getFW_rightSetpoint() - Feedback.getInstance().getFW_rightRate()) < Constants.FW_ACCEPTABLE.getDouble()) {
-			i.setRumble(true);
+		
+		double errorLeft = Math.abs(in.getFW_leftSetpoint() - feedback.getFW_leftRate());
+		double errorRight = Math.abs(in.getFW_rightSetpoint() - feedback.getFW_rightRate());
+		boolean flywheelSpinning = in.getFW_leftSetpoint() != 0 || in.getFW_rightSetpoint() != 0;
+		
+		boolean flywheelReady = flywheelSpinning
+				&& errorLeft < ALLOWABLE_ERROR_FLYWHEEL
+				&& errorRight < ALLOWABLE_ERROR_FLYWHEEL;
+		
+		if (flywheelReady) {
+			in.setRumble(true);
 			doLight = false;
 		} else {
 			if(Timer.getFPGATimestamp() - lt > .5) {
-				i.setRumble(false);
+				in.setRumble(false);
 				lt = Timer.getFPGATimestamp();
 			}
 		}
 //		RobotOutput.getInstance().setLight(doLight);
-		gateSpeed = i.getFW_gateSpeed();
-		hood = i.getFW_hood();
-		Lights.getInstance().set(Climber.getInstance().isClimbing(), Feedback.getInstance().getFW_leftRate(), i.getFW_leftSetpoint());
+		gateSpeed = in.getFW_gateSpeed();
+		hood = in.getFW_hood();
+		lights.set(climber.isClimbing(), feedback.getFW_leftRate(), in.getFW_leftSetpoint());
 		output();
 	}
 
 	private void output() {
-		RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
-		RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
-		RobotOutput.getInstance().setHoodSpeed(hood);
+		robotOut.setFlyWheelSpeed(leftSpeed, rightSpeed);
+		robotOut.setGateSpeed(gateSpeed, gateSpeed);
+		robotOut.setHoodSpeed(hood);
 	}
 
 	public void updatePID() {
@@ -141,8 +161,7 @@ public class FlyWheel extends Subsystem {
 		updatePID();
 	}
 
-	public static FlyWheel getInstance() {
+	public static synchronized FlyWheel getInstance() {
 		return instance == null ? instance = new FlyWheel() : instance;
 	}
-
 }
