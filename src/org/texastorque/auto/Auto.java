@@ -54,6 +54,9 @@ public class Auto implements Runnable {
 		analyzeAutoMode();
 		
 		thread = new Thread(this);
+	}
+	
+	public void init() {
 		thread.start();
 	}
 
