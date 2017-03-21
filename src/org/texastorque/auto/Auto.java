@@ -24,7 +24,7 @@ public class Auto implements Runnable {
 
 	/* Singleton */
 	
-	private static Auto instance;
+	private static volatile Auto instance;
 	
 	
 	/* Static */
@@ -466,7 +466,7 @@ public class Auto implements Runnable {
 		SmartDashboard.putNumber("AUTOMODE", autoMode);
 	}
 
-	public static Auto getInstance() {
+	public static synchronized Auto getInstance() {
 		return instance == null ? instance = new Auto() : instance;
 	}
 }

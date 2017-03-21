@@ -3,7 +3,7 @@ package org.texastorque.io;
 import org.texastorque.constants.Constants;
 import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueMotor;
-import org.texastorque.torquelib.util.TorqueMathUtil;
+import static org.texastorque.torquelib.util.TorqueMathUtil.constrain;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -13,36 +13,60 @@ import edu.wpi.first.wpilibj.VictorSP;
 
 public class RobotOutput {
 
-	private static RobotOutput instance;
+	/* Singleton */
+	
+	private static volatile RobotOutput instance;
+	
+	
+	/* Constants */
+	
+	private static final double LIMIT_SPEED = Constants.IN_LIMIT.getDouble();
 
+	
+	/* DriveBase */
+	
 	private TorqueMotor DB_leftFore;
 	private TorqueMotor DB_leftRear;
 	private TorqueMotor DB_rightFore;
 	private TorqueMotor DB_rightRear;
 	private DoubleSolenoid DB_shiftSole;
 
+
+	/* Flywheel */
+	
 	private TorqueMotor FW_leftSole;
 	private TorqueMotor FW_rightSole;
 	private TorqueMotor FW_gateLeft;
 	private TorqueMotor FW_gateRight;
 	private Solenoid FW_hood;
-
 	private Relay FW_light;
+	
+	
+	/* Intake */
 	
 	private TorqueMotor IN_sole;
 
+	
+	/* Twinsters */
+	
 	private TorqueMotor TW_feederSole;
 	private TorqueMotor TW_rightSole;
 	private TorqueMotor TW_leftSole;
 
+	
+	/* Climber */
+	
 	private TorqueMotor CL_left;
 	private TorqueMotor CL_right;
 
+	
+	/* Gear Mechanism */
+	
 	private DoubleSolenoid GC_deploy;
 	private TorqueMotor GC_belt;
-	
 	private Solenoid GH_sole;
 	private Solenoid GR_sole;
+	
 	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = true;
@@ -133,7 +157,7 @@ public class RobotOutput {
 	 *            - The speed the rightside motor should be set to.
 	 */
 	public void setIntakeSpeed(double speed) {
-		speed = TorqueMathUtil.constrain(speed, Constants.IN_LIMIT.getDouble());
+		speed = constrain(speed, LIMIT_SPEED);
 		IN_sole.set(speed);
 	}
 
@@ -147,9 +171,9 @@ public class RobotOutput {
 	 *            - The speed the rightside motor should be set to.
 	 */
 	public void setTwinstersSpeed(double leftSpeed, double rightSpeed, double feederSpeed) {
-		leftSpeed = TorqueMathUtil.constrain(leftSpeed, Constants.IN_LIMIT.getDouble());
-		rightSpeed = TorqueMathUtil.constrain(rightSpeed, Constants.IN_LIMIT.getDouble());
-		feederSpeed = TorqueMathUtil.constrain(feederSpeed, Constants.IN_LIMIT.getDouble());
+		leftSpeed = constrain(leftSpeed, LIMIT_SPEED);
+		rightSpeed = constrain(rightSpeed, LIMIT_SPEED);
+		feederSpeed = constrain(feederSpeed, LIMIT_SPEED);
 		TW_feederSole.set(feederSpeed);
 		TW_rightSole.set(rightSpeed);
 		TW_leftSole.set(leftSpeed);
@@ -195,8 +219,7 @@ public class RobotOutput {
 			GC_belt.set(0);
 	}
 
-	public static RobotOutput getInstance() {
+	public static synchronized RobotOutput getInstance() {
 		return instance == null ? instance = new RobotOutput() : instance;
 	}
-
 }

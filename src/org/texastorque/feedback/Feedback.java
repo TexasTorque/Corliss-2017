@@ -14,7 +14,7 @@ public class Feedback {
 
 	/* Singleton */
 	
-	private static Feedback instance;
+	private static volatile Feedback instance;
 	
 	
 	/* Constants */
@@ -233,8 +233,7 @@ public class Feedback {
 		SmartDashboard.putNumber("PIXYY_2", PX_y2);
 	}
 	
-	public static Feedback getInstance() {
+	public static synchronized Feedback getInstance() {
 		return instance == null ? instance = new Feedback() : instance;
 	}
-	
 }

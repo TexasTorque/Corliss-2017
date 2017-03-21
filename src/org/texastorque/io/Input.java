@@ -2,7 +2,7 @@ package org.texastorque.io;
 
 public class Input {
 
-	private static Input instance;
+	private static volatile Input instance;
 
 	protected double DB_leftSpeed;
 	protected double DB_rightSpeed;
@@ -147,7 +147,7 @@ public class Input {
 		return flipCheck;
 	}
 
-	public static Input getInstance() {
+	public static synchronized Input getInstance() {
 		return instance == null ? instance = new Input() : instance;
 	}
 

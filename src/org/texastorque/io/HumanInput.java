@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HumanInput extends Input {
 
-	private static HumanInput instance;
+	private static volatile HumanInput instance;
 
 	private GenericController driver;
 	private GenericController operator;
@@ -293,7 +293,7 @@ public class HumanInput extends Input {
 		SmartDashboard.putNumber("HI_DT", dT);
 	}
 
-	public static HumanInput getInstance() {
+	public static synchronized HumanInput getInstance() {
 		return instance == null ? instance = new HumanInput() : instance;
 	}
 
