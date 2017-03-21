@@ -32,7 +32,7 @@ public class Robot extends TorqueIterative {
 
 	private final ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
 	private final Climber climber = Climber.getInstance();
-	private final DriveBase drivebase = DriveBase.getInstance();
+	private final DriveBase driveBase = DriveBase.getInstance();
 	private final FlyWheel flywheel = FlyWheel.getInstance();
 	private final Intake intake = Intake.getInstance();
 	private final Twinsters twinsters = Twinsters.getInstance();
@@ -48,12 +48,12 @@ public class Robot extends TorqueIterative {
 	
 	@Override
 	public void robotInit() {
-		subsystems.add(drivebase);
+		subsystems.add(driveBase);
 		subsystems.add(intake);
-		subsystems.add(climber);
-		subsystems.add(flywheel);
 		subsystems.add(twinsters);
 		subsystems.add(gearMechanism);
+		subsystems.add(flywheel);
+		subsystems.add(climber);
 		
 		robotOut.setLight(true);
 	}
