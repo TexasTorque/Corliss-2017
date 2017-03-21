@@ -12,23 +12,39 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Feedback {
 
+	/* Singleton */
+	
 	private static Feedback instance;
-
-	private final double C_FLYWHEEL = .24;
-	private final double DB_DISTANCE_CONVERSION = 0.04927988;
 	
-//	sensors
-	private TorqueEncoder DB_leftEncoder;
-	private TorqueEncoder DB_rightEncoder;
-
-	private AHRS DB_gyro;
 	
-	private TorqueEncoder FW_leftEncoder;
-	private TorqueEncoder FW_rightEncoder;
+	/* Constants */
 
-	private AnalogInput DB_ultrasonic;
+	private static final double CM_PER_INCH = 2.54;
+	private static final double C_FLYWHEEL = .24;
+	private static final double CONVERSION_DRIVEBASE_DISTANCE = 0.04927988;
 	
-//	related values
+	private static final double CONVERSION_PX_H = .234;
+	private static final double CONVERSION_PX_V = .235;
+	private static final int CLEAR_PIXY_XY = -999;
+	private static final int CORRECTION_PIXY_PACKET_X = -160;
+	private static final int CORRECTION_PIXY_PACKET_Y = -100;
+	
+	
+	/* Sensors */
+	
+	private final TorqueEncoder DB_leftEncoder;
+	private final TorqueEncoder DB_rightEncoder;
+
+	private final AHRS DB_gyro;
+	
+	private final TorqueEncoder FW_leftEncoder;
+	private final TorqueEncoder FW_rightEncoder;
+
+	private final AnalogInput DB_ultrasonic;
+	
+	
+	/* Drivebase */
+	
 	private double DB_leftDistance;
 	private double DB_rightDistance;
 	
@@ -43,6 +59,9 @@ public class Feedback {
 	
 	private double DB_distance;
 	
+	
+	/* Flywheel */
+	
 	private double FW_leftDistance;
 	private double FW_rightDistance;
 	
@@ -51,6 +70,9 @@ public class Feedback {
 	
 	private double FW_leftAcceleration;
 	private double FW_rightAcceleration;
+	
+	
+	/* Pixy */
 	
 	private Pixy pixy;
 	
@@ -61,16 +83,9 @@ public class Feedback {
 	private double PX_y2;
 	private double PX_surfaceArea2;
 	
-	private final double PX_CONVERSIONH = .234;
-	private final double PX_CONVERSIONV = .235;
-	
 	private boolean PX_goodPacket = false;
 	
 	public Feedback() {
-		init();
-	}
-	
-	private void init() {
 		DB_leftEncoder = new TorqueEncoder(Ports.DB_LEFTENCODER_A, Ports.DB_LEFTENCODER_B, false, EncodingType.k4X);
 		DB_rightEncoder = new TorqueEncoder(Ports.DB_RIGHTENCODER_A, Ports.DB_RIGHTENCODER_B, false, EncodingType.k4X);
 		DB_gyro = new AHRS(SPI.Port.kMXP);
@@ -83,23 +98,20 @@ public class Feedback {
 		pixy = new Pixy();
 	}
 	
-	public void update() {
+	private void updateDriveBase() {
 		DB_leftEncoder.calc();
 		DB_rightEncoder.calc();
 		
-		FW_leftEncoder.calc();
-		FW_rightEncoder.calc();
-		
-		DB_leftDistance = DB_leftEncoder.getDistance() * DB_DISTANCE_CONVERSION;
-		DB_rightDistance = DB_rightEncoder.getDistance() * DB_DISTANCE_CONVERSION;
-		DB_leftRate = DB_leftEncoder.getRate() * DB_DISTANCE_CONVERSION;
-		DB_rightRate = DB_rightEncoder.getRate() * DB_DISTANCE_CONVERSION;
+		DB_leftDistance = DB_leftEncoder.getDistance() * CONVERSION_DRIVEBASE_DISTANCE;
+		DB_rightDistance = DB_rightEncoder.getDistance() * CONVERSION_DRIVEBASE_DISTANCE;
+		DB_leftRate = DB_leftEncoder.getRate() * CONVERSION_DRIVEBASE_DISTANCE;
+		DB_rightRate = DB_rightEncoder.getRate() * CONVERSION_DRIVEBASE_DISTANCE;
 		
 		DB_angle = DB_gyro.getAngle();
 		DB_angleRate = DB_gyro.getVelocityX();
 		
 		if(DB_ultrasonic.getAverageVoltage() >= .5) {
-			DB_distance = (26 / (DB_ultrasonic.getAverageVoltage() - .15))/2.54;
+			DB_distance = (26 / (DB_ultrasonic.getAverageVoltage() - .15)) / CM_PER_INCH;
 			if(DB_distance >= 28 || DB_distance <= 4) {
 				DB_distance = -1;
 			}
@@ -109,30 +121,38 @@ public class Feedback {
 		
 		SmartDashboard.putNumber("DB_DISTANCE", DB_distance);
 		SmartDashboard.putNumber("DB_ULTRASONIC", DB_ultrasonic.getAverageVoltage());
-		
+	}
+	
+	private void updateFlywheel() {		
+		FW_leftEncoder.calc();
+		FW_rightEncoder.calc();
 		FW_leftDistance = FW_leftEncoder.getDistance();
 		FW_rightDistance = FW_rightEncoder.getDistance();
 		FW_leftRate = FW_leftEncoder.getRate() * C_FLYWHEEL;
 		FW_rightRate = FW_rightEncoder.getRate() * C_FLYWHEEL;
+	}
+	
+	private void updatePixy() {
 		try {
 			PixyPacket one = pixy.readPacket(1);
-			PX_x1 = one.X - 160;
-			PX_y1 = one.Y - 100;
 			PixyPacket two = pixy.readPacket(1);
-			PX_y2 = two.Y - 100;
-			PX_x2 = two.X - 160;
+			
+			PX_x1 = one.X + CORRECTION_PIXY_PACKET_X;
+			PX_y1 = one.Y + CORRECTION_PIXY_PACKET_Y;
+			
+			PX_x2 = two.X + CORRECTION_PIXY_PACKET_X;
+			PX_y2 = two.Y + CORRECTION_PIXY_PACKET_Y;
+			
 			PX_goodPacket = true;
 		} catch (Exception e) {
 			PX_goodPacket = false;
 		}
-		
 	}
 	
-	private void PX_clearData() {
-		PX_x1 = -999;
-		PX_x2 = -999;
-		PX_y1 = -999;
-		PX_y2 = -999;
+	public void update() {
+		updateDriveBase();
+		updateFlywheel();
+		updatePixy();
 	}
 	
 	public double getDB_distance() {
@@ -176,7 +196,7 @@ public class Feedback {
 	}
 	
 	public double getPX_HorizontalDegreeOff() {
-		return ((PX_x1 + PX_x2) / 2)*PX_CONVERSIONH;
+		return ((PX_x1 + PX_x2) / 2) * CONVERSION_PX_H;
 	}
 	
 	public void resetDB_encoders() {
@@ -186,6 +206,13 @@ public class Feedback {
 	
 	public void resetDB_gyro() {
 		DB_gyro.reset();
+	}
+	
+	private void clearPixyData() {
+		PX_x1 = CLEAR_PIXY_XY;
+		PX_x2 = CLEAR_PIXY_XY;
+		PX_y1 = CLEAR_PIXY_XY;
+		PX_y2 = CLEAR_PIXY_XY;
 	}
 	
 	public void smartDashboard() {

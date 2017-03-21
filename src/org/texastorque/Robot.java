@@ -18,79 +18,100 @@ import org.texastorque.subsystem.Twinsters;
 import org.texastorque.torquelib.base.TorqueIterative;
 
 public class Robot extends TorqueIterative {
-
-	private ArrayList<Subsystem> subsystems;
 	
-	@SuppressWarnings("serial")
+	/* IO, Feedback */
+	
+	private final Input autoInput = Input.getInstance();
+	private final HumanInput humanInput = HumanInput.getInstance();
+	private final RobotOutput robotOut = RobotOutput.getInstance();
+	private final Feedback feedback = Feedback.getInstance();
+	private final Lights lights = Lights.getInstance();
+	
+	
+	/* Subsystems */
+
+	private final ArrayList<Subsystem> subsystems = new ArrayList<Subsystem>();
+	private final Climber climber = Climber.getInstance();
+	private final DriveBase drivebase = DriveBase.getInstance();
+	private final FlyWheel flywheel = FlyWheel.getInstance();
+	private final Intake intake = Intake.getInstance();
+	private final Twinsters twinsters = Twinsters.getInstance();
+	private final Gear gearMechanism = Gear.getInstance();
+	
+	
+	/* Autonomous */
+	
+	private final Auto autonomous = Auto.getInstance();
+
+	
+	/* Initialization */
+	
 	@Override
 	public void robotInit() {
-		Input.getInstance();
-		HumanInput.getInstance();
-		RobotOutput.getInstance();
-		Feedback.getInstance();
-		subsystems = new ArrayList<Subsystem>(){{
-			add(Climber.getInstance());
-			add(DriveBase.getInstance());
-			add(FlyWheel.getInstance());
-			add(Intake.getInstance());
-			add(Twinsters.getInstance());
-			add(Gear.getInstance());
-		}};
-		RobotOutput.getInstance().setLight(true);
-		Lights.getInstance();
+		subsystems.add(drivebase);
+		subsystems.add(intake);
+		subsystems.add(climber);
+		subsystems.add(flywheel);
+		subsystems.add(twinsters);
+		subsystems.add(gearMechanism);
+		
+		robotOut.setLight(true);
 	}
 
 	@Override
 	public void disabledInit() {
-		RobotOutput.getInstance().setLight(true);
+		robotOut.setLight(true);
 	}
 	
 	@Override
 	public void autonomousInit() {
-		RobotOutput.getInstance().setLight(false);
-		for(Subsystem system : subsystems ) {
+		robotOut.setLight(false);
+
+		subsystems.stream().forEach(system -> {
 			system.autoInit();
-			system.setInput(Input.getInstance());
-		}
-		Auto.getInstance().init();
+			system.setInput(autoInput);
+		});
+		
+		autonomous.init();
 	}
 
 	@Override
 	public void teleopInit() {
-		RobotOutput.getInstance().setLight(false);
-		for(Subsystem system : subsystems ) {
+		robotOut.setLight(false);
+
+		subsystems.stream().forEach(system -> {
 			system.teleopInit();
-			system.setInput(HumanInput.getInstance());
-		}
+			system.setInput(humanInput);
+		});
 	}
+	
+	
+	/* Continuous */
 
 	@Override
 	public void autonomousContinuous() {
-		Feedback.getInstance().update();
-		for(Subsystem system : subsystems ) {
-			system.autoContinuous();
-		}
+		feedback.update();
+		
+		subsystems.stream().forEach(system -> system.autoContinuous());
 	}
 
 	@Override
 	public void teleopContinuous() {
-		Feedback.getInstance().update();
-		HumanInput.getInstance().update();
-		for(Subsystem system : subsystems ) {
-			system.teleopContinuous();
-		}
+		feedback.update();
+		humanInput.update();
+		
+		subsystems.stream().forEach(system -> system.teleopContinuous());
 	}
 
 	@Override
 	public void alwaysContinuous() {
-		Feedback.getInstance().update();
-		for(Subsystem system : subsystems) {
-			system.smartDashboard();
-		}
-		HumanInput.getInstance().smartDashboard();
-		Feedback.getInstance().smartDashboard();
-		Auto.getInstance().smartDashboard();
-		Lights.getInstance().update();
-	}
+		feedback.update();
+		lights.update();
 
+		subsystems.stream().forEach(system -> system.smartDashboard());
+		
+		humanInput.smartDashboard();
+		feedback.smartDashboard();
+		autonomous.smartDashboard();
+	}
 }

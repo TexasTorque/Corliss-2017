@@ -7,3 +7,6 @@ sysProps.xml
 *.*.synctex.gz
 *.*.toc
 .classpath
+
+.DS_Store
+
