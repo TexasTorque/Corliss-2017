@@ -26,7 +26,7 @@
   <property file="${user.home}/wpilib/java/${version}/ant/build.properties"/>
 
   <import file="${wpilib.ant.dir}/build.xml"/>
-	
+<!--	
 	<target name="get-target-ip">
 	    <property name="ant.enable.asserts" value="true"/>
 		<assert name="team-number" exists="true" message="Team number not set. Go to Window->Preferences->WPILib Preferences to set it."/>
@@ -63,7 +63,6 @@
 		  </else>
 		 </if>
 	  </target>
-
+-->
 </project>
-
 

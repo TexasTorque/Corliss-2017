@@ -38,11 +38,12 @@ public class RobotOutput {
 	private TorqueMotor CL_left;
 	private TorqueMotor CL_right;
 
-	private DoubleSolenoid BN_sole;
-
+	private DoubleSolenoid GC_deploy;
+	private TorqueMotor GC_belt;
+	
 	private Solenoid GH_sole;
 	private Solenoid GR_sole;
-
+	
 	private boolean flipDriveTrain = false;
 	private boolean flipShooter = true;
 	private boolean flipIntake = true;
@@ -74,11 +75,11 @@ public class RobotOutput {
 		CL_left = new TorqueMotor(new VictorSP(Ports.CL_LEFT), flipClimber);
 		CL_right = new TorqueMotor(new VictorSP(Ports.CL_RIGHT), flipClimber);
 
-		BN_sole = new DoubleSolenoid(Ports.BN_B, Ports.BN_A);
-
 		GR_sole = new Solenoid(Ports.GR_SOLE);
-
 		GH_sole = new Solenoid(Ports.GH_SOLE);
+		
+		GC_deploy = new DoubleSolenoid(Ports.GC_DEPLOY_A, Ports.GC_DEPLOY_B);
+		GC_belt = new TorqueMotor(new VictorSP(Ports.GC_BELT), false);
 	}
 
 	/**
@@ -170,16 +171,6 @@ public class RobotOutput {
 		GR_sole.set(open);
 	}
 
-	/**
-	 * Set the state of the bin pneumatics.
-	 * 
-	 * @param output
-	 *            - set the pneumatic in or out.
-	 */
-	public void setBinExtension(boolean extended) {
-		BN_sole.set(extended ? Value.kReverse : Value.kForward);
-	}
-
 	public void extendGearHolder(boolean extended) {
 		GH_sole.set(extended);
 	}
@@ -194,6 +185,14 @@ public class RobotOutput {
 		} else {
 			FW_light.set(Relay.Value.kOn);
 		}
+	}
+	
+	public void deployGearCollector(boolean deployed) {
+		GC_deploy.set(deployed ? Value.kForward : Value.kReverse);
+		if(deployed)
+			GC_belt.set(1);
+		else
+			GC_belt.set(0);
 	}
 
 	public static RobotOutput getInstance() {

@@ -40,6 +40,10 @@ public class Climber extends Subsystem {
 	private void output() {
 		RobotOutput.getInstance().setClimberSpeed(speed);
 	}
+	
+	public boolean isClimbing() {
+		return speed > 0 ? true : false;
+	}
 
 	@Override
 	public void smartDashboard() {

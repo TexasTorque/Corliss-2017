@@ -11,6 +11,7 @@ public class Gear extends Subsystem{
 	
 	private boolean open = false;
 	private boolean extended = false;
+	private boolean scoopDown = false;
 	
 	
 	@Override
@@ -39,6 +40,7 @@ public class Gear extends Subsystem{
 	public void run(){
 		open=i.getGR_open();
 		extended=i.getGH_extended();
+		scoopDown=i.getGC_down();
 		output();
 	}
 	
@@ -46,6 +48,7 @@ public class Gear extends Subsystem{
 		if(i instanceof HumanInput) {
 			RobotOutput.getInstance().openGearRamp(open);
 			RobotOutput.getInstance().extendGearHolder(extended);
+			RobotOutput.getInstance().deployGearCollector(scoopDown);
 		}
 	}
 	

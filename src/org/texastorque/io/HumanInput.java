@@ -106,7 +106,7 @@ public class HumanInput extends Input {
 		} else if (doLayupShot.get()) {
 			FW_setpointShift = Constants.FW_LAYUPSHOT.getDouble();
 			doLayupShot.set(false);
-			hood.set(false);
+			hood.set(true);
 		} else if (dT >= Constants.HI_DBDT.getDouble()) {
 			if (operator.getDPADRight()) {
 				FW_setpointShift += Constants.FW_LS.getDouble();
@@ -117,6 +117,7 @@ public class HumanInput extends Input {
 		}
 		if (operator.getAButton()) {
 			FW_setpointShift = 0;
+			hood.set(false);
 		}
 		if(FW_setpointShift < 0) {
 			FW_setpointShift = 0;
@@ -125,6 +126,11 @@ public class HumanInput extends Input {
 		FW_rightSetpoint = FW_leftSetpoint-300;
 		if(FW_rightSetpoint < 0) {
 			FW_rightSetpoint = 0;
+		}
+		if(operator.getBButton()) {
+			RobotOutput.getInstance().setLight(true);
+		} else {
+			RobotOutput.getInstance().setLight(false);
 		}
 	}
 
@@ -275,6 +281,11 @@ public class HumanInput extends Input {
 			GH_extended = true;
 		} else {
 			GH_extended = false;
+		}
+		if(driver.getLeftBumper() || driver.getRightBumper()) {
+			GC_down = true;
+		} else {
+			GC_down = false;
 		}
 	}// update gear
 

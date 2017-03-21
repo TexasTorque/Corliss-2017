@@ -7,12 +7,12 @@ import org.texastorque.feedback.Feedback;
 import org.texastorque.io.HumanInput;
 import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
-import org.texastorque.subsystem.Bin;
 import org.texastorque.subsystem.Climber;
 import org.texastorque.subsystem.DriveBase;
 import org.texastorque.subsystem.FlyWheel;
 import org.texastorque.subsystem.Gear;
 import org.texastorque.subsystem.Intake;
+import org.texastorque.subsystem.Lights;
 import org.texastorque.subsystem.Subsystem;
 import org.texastorque.subsystem.Twinsters;
 import org.texastorque.torquelib.base.TorqueIterative;
@@ -34,10 +34,10 @@ public class Robot extends TorqueIterative {
 			add(FlyWheel.getInstance());
 			add(Intake.getInstance());
 			add(Twinsters.getInstance());
-			add(Bin.getInstance());
 			add(Gear.getInstance());
 		}};
 		RobotOutput.getInstance().setLight(true);
+		Lights.getInstance();
 	}
 
 	@Override
@@ -90,6 +90,7 @@ public class Robot extends TorqueIterative {
 		HumanInput.getInstance().smartDashboard();
 		Feedback.getInstance().smartDashboard();
 		Auto.getInstance().smartDashboard();
+		Lights.getInstance().update();
 	}
 
 }

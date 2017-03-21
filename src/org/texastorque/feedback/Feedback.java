@@ -123,7 +123,6 @@ public class Feedback {
 			PX_x2 = two.X - 160;
 			PX_goodPacket = true;
 		} catch (Exception e) {
-			System.out.println("BAD PACKET");
 			PX_goodPacket = false;
 		}
 		
@@ -190,12 +189,12 @@ public class Feedback {
 	}
 	
 	public void smartDashboard() {
-		SmartDashboard.putNumber("DB_LEFTPOSITION", DB_rightDistance);
-		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_leftDistance);
-		SmartDashboard.putNumber("FW_LEFTPOSITION", FW_rightDistance);
-		SmartDashboard.putNumber("FW_RIGHTPOSITION", FW_leftDistance);
-		SmartDashboard.putNumber("FW_LEFTRATE", FW_rightRate);
-		SmartDashboard.putNumber("FW_RIGHTRATE", FW_leftRate);
+		SmartDashboard.putNumber("DB_LEFTPOSITION", DB_leftDistance);
+		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_rightDistance);
+		SmartDashboard.putNumber("FW_LEFTPOSITION", FW_leftDistance);
+		SmartDashboard.putNumber("FW_RIGHTPOSITION", FW_rightDistance);
+		SmartDashboard.putNumber("FW_LEFTRATE", FW_leftRate);
+		SmartDashboard.putNumber("FW_RIGHTRATE", FW_rightRate);
 		SmartDashboard.putNumber("DB_GYRO", DB_angle);
 		SmartDashboard.putNumber("DB_GYRORATE", DB_angleRate);
 		SmartDashboard.putNumber("GYROX", DB_gyro.getAngle());

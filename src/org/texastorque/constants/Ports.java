@@ -28,13 +28,14 @@ public class Ports {
 	// climber ports
 	public static final int CL_LEFT = 5;
 	public static final int CL_RIGHT = 4;
-	// bin ports
-	public static final int BN_A = 2;
-	public static final int BN_B = 3;
 
 	// gear ports
-	public static final int GH_SOLE = 4;
+	public static final int GH_SOLE = 7;
 	public static final int GR_SOLE = 5;
+	public static final int GC_DEPLOY_A = 2;
+	public static final int GC_DEPLOY_B = 3;
+	public static final int GC_BELT = 15;
+
 	// Sensors
 	// ==================
 	public static final int DB_ULTRASONIC = 0;

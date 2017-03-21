@@ -26,8 +26,7 @@ public class Auto {
 	private static ArrayList<Integer> autoComponents;
 	private static int autoMode;
 	private boolean doGearCenter = true;
-	private boolean doGearSide = true;
-	private boolean doVision = false;
+	private boolean doGearSide = false;
 	private boolean cornerAuto = true;
 	private boolean isActionDone = false;
 	private static ArrayList<Integer> previousModes = new ArrayList<>();
@@ -35,10 +34,11 @@ public class Auto {
 	private Thread thread;
 
 	public Auto() {
+		init();
 	}
 
 	public void init() {
-		autoMode = (int) SmartDashboard.getNumber("AUTOMODE", 0);
+		autoMode = (int) SmartDashboard.getNumber("AUTOMODE", -1);
 		analyzeAutoMode();
 		thread = new Thread(() -> run());
 		thread.start();
@@ -97,9 +97,9 @@ public class Auto {
 				break;
 			// Center Gear
 			case 3:
-				drive(-72);
-				pause(3.0);
-				if (doGearSide)
+				drive(-76);
+				pause(4.0);
+				if (doGearCenter)
 					dropGear();
 				break;
 			// Right Gear
@@ -114,50 +114,14 @@ public class Auto {
 			case 5:
 				switch (previousModes.get(previousModes.size() - 1)) {
 				case 2:
-					drive(76);
-					pause(3.0);
-					turn(30);
-					pause(2.0);
-					drive(35);
-					pause(3.0);
+					driveToHopper();
 					break;
 				case 4:
 					break;
 				}
 				break;
 			case 6:
-				switch (previousModes.get(previousModes.size() - 1)) {
-				case 5:
-					switch (previousModes.get(previousModes.size() - 2)) {
-					case 2:
-						Input.getInstance().setFW_leftSetpoint(4200);
-						Input.getInstance().setFW_rightSetpoint(4200);
-						pause(3.0, false);
-						drive(-8);
-						pause(.5);
-						turn(-90);
-						pause(.75, false);
-						RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
-						RobotOutput.getInstance().setIntakeSpeed(1);
-						Input.getInstance().setFW_gateSpeed(.5);
-						break;
-					}
-					break;
-				case 2:
-					pause(.5, false);
-					drive(20);
-					pause(1.5);
-					turn(-15);
-					pause(.5);
-					drive(96);
-					Input.getInstance().setFW_leftSetpoint(3300);
-					Input.getInstance().setFW_rightSetpoint(3300);
-					pause(3.0);
-					RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
-					RobotOutput.getInstance().setIntakeSpeed(1);
-					Input.getInstance().setFW_gateSpeed(.25);
-					break;
-				}
+				autoShoot();
 				break;
 			case 7:
 				switch (previousModes.get(previousModes.size() - 1)) {
@@ -170,14 +134,79 @@ public class Auto {
 				}
 				break;
 			case 0:
-				// visionAlign();
-				ultrasonicDrive();
 				break;
 			default:
 				System.out.println("INVALID STEP OR NULL. . ." + currentStep);
 				break;
 			}
 			previousModes.add(currentStep);
+		}
+	}
+
+	public void driveToHopper() {
+		drive(76);
+		pause(3.0);
+		turn(30);
+		pause(2.0);
+		drive(35);
+		pause(3.0);
+	}
+
+	public void autoShoot() {
+
+		switch (previousModes.get(previousModes.size() - 1)) {
+		case 5:
+			switch (previousModes.get(previousModes.size() - 2)) {
+			case 2:
+				Input.getInstance().setFW_leftSetpoint(4200);
+				Input.getInstance().setFW_rightSetpoint(4050);
+				pause(3.0, false);
+				drive(-8);
+				pause(.5);
+				turn(-90);
+				pause(.75, false);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1);
+				Input.getInstance().setFW_gateSpeed(.4);
+				break;
+			}
+			break;
+		case 2:
+			switch (DriverStation.getInstance().getAlliance()) {
+			case Blue:
+				pause(.5, false);
+				drive(20);
+				pause(1.5);
+				turn(-15);
+				pause(.5);
+				drive(96);
+				Input.getInstance().setFW_leftSetpoint(3000);
+				Input.getInstance().setFW_rightSetpoint(2850);
+				pause(3.0);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1);
+				Input.getInstance().setFW_gateSpeed(.4);
+				break;
+			}
+			break;
+		case 4:
+			switch (DriverStation.getInstance().getAlliance()) {
+			case Red:
+				pause(.5, false);
+				drive(20);
+				pause(1.5);
+				turn(15);
+				pause(.5);
+				drive(96);
+				Input.getInstance().setFW_leftSetpoint(3000);
+				Input.getInstance().setFW_rightSetpoint(2850);
+				pause(3.0);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1);
+				Input.getInstance().setFW_gateSpeed(.4);
+				break;
+			}
+			break;
 		}
 	}
 
@@ -198,11 +227,11 @@ public class Auto {
 	private void cornerAuto2() {
 		switch (DriverStation.getInstance().getAlliance()) {
 		case Red:
-			drive(-76);
+			drive(-75);
 			pause(3.0);
-			turn(-87);
+			turn(87);
 			pause(3.0);
-			drive(-64);
+			drive(-69);
 			pause(3.0);
 			break;
 		case Blue:
@@ -210,7 +239,7 @@ public class Auto {
 			pause(5.0);
 			turn(60);
 			pause(1);
-			drive(-82);
+			drive(-78);
 			pause(5.0);
 			break;
 		default:
@@ -223,17 +252,17 @@ public class Auto {
 		case Red:
 			drive(-61);
 			pause(5.0);
-			turn(60);
+			turn(-60);
 			pause(1);
-			drive(-82);
+			drive(-78);
 			pause(5.0);
 			break;
 		case Blue:
-			drive(-76);
+			drive(-75);
 			pause(3.0);
 			turn(-87);
 			pause(3.0);
-			drive(-64);
+			drive(-69);
 			pause(3.0);
 			break;
 		default:
@@ -246,7 +275,7 @@ public class Auto {
 		case Red:
 			drive(-76);
 			pause(3.0);
-			turn(-87);
+			turn(87);
 			pause(3.0);
 			drive(-66);
 			pause(3.0);
@@ -269,7 +298,7 @@ public class Auto {
 		case Red:
 			drive(-88);
 			pause(4.0);
-			turn(111);
+			turn(-111);
 			pause(3.0);
 			drive(-85);
 			pause(3.0);
@@ -288,25 +317,54 @@ public class Auto {
 	}
 
 	private void scurry2() {
-		drive(40);
-		pause(2.0);
-		turn(-60);
-		pause(1.0);
-		drive(-144);
-		pause(6.0);
-		turn(45);
-		pause(2.0);
-		drive(-216);
-		pause(6.0);
+		switch(DriverStation.getInstance().getAlliance()) {
+		case Red:
+			drive(40);
+			pause(2.0);
+			turn(-60);
+			pause(1.0);
+			drive(-288);
+			pause(10.0);
+			break;
+		case Blue:
+			drive(40);
+			pause(2.0);
+			turn(-60);
+			pause(1.0);
+			drive(-144);
+			pause(6.0);
+			turn(45);
+			pause(2.0);
+			drive(-216);
+			pause(6.0);
+			break;
+		}
+		
 	}
 
 	private void scurry4() {
-		drive(40);
-		pause(2.0);
-		turn(60);
-		pause(1.0);
-		drive(-288);
-		pause(10.0);
+		switch(DriverStation.getInstance().getAlliance()) {
+		case Red:
+			drive(40);
+			pause(2.0);
+			turn(60);
+			pause(1.0);
+			drive(-144);
+			pause(6.0);
+			turn(-45);
+			pause(2.0);
+			drive(-216);
+			pause(6.0);
+			break;
+		case Blue:
+			drive(40);
+			pause(2.0);
+			turn(60);
+			pause(1.0);
+			drive(-288);
+			pause(10.0);
+			break;
+		}
 	}
 
 	/**
@@ -314,8 +372,8 @@ public class Auto {
 	 */
 	private void dropGear() {
 		RobotOutput.getInstance().extendGearHolder(true);
-		pause(.25, false);
-		drive(10);
+		pause(.0625, false);
+		drive(14);
 		pause(2.0);
 	}
 

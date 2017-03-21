@@ -13,8 +13,8 @@ public class Constants {
 	public static final Constant FW_SS = new Constant("FW_SMALLSHIFT",10);
 	public static final Constant FW_LS = new Constant("FW_LARGESHIFT",100);
 	public static final Constant FW_LIMIT = new Constant("FW_LIMIT",1);
-	public static final Constant FW_LONGSHOT = new Constant("FW_LONGSHOT",3200);
-	public static final Constant FW_LAYUPSHOT = new Constant("FW_LAYUP",3500);
+	public static final Constant FW_LONGSHOT = new Constant("FW_LONGSHOT",3000);
+	public static final Constant FW_LAYUPSHOT = new Constant("FW_LAYUP",3000);
 	
 	public static final Constant FW_R_P = new Constant("FW_R_P",0);
 	public static final Constant FW_ACCEPTABLE = new Constant("FW_ACCEPTABLE", 50);
@@ -23,7 +23,7 @@ public class Constants {
 	public static final Constant IN_LIMIT = new Constant("IN_LIMIT", .75);
 	
 //	drive base
-	public static final Constant DB_MVELOCITY = new Constant("DB_MVELOCITY",150d);
+	public static final Constant DB_MVELOCITY = new Constant("DB_MVELOCITY",100d);
 	public static final Constant DB_MACCELERATION = new Constant("DB_MACCELERATION",200d);
 	public static final Constant DB_MAVELOCITY = new Constant("DB_MAVELOCITY",150d);
 	public static final Constant DB_MAACCELERATION = new Constant("DB_MAACCELERATION",200d);

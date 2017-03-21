@@ -30,7 +30,8 @@ public class Input {
 
 	protected boolean GR_open;
 	protected boolean GH_extended;
-
+	protected boolean GC_down;
+	
 	protected boolean flipCheck;
 
 	public Input() {
@@ -108,6 +109,10 @@ public class Input {
 
 	public boolean getGH_extended() {
 		return GH_extended;
+	}
+	
+	public boolean getGC_down() {
+		return GC_down;
 	}
 
 	public boolean getUpShift() {

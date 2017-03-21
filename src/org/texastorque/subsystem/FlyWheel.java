@@ -113,10 +113,10 @@ public class FlyWheel extends Subsystem {
 				lt = Timer.getFPGATimestamp();
 			}
 		}
-		RobotOutput.getInstance().setLight(doLight);
+//		RobotOutput.getInstance().setLight(doLight);
 		gateSpeed = i.getFW_gateSpeed();
 		hood = i.getFW_hood();
-		Lights.getInstance().set(Feedback.getInstance().getFW_leftRate(), i.getFW_leftSetpoint());
+		Lights.getInstance().set(Climber.getInstance().isClimbing(), Feedback.getInstance().getFW_leftRate(), i.getFW_leftSetpoint());
 		output();
 	}
 
