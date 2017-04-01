@@ -102,7 +102,7 @@ public class HumanInput extends Input {
 		if (doLongShot.get()) {
 			FW_setpointShift = Constants.FW_LONGSHOT.getDouble();
 			doLongShot.set(false);
-			hood.set(true);
+			hood.set(false);
 		} else if (doLayupShot.get()) {
 			FW_setpointShift = Constants.FW_LAYUPSHOT.getDouble();
 			doLayupShot.set(false);
@@ -119,15 +119,18 @@ public class HumanInput extends Input {
 			FW_setpointShift = 0;
 			hood.set(false);
 		}
-		if(FW_setpointShift < 0) {
+		if (FW_setpointShift < 0) {
 			FW_setpointShift = 0;
 		}
 		FW_leftSetpoint = FW_setpointShift;
-		FW_rightSetpoint = FW_leftSetpoint-300;
-		if(FW_rightSetpoint < 0) {
+		FW_rightSetpoint = FW_setpointShift-100;
+		if (FW_rightSetpoint < 0) {
 			FW_rightSetpoint = 0;
 		}
-		if(operator.getBButton()) {
+		if (FW_leftSetpoint < 0) {
+			FW_leftSetpoint = 0;
+		}
+		if (operator.getLeftStickClick()) {
 			RobotOutput.getInstance().setLight(true);
 		} else {
 			RobotOutput.getInstance().setLight(false);
@@ -158,12 +161,12 @@ public class HumanInput extends Input {
 		if (operator.getAButton()) {
 			FW_setpointShift = 0;
 		}
-		if(FW_setpointShift < 0) {
+		if (FW_setpointShift < 0) {
 			FW_setpointShift = 0;
 		}
 		RobotOutput.getInstance().setFlyWheelSpeed(FW_setpointShift, FW_setpointShift);
 	}
-	
+
 	public void updateShooterDeprecated() {
 		dT = Timer.getFPGATimestamp() - lT;
 		if (dT >= Constants.HI_DBDT.getDouble()) {
@@ -210,7 +213,7 @@ public class HumanInput extends Input {
 			operator.setRumble(false);
 		}
 	}
-	
+
 	public void updateHood() {
 		switchShooter.calc(operator.getXButton());
 //		hood.calc(operator.getBButton());
@@ -222,16 +225,21 @@ public class HumanInput extends Input {
 		}
 	}
 
-
 	public void updateIntake() {
-		if (operator.getLeftBumper()) {
-			IN_speed = 1d;
-			TW_feederSpeed = 1d;
+		if (operator.getLeftBumper() && operator.getRightStickClick()) {
+			IN_speed = 1d; // .5
+			TW_feederSpeed = .3d;
+			intaking = true;
+		} else if (operator.getLeftBumper()) {
+			IN_speed = .5d;
+			TW_feederSpeed = -1;
 			intaking = true;
 		} else if (operator.getRightBumper()) {
 			IN_speed = -1d;
+			TW_feederSpeed = 1d;
 			intaking = true;
 		} else {
+			intaking = false;
 			IN_speed = 0d;
 			TW_feederSpeed = 0d;
 		}
@@ -239,7 +247,9 @@ public class HumanInput extends Input {
 
 	public void updateGates() {
 		if (operator.getXButton()) {
-			FW_gateSpeed = 1;
+			FW_gateSpeed = .5; // + (getFW_leftSetpoint() -
+								// Feedback.getInstance().getFW_leftRate()) *
+								// .01;
 		} else {
 			FW_gateSpeed = 0d;
 		}
@@ -249,11 +259,9 @@ public class HumanInput extends Input {
 		if (operator.getLeftTrigger()) {
 			TW_leftSpeed = 1d;
 			TW_rightSpeed = 1d;
-			TW_feederSpeed = 1d;
 		} else if (operator.getRightTrigger()) {
 			TW_leftSpeed = -1d;
 			TW_rightSpeed = -1d;
-			TW_feederSpeed = -1d;
 		} else {
 			TW_leftSpeed = 0d;
 			TW_rightSpeed = 0d;
@@ -279,10 +287,13 @@ public class HumanInput extends Input {
 		}
 		if (driver.getBButton()) {
 			GH_extended = true;
+			RobotOutput.getInstance().setGearCollectorSpeed(-1);
+			GC_override = true;
 		} else {
 			GH_extended = false;
+			GC_override = false;
 		}
-		if(driver.getLeftBumper() || driver.getRightBumper()) {
+		if (operator.getBButton()) {
 			GC_down = true;
 		} else {
 			GC_down = false;
@@ -291,6 +302,7 @@ public class HumanInput extends Input {
 
 	public void smartDashboard() {
 		SmartDashboard.putNumber("HI_DT", dT);
+		SmartDashboard.putNumber("FW_GATE", FW_gateSpeed);
 	}
 
 	public static HumanInput getInstance() {

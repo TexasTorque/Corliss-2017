@@ -1,5 +1,7 @@
 package org.texastorque.feedback;
 
+import java.util.ArrayList;
+
 import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueEncoder;
 
@@ -16,6 +18,7 @@ public class Feedback {
 
 	private final double C_FLYWHEEL = .24;
 	private final double DB_DISTANCE_CONVERSION = 0.04927988;
+	private final double GC_DISTANCE_CONVERSION = 1.41176;
 	
 //	sensors
 	private TorqueEncoder DB_leftEncoder;
@@ -52,6 +55,9 @@ public class Feedback {
 	private double FW_leftAcceleration;
 	private double FW_rightAcceleration;
 	
+	private double GC_distance;
+	private double GC_rate;
+	
 	private Pixy pixy;
 	
 	private double PX_x1;
@@ -64,8 +70,13 @@ public class Feedback {
 	private final double PX_CONVERSIONH = .234;
 	private final double PX_CONVERSIONV = .235;
 	
+	private TorqueEncoder GC_encoder;
+	
 	private boolean PX_goodPacket = false;
 	
+	private int leftRateLogSize = 20;
+	private ArrayList<Double> leftRateLog = new ArrayList<>(leftRateLogSize);
+		
 	public Feedback() {
 		init();
 	}
@@ -80,6 +91,8 @@ public class Feedback {
 		FW_leftEncoder = new TorqueEncoder(Ports.FW_LEFTENCODER_A, Ports.FW_LEFTENCODER_B, false, EncodingType.k4X);
 		FW_rightEncoder = new TorqueEncoder(Ports.FW_RIGHTENCODER_A, Ports.FW_RIGHTENCODER_B, false, EncodingType.k4X);
 		
+		GC_encoder = new TorqueEncoder(Ports.GC_A, Ports.GC_B, false, EncodingType.k4X);
+		
 		pixy = new Pixy();
 	}
 	
@@ -90,6 +103,8 @@ public class Feedback {
 		FW_leftEncoder.calc();
 		FW_rightEncoder.calc();
 		
+		GC_encoder.calc();
+		
 		DB_leftDistance = DB_leftEncoder.getDistance() * DB_DISTANCE_CONVERSION;
 		DB_rightDistance = DB_rightEncoder.getDistance() * DB_DISTANCE_CONVERSION;
 		DB_leftRate = DB_leftEncoder.getRate() * DB_DISTANCE_CONVERSION;
@@ -97,6 +112,9 @@ public class Feedback {
 		
 		DB_angle = DB_gyro.getAngle();
 		DB_angleRate = DB_gyro.getVelocityX();
+		
+		GC_distance = GC_encoder.getDistance() * GC_DISTANCE_CONVERSION;
+		GC_rate = GC_encoder.getRate() * GC_DISTANCE_CONVERSION;
 		
 		if(DB_ultrasonic.getAverageVoltage() >= .5) {
 			DB_distance = (26 / (DB_ultrasonic.getAverageVoltage() - .15))/2.54;
@@ -112,20 +130,23 @@ public class Feedback {
 		
 		FW_leftDistance = FW_leftEncoder.getDistance();
 		FW_rightDistance = FW_rightEncoder.getDistance();
-		FW_leftRate = FW_leftEncoder.getRate() * C_FLYWHEEL;
-		FW_rightRate = FW_rightEncoder.getRate() * C_FLYWHEEL;
+		
+		
+		FW_leftRate = FW_leftEncoder.getAverageRate() * C_FLYWHEEL;
+		FW_rightRate = FW_rightEncoder.getAverageRate() * C_FLYWHEEL;
+		
+		
 		try {
 			PixyPacket one = pixy.readPacket(1);
 			PX_x1 = one.X - 160;
 			PX_y1 = one.Y - 100;
-			PixyPacket two = pixy.readPacket(1);
-			PX_y2 = two.Y - 100;
-			PX_x2 = two.X - 160;
+//			PixyPacket two = pixy.readPacket(1);
+//			PX_y2 = two.Y - 100;
+//			PX_x2 = two.X - 160;
 			PX_goodPacket = true;
 		} catch (Exception e) {
 			PX_goodPacket = false;
 		}
-		
 	}
 	
 	private void PX_clearData() {
@@ -134,6 +155,10 @@ public class Feedback {
 		PX_y1 = -999;
 		PX_y2 = -999;
 	}
+	
+//	public double getFW_LeftRateAverage() {
+//		leftRateLog.add(0,FW_leftEncoder.getA)
+//	}
 	
 	public double getDB_distance() {
 		return DB_distance;
@@ -179,6 +204,18 @@ public class Feedback {
 		return ((PX_x1 + PX_x2) / 2)*PX_CONVERSIONH;
 	}
 	
+	public double getGC_distance() {
+		return GC_distance;
+	}
+	
+	public double getGC_rate() {
+		return GC_rate;
+	}
+	
+	public void resetGC_Encoder() {
+		GC_encoder.reset();
+	}
+	
 	public void resetDB_encoders() {
 		DB_leftEncoder.reset();
 		DB_rightEncoder.reset();
@@ -189,6 +226,9 @@ public class Feedback {
 	}
 	
 	public void smartDashboard() {
+		
+		leftRateLogSize = (int)SmartDashboard.getNumber("DB_SAMPLESIZE", leftRateLogSize);
+		
 		SmartDashboard.putNumber("DB_LEFTPOSITION", DB_leftDistance);
 		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_rightDistance);
 		SmartDashboard.putNumber("FW_LEFTPOSITION", FW_leftDistance);
@@ -204,6 +244,9 @@ public class Feedback {
 
 		SmartDashboard.putNumber("PIXYX_2", PX_x2);
 		SmartDashboard.putNumber("PIXYY_2", PX_y2);
+		
+		SmartDashboard.putNumber("DB_SAMPLESIZE", leftRateLogSize);
+		SmartDashboard.putNumber("GC_ENCODERDISTANCE", GC_distance);
 	}
 	
 	public static Feedback getInstance() {

@@ -2,21 +2,23 @@ package org.texastorque.constants;
 
 public class Ports {
 
+	public static boolean isAlpha = false;
+
 	// Motors
 	// ==================
 
 	// drivebase ports
-	public static final int DB_LEFTFORE = 18;
-	public static final int DB_LEFTREAR = 7;
-	public static final int DB_RIGHTFORE = 17;
-	public static final int DB_RIGHTREAR = 16;
+	public static final int DB_LEFTFORE = isAlpha ? 3 : 18;
+	public static final int DB_LEFTREAR = isAlpha ? 2 : 7;
+	public static final int DB_RIGHTFORE = isAlpha ? 1 : 17;
+	public static final int DB_RIGHTREAR = isAlpha ? 0 : 16;
 	public static final int DB_SHIFT_A = 0;
 	public static final int DB_SHIFT_B = 1;
 	// shooter ports
-	public static final int FW_LEFT = 3;
-	public static final int FW_RIGHT = 2;
-	public static final int FW_GATER = 1;
-	public static final int FW_GATEL = 0;
+	public static final int FW_LEFT = isAlpha ? 16 : 3;
+	public static final int FW_RIGHT = isAlpha ? 17 : 2;
+	public static final int FW_GATER = isAlpha ? 18 : 1;
+	public static final int FW_GATEL = isAlpha ? 7 : 0;
 	public static final int FW_HOOD = 6;
 	public static final int FW_LIGHT = 0;
 	// intake ports
@@ -32,9 +34,10 @@ public class Ports {
 	// gear ports
 	public static final int GH_SOLE = 7;
 	public static final int GR_SOLE = 5;
-	public static final int GC_DEPLOY_A = 2;
-	public static final int GC_DEPLOY_B = 3;
-	public static final int GC_BELT = 15;
+	public static final int GC_ANGLE = 15;
+	public static final int GC_INTAKE = 14;
+	public static final int GC_A = 8;
+	public static final int GC_B = 9;
 
 	// Sensors
 	// ==================
@@ -47,9 +50,9 @@ public class Ports {
 	public static final int FW_LEFTENCODER_B = 5;
 	public static final int FW_RIGHTENCODER_A = 6;
 	public static final int FW_RIGHTENCODER_B = 7;
-	
-//	MISC
-	
+
+	// MISC
+
 	public static final int LI_ARDUINO = 0;
 
 }

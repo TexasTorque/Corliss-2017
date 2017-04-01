@@ -3,6 +3,7 @@ package org.texastorque.torquelib.base;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
@@ -120,7 +121,8 @@ public abstract class TorqueIterative extends RobotBase {
 						testPeriodic();
 					}
 				} else if (isAutonomous()) {
-					if (!m_autonomousInitialized) {
+					if (DriverStation.getInstance().isEnabled() && !m_autonomousInitialized) {
+						
 						LiveWindow.setEnabled(false);
 						autonomousInit();
 

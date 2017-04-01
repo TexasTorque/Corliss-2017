@@ -1,5 +1,7 @@
 package org.texastorque.io;
 
+import org.texastorque.feedback.Feedback;
+
 public class Input {
 
 	private static Input instance;
@@ -31,7 +33,8 @@ public class Input {
 	protected boolean GR_open;
 	protected boolean GH_extended;
 	protected boolean GC_down;
-	
+	protected boolean GC_override;
+
 	protected boolean flipCheck;
 
 	public Input() {
@@ -110,7 +113,11 @@ public class Input {
 	public boolean getGH_extended() {
 		return GH_extended;
 	}
-	
+
+	public void setGC_down(boolean down) {
+		GC_down = down;
+	}
+
 	public boolean getGC_down() {
 		return GC_down;
 	}
@@ -132,7 +139,11 @@ public class Input {
 	}
 
 	public void setDB_turnSetpoint(double setpoint) {
-		DB_turnSetpoint = setpoint;
+		DB_turnSetpoint = setpoint + Feedback.getInstance().getDB_angle();
+	}
+
+	public double getGC_setpoint() {
+		return GC_down ? 90 : -10;
 	}
 
 	public double getDB_turnSetpoint() {

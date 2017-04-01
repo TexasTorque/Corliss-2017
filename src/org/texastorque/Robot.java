@@ -17,9 +17,12 @@ import org.texastorque.subsystem.Subsystem;
 import org.texastorque.subsystem.Twinsters;
 import org.texastorque.torquelib.base.TorqueIterative;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Robot extends TorqueIterative {
 
 	private ArrayList<Subsystem> subsystems;
+	private double time;
 	
 	@SuppressWarnings("serial")
 	@Override
@@ -46,7 +49,13 @@ public class Robot extends TorqueIterative {
 	}
 	
 	@Override
+	public void disabledContinuous() {
+		Auto.getInstance().stop();
+	}
+	
+	@Override
 	public void autonomousInit() {
+		time = 0;
 		RobotOutput.getInstance().setLight(false);
 		for(Subsystem system : subsystems ) {
 			system.autoInit();
@@ -57,6 +66,7 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void teleopInit() {
+		time = 0;
 		RobotOutput.getInstance().setLight(false);
 		for(Subsystem system : subsystems ) {
 			system.teleopInit();
@@ -87,10 +97,12 @@ public class Robot extends TorqueIterative {
 		for(Subsystem system : subsystems) {
 			system.smartDashboard();
 		}
+		if(!isDisabled())
+			SmartDashboard.putNumber("Time", time++);
 		HumanInput.getInstance().smartDashboard();
 		Feedback.getInstance().smartDashboard();
 		Auto.getInstance().smartDashboard();
 		Lights.getInstance().update();
 	}
-
+	
 }

@@ -5,6 +5,7 @@ import org.texastorque.feedback.Feedback;
 import org.texastorque.io.RobotOutput;
 import org.texastorque.torquelib.controlLoop.TorquePID;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,17 +21,17 @@ public class FlyWheel extends Subsystem {
 	private double setpointLeft;
 	private double setpointRight;
 
-	private double leftP = 6;
-	private double leftI = 20; //20
-	private double leftD = 15;
+	private double leftP = .0081;
+	private double leftI = .0576; //20
+	private double leftD = .0028;
 
-	private double rightP = 6;
-	private double rightI = 20;
-	private double rightD = 15;
+	private double rightP = .108;
+	private double rightI = 3.81;
+	private double rightD = .0007741;
 
 	private double lt = Timer.getFPGATimestamp();
 
-	private boolean hood;
+	private boolean hood = false;
 	private boolean doLight;
 	
 	private double gateSpeed;
@@ -123,22 +124,31 @@ public class FlyWheel extends Subsystem {
 	private void output() {
 		RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
 		RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
-		RobotOutput.getInstance().setHoodSpeed(hood);
+		if(!DriverStation.getInstance().isAutonomous())
+			RobotOutput.getInstance().setHoodSpeed(hood);
 	}
 
 	public void updatePID() {
+		leftP = SmartDashboard.getNumber("FW_PIDL_P", leftP);
+		leftI = SmartDashboard.getNumber("FW_PIDL_I", leftI);
+		leftD = SmartDashboard.getNumber("FW_PIDL_D", leftD);
+
+		rightP = SmartDashboard.getNumber("FW_PIDR_P", rightP);
+		rightI = SmartDashboard.getNumber("FW_PIDR_I", rightI);
+		rightD = SmartDashboard.getNumber("FW_PIDR_D", rightD);
+
 		leftFlywheelControl.setPIDGains(leftP, leftI, leftD);
 		rightFlywheelControl.setPIDGains(rightP, rightI, rightD);
 	}
 
 	@Override
 	public void smartDashboard() {
+		updatePID();
 		SmartDashboard.putNumber("FW_LEFTSPEED", leftSpeed);
 		SmartDashboard.putNumber("FW_RIGHTSPEED", rightSpeed);
 		SmartDashboard.putNumber("FW_LEFTSETPOINT", setpointLeft);
 		SmartDashboard.putNumber("FW_RIGHTSETPOINT", setpointRight);
 		SmartDashboard.putBoolean("FW_HOODUP",hood);
-		updatePID();
 	}
 
 	public static FlyWheel getInstance() {

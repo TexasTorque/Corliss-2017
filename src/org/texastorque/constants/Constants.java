@@ -25,7 +25,7 @@ public class Constants {
 //	drive base
 	public static final Constant DB_MVELOCITY = new Constant("DB_MVELOCITY",100d);
 	public static final Constant DB_MACCELERATION = new Constant("DB_MACCELERATION",200d);
-	public static final Constant DB_MAVELOCITY = new Constant("DB_MAVELOCITY",150d);
+	public static final Constant DB_MAVELOCITY = new Constant("DB_MAVELOCITY",100d);
 	public static final Constant DB_MAACCELERATION = new Constant("DB_MAACCELERATION",200d);
 	
 	public static final Constant DB_RIGHT_PV_P = new Constant("DB_RIGHT_PV_P", .08);
@@ -49,4 +49,12 @@ public class Constants {
 	public static final Constant DB_RIMP_ffA = new Constant("DB_RIMP_ffA", 0);
 	
 	public static final Constant TUNED_VOLTAGE = new Constant("TUNED_VOLTAGE", 12.5);
+	
+//	gear collector
+	public static final Constant GC_MVELOCITY = new Constant("GC_MVELOCITY",400d);
+	public static final Constant GC_MACCELERATION = new Constant("GC_MACCELERATION",1200d);
+	public static final Constant GC_LEFT_PV_P = new Constant("GC_LEFT_PV_P", .01);
+	public static final Constant GC_LEFT_PV_V = new Constant("GC_LEFT_PV_V", .0);
+	public static final Constant GC_LEFT_PV_ffV = new Constant("GC_LEFT_PV_ffV", 0.0);
+	public static final Constant GC_LEFT_PV_ffA = new Constant("GC_LEFT_PV_ffA", 0.0);
 }

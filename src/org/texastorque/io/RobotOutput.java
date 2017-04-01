@@ -38,8 +38,8 @@ public class RobotOutput {
 	private TorqueMotor CL_left;
 	private TorqueMotor CL_right;
 
-	private DoubleSolenoid GC_deploy;
-	private TorqueMotor GC_belt;
+	private TorqueMotor GC_angleMotor;
+	private TorqueMotor GC_intakeMotor;
 	
 	private Solenoid GH_sole;
 	private Solenoid GR_sole;
@@ -78,8 +78,8 @@ public class RobotOutput {
 		GR_sole = new Solenoid(Ports.GR_SOLE);
 		GH_sole = new Solenoid(Ports.GH_SOLE);
 		
-		GC_deploy = new DoubleSolenoid(Ports.GC_DEPLOY_A, Ports.GC_DEPLOY_B);
-		GC_belt = new TorqueMotor(new VictorSP(Ports.GC_BELT), false);
+		GC_angleMotor = new TorqueMotor(new VictorSP(Ports.GC_ANGLE), false);
+		GC_intakeMotor = new TorqueMotor(new VictorSP(Ports.GC_INTAKE), false);
 	}
 
 	/**
@@ -115,6 +115,9 @@ public class RobotOutput {
 	}
 
 	public void setGateSpeed(double leftSpeed, double rightSpeed) {
+		leftSpeed -= .2;
+		if(leftSpeed < 0)
+			leftSpeed = 0;
 		FW_gateLeft.set(leftSpeed);
 		FW_gateRight.set(rightSpeed);
 	}
@@ -187,14 +190,17 @@ public class RobotOutput {
 		}
 	}
 	
-	public void deployGearCollector(boolean deployed) {
-		GC_deploy.set(deployed ? Value.kForward : Value.kReverse);
-		if(deployed)
-			GC_belt.set(1);
-		else
-			GC_belt.set(0);
+	public void setGearCollectorSpeed(double angleSpeed, double intakeSpeed) {
+		GC_angleMotor.set(TorqueMathUtil.constrain(angleSpeed, 1));
+		if(!Input.getInstance().GC_override)
+			GC_intakeMotor.set(intakeSpeed);
 	}
-
+	
+	public void setGearCollectorSpeed(double intakeSpeed) {
+		if(!Input.getInstance().GC_override)
+			GC_intakeMotor.set(intakeSpeed);
+	}
+	
 	public static RobotOutput getInstance() {
 		return instance == null ? instance = new RobotOutput() : instance;
 	}
