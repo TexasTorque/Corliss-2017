@@ -166,13 +166,15 @@ public class AutoManager {
 				Input.getInstance().setFW_rightSetpoint(3050);
 				Input.getInstance().setFW_leftSetpoint(3200);
 				pause(1.0, false);
-				RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
 				Input.getInstance().setFW_gateSpeed(.5);
 				pause(3.0, false);
 				pause(1.0, true);
 				Input.getInstance().setFW_rightSetpoint(0);
 				Input.getInstance().setFW_leftSetpoint(0);
-				RobotOutput.getInstance().setTwinstersSpeed(0, 0, 0);
+				RobotOutput.getInstance().setTwinstersSpeed(0, 0);
+				RobotOutput.getInstance().setIntakeSpeed(0, 0);
 				Input.getInstance().setFW_gateSpeed(0);
 				switch (DriverStation.getInstance().getAlliance()) {
 				case Blue:
@@ -235,19 +237,19 @@ public class AutoManager {
 				turn(90);
 				pause(2.0);
 				drive(34);
-				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-				RobotOutput.getInstance().setIntakeSpeed(1);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
 				pause(2.0);
 				pause(2.0, false);
 				pause(1.0, true);
-				RobotOutput.getInstance().setTwinstersSpeed(0, 0, 0);
-				RobotOutput.getInstance().setIntakeSpeed(0);
+				RobotOutput.getInstance().setTwinstersSpeed(0, 0);
+				RobotOutput.getInstance().setIntakeSpeed(0, 0);
 				drive(-36);
 				pause(2.0);
 				turn(-90);
 				pause(.5);
-				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-				RobotOutput.getInstance().setIntakeSpeed(1);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
 				drive(48);
 				pause(3.0);
 				Input.getInstance().setFW_leftSetpoint(3250);
@@ -256,8 +258,8 @@ public class AutoManager {
 				pause(2.0);
 				drive(15);
 				pause(2.0);
-				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-				RobotOutput.getInstance().setIntakeSpeed(1);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
 				Input.getInstance().setFW_gateSpeed(.3);
 				break;
 			case Red:
@@ -267,11 +269,11 @@ public class AutoManager {
 				turn(-90);
 				pause(2.0);
 				drive(34);
-				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-				RobotOutput.getInstance().setIntakeSpeed(1);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
 				pause(2.0);
-				RobotOutput.getInstance().setTwinstersSpeed(0, 0, 0);
-				RobotOutput.getInstance().setIntakeSpeed(0);
+				RobotOutput.getInstance().setTwinstersSpeed(0, 0);
+				RobotOutput.getInstance().setIntakeSpeed(0, 0);
 				Input.getInstance().setFW_leftSetpoint(3000);
 				Input.getInstance().setFW_rightSetpoint(2850);
 				pause(2.0, false);
@@ -279,16 +281,16 @@ public class AutoManager {
 				pause(1.5);
 				turn(90);
 				pause(1.0);
-				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-				RobotOutput.getInstance().setIntakeSpeed(1);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
 				drive(40);
 				pause(3.0);
 				turn(-45);
 				pause(1.0);
 				drive(16);
 				pause(1.0);
-				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-				RobotOutput.getInstance().setIntakeSpeed(1);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
 				Input.getInstance().setFW_gateSpeed(.6);
 				break;
 			// drive(-74);
@@ -324,8 +326,8 @@ public class AutoManager {
 					pause(.5);
 					turn(-90);
 					pause(.75, false);
-					RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
-					RobotOutput.getInstance().setIntakeSpeed(1);
+					RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+					RobotOutput.getInstance().setIntakeSpeed(1, 1);
 					Input.getInstance().setFW_gateSpeed(.4);
 					break;
 				}
@@ -342,8 +344,8 @@ public class AutoManager {
 					Input.getInstance().setFW_leftSetpoint(3000);
 					Input.getInstance().setFW_rightSetpoint(2850);
 					pause(3.0);
-					RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
-					RobotOutput.getInstance().setIntakeSpeed(1);
+					RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+					RobotOutput.getInstance().setIntakeSpeed(1, 1);
 					Input.getInstance().setFW_gateSpeed(.4);
 					break;
 				}
@@ -360,8 +362,8 @@ public class AutoManager {
 					Input.getInstance().setFW_leftSetpoint(3000);
 					Input.getInstance().setFW_rightSetpoint(2850);
 					pause(3.0);
-					RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
-					RobotOutput.getInstance().setIntakeSpeed(1);
+					RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+					RobotOutput.getInstance().setIntakeSpeed(1, 1);
 					Input.getInstance().setFW_gateSpeed(.4);
 					break;
 				}
