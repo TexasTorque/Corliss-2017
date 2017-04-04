@@ -29,9 +29,9 @@ public class RobotOutput {
 
 	private Relay FW_light;
 	
-	private TorqueMotor IN_sole;
-
-	private TorqueMotor TW_feederSole;
+	private TorqueMotor IN_upper;
+	private TorqueMotor IN_lower;
+	
 	private TorqueMotor TW_rightSole;
 	private TorqueMotor TW_leftSole;
 
@@ -66,11 +66,11 @@ public class RobotOutput {
 
 		FW_light = new Relay(Ports.FW_LIGHT, Relay.Direction.kBoth);
 		
-		IN_sole = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
+		IN_upper = new TorqueMotor(new VictorSP(Ports.IN_UPPER), flipIntake);
+		IN_lower = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
 
 		TW_leftSole = new TorqueMotor(new VictorSP(Ports.TW_LEFT), flipTwinsters);
 		TW_rightSole = new TorqueMotor(new VictorSP(Ports.TW_RIGHT), !flipTwinsters);
-		TW_feederSole = new TorqueMotor(new VictorSP(Ports.TW_FEEDER), flipFeeder);
 
 		CL_left = new TorqueMotor(new VictorSP(Ports.CL_LEFT), flipClimber);
 		CL_right = new TorqueMotor(new VictorSP(Ports.CL_RIGHT), flipClimber);
@@ -132,9 +132,9 @@ public class RobotOutput {
 	 * @param lowerSpeed
 	 *            - The speed the rightside motor should be set to.
 	 */
-	public void setIntakeSpeed(double speed) {
-		speed = TorqueMathUtil.constrain(speed, Constants.IN_LIMIT.getDouble());
-		IN_sole.set(speed);
+	public void setIntakeSpeed(double upperSpeed, double lowerSpeed) {
+		upperSpeed = TorqueMathUtil.constrain(upperSpeed, Constants.IN_LIMIT.getDouble());
+		IN_upper.set(upperSpeed);
 	}
 
 	/**
@@ -146,11 +146,9 @@ public class RobotOutput {
 	 * @param rightSpeed
 	 *            - The speed the rightside motor should be set to.
 	 */
-	public void setTwinstersSpeed(double leftSpeed, double rightSpeed, double feederSpeed) {
+	public void setTwinstersSpeed(double leftSpeed, double rightSpeed) {
 		leftSpeed = TorqueMathUtil.constrain(leftSpeed, Constants.IN_LIMIT.getDouble());
 		rightSpeed = TorqueMathUtil.constrain(rightSpeed, Constants.IN_LIMIT.getDouble());
-		feederSpeed = TorqueMathUtil.constrain(feederSpeed, Constants.IN_LIMIT.getDouble());
-		TW_feederSole.set(feederSpeed);
 		TW_rightSole.set(rightSpeed);
 		TW_leftSole.set(leftSpeed);
 	}

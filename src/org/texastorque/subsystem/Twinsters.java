@@ -10,7 +10,6 @@ public class Twinsters extends Subsystem {
 	
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
-	private double feederSpeed = 0d;
 	
 	@Override
 	public void autoInit() {
@@ -38,13 +37,12 @@ public class Twinsters extends Subsystem {
 	private void run() {
 		leftSpeed = i.getTW_leftSpeed();
 		rightSpeed = i.getTW_rightSpeed();
-		feederSpeed = i.getTW_feederSpeed();
 		
 		output();
 	}
 	
 	private void output() {
-		RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed, feederSpeed);
+		RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed);
 	}
 	
 	@Override

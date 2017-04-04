@@ -22,8 +22,8 @@ public class Input {
 	protected double FW_gateSpeed;
 	protected boolean FW_hood;
 
-	protected double IN_speed;
-	protected double TW_feederSpeed;
+	protected double IN_lowerSpeed;
+	protected double IN_upperSpeed;
 
 	protected double TW_leftSpeed;
 	protected double TW_rightSpeed;
@@ -74,8 +74,12 @@ public class Input {
 		FW_gateSpeed = speed;
 	}
 
-	public double getIN_speed() {
-		return IN_speed;
+	public double getIN_lowerSpeed() {
+		return IN_lowerSpeed;
+	}
+	
+	public double getIN_upperSpeed() {
+		return IN_upperSpeed;
 	}
 
 	public double getTW_rightSpeed() {
@@ -92,14 +96,6 @@ public class Input {
 
 	public void setTW_leftSpeed(double speed) {
 		TW_leftSpeed = speed;
-	}
-
-	public double getTW_feederSpeed() {
-		return TW_feederSpeed;
-	}
-
-	public void setTW_feederSpeed(double speed) {
-		TW_feederSpeed = speed;
 	}
 
 	public double getCL_speed() {

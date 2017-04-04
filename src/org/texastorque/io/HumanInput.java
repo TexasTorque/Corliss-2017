@@ -227,21 +227,21 @@ public class HumanInput extends Input {
 
 	public void updateIntake() {
 		if (operator.getLeftBumper() && operator.getRightStickClick()) {
-			IN_speed = 1d; // .5
-			TW_feederSpeed = .3d;
+			IN_upperSpeed = 1d; // .5
+			IN_lowerSpeed = .3d;
 			intaking = true;
 		} else if (operator.getLeftBumper()) {
-			IN_speed = .5d;
-			TW_feederSpeed = -1;
+			IN_upperSpeed = .5d;
+			IN_lowerSpeed = -1;
 			intaking = true;
 		} else if (operator.getRightBumper()) {
-			IN_speed = -1d;
-			TW_feederSpeed = 1d;
+			IN_upperSpeed = -1d;
+			IN_lowerSpeed = 1d;
 			intaking = true;
 		} else {
 			intaking = false;
-			IN_speed = 0d;
-			TW_feederSpeed = 0d;
+			IN_upperSpeed = 0d;
+			IN_lowerSpeed = 0d;
 		}
 	}
 
@@ -266,7 +266,7 @@ public class HumanInput extends Input {
 			TW_leftSpeed = 0d;
 			TW_rightSpeed = 0d;
 			if (!intaking)
-				TW_feederSpeed = 0d;
+				IN_lowerSpeed = 0d;
 		}
 	}
 
