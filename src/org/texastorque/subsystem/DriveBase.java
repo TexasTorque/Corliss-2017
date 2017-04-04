@@ -1,6 +1,6 @@
 package org.texastorque.subsystem;
 
-import org.texastorque.auto.Auto;
+import org.texastorque.auto.AutoManager;
 import org.texastorque.constants.Constants;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.RobotOutput;
@@ -135,7 +135,7 @@ public class DriveBase extends Subsystem {
 			}
 			if (TorqueMathUtil.near(setpoint, Feedback.getInstance().getDB_leftDistance(), .5)
 					&& TorqueMathUtil.near(setpoint, Feedback.getInstance().getDB_rightDistance(), .5))
-				Auto.getInstance().setActionDone();
+				AutoManager.getInstance().setActionDone();
 			double dt = Timer.getFPGATimestamp() - prevTime;
 			prevTime = Timer.getFPGATimestamp();
 			tmp.calculateNextSituation(dt);
@@ -159,7 +159,7 @@ public class DriveBase extends Subsystem {
 				prevTime = Timer.getFPGATimestamp();
 			}
 			if (TorqueMathUtil.near(turnSetpoint, Feedback.getInstance().getDB_angle(), .5))
-				Auto.getInstance().setActionDone();
+				AutoManager.getInstance().setActionDone();
 			dt = Timer.getFPGATimestamp() - prevTime;
 			prevTime = Timer.getFPGATimestamp();
 			turnProfile.calculateNextSituation(dt);

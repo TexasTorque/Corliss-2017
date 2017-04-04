@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Auto {
+public class AutoManager {
 
 	/*
 	 * mode 0 - null mode, do nothing mode 1 - gear a left to left * mode 2 -
@@ -21,7 +21,7 @@ public class Auto {
 	 * center) mode 34 - move to hopper (from near)
 	 */
 
-	private static Auto instance;
+	private static AutoManager instance;
 
 	private static ArrayList<Integer> autoComponents;
 	private static int autoMode;
@@ -33,7 +33,7 @@ public class Auto {
 
 	private Thread thread;
 
-	public Auto() {
+	public AutoManager() {
 		// init();
 	}
 
@@ -585,8 +585,8 @@ public class Auto {
 		SmartDashboard.putNumber("AUTOMODE", autoMode);
 	}
 
-	public static Auto getInstance() {
-		return instance == null ? instance = new Auto() : instance;
+	public static AutoManager getInstance() {
+		return instance == null ? instance = new AutoManager() : instance;
 	}
 
 }

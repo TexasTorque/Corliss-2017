@@ -2,7 +2,7 @@ package org.texastorque;
 
 import java.util.ArrayList;
 
-import org.texastorque.auto.Auto;
+import org.texastorque.auto.AutoManager;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.HumanInput;
 import org.texastorque.io.Input;
@@ -50,7 +50,7 @@ public class Robot extends TorqueIterative {
 	
 	@Override
 	public void disabledContinuous() {
-		Auto.getInstance().stop();
+		AutoManager.getInstance().stop();
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class Robot extends TorqueIterative {
 			system.autoInit();
 			system.setInput(Input.getInstance());
 		}
-		Auto.getInstance().init();
+		AutoManager.getInstance().init();
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Robot extends TorqueIterative {
 			SmartDashboard.putNumber("Time", time++);
 		HumanInput.getInstance().smartDashboard();
 		Feedback.getInstance().smartDashboard();
-		Auto.getInstance().smartDashboard();
+		AutoManager.getInstance().smartDashboard();
 		Lights.getInstance().update();
 	}
 	
