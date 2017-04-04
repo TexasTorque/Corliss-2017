@@ -123,7 +123,7 @@ public class HumanInput extends Input {
 			FW_setpointShift = 0;
 		}
 		FW_leftSetpoint = FW_setpointShift;
-		FW_rightSetpoint = FW_setpointShift-100;
+		FW_rightSetpoint = FW_setpointShift-150;
 		if (FW_rightSetpoint < 0) {
 			FW_rightSetpoint = 0;
 		}
@@ -247,7 +247,7 @@ public class HumanInput extends Input {
 
 	public void updateGates() {
 		if (operator.getXButton()) {
-			FW_gateSpeed = .5; // + (getFW_leftSetpoint() -
+			FW_gateSpeed = 1; // + (getFW_leftSetpoint() -
 								// Feedback.getInstance().getFW_leftRate()) *
 								// .01;
 		} else {

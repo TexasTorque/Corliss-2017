@@ -34,7 +34,7 @@ public class Auto {
 	private Thread thread;
 
 	public Auto() {
-//		init();
+		// init();
 	}
 
 	public void init() {
@@ -53,7 +53,7 @@ public class Auto {
 			thread.join(500);
 			thread.interrupt();
 		} catch (Exception e) {
-			if(e instanceof InterruptedException)
+			if (e instanceof InterruptedException)
 				thread.interrupt();
 		}
 	}
@@ -69,7 +69,7 @@ public class Auto {
 			autoMode /= 10;
 		} while (autoMode != 0);
 	}
-	
+
 	protected final void pause(double seconds) {
 		pause(seconds, true);
 	}
@@ -84,7 +84,7 @@ public class Auto {
 			try {
 				Thread.sleep(1);
 			} catch (Exception e) {
-				if(e instanceof InterruptedException) {
+				if (e instanceof InterruptedException) {
 					thread.interrupt();
 				}
 			}
@@ -159,9 +159,50 @@ public class Auto {
 				}
 				break;
 			case 8:
-				visionAlign();
-				visionAlign();
-				break;
+				RobotOutput.getInstance().setHoodSpeed(true);
+				Input.getInstance().setFW_rightSetpoint(3050);
+				Input.getInstance().setFW_leftSetpoint(3200);
+				pause(1.0, false);
+				Input.getInstance().setFW_rightSetpoint(3050);
+				Input.getInstance().setFW_leftSetpoint(3200);
+				pause(1.0, false);
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1, 1);
+				Input.getInstance().setFW_gateSpeed(.5);
+				pause(3.0, false);
+				pause(1.0, true);
+				Input.getInstance().setFW_rightSetpoint(0);
+				Input.getInstance().setFW_leftSetpoint(0);
+				RobotOutput.getInstance().setTwinstersSpeed(0, 0, 0);
+				Input.getInstance().setFW_gateSpeed(0);
+				switch (DriverStation.getInstance().getAlliance()) {
+				case Blue:
+					drive(-24);
+					pause(2.0);
+					turn(-45);
+					pause(5.0);
+					drive(-60);
+					pause(3.0);
+					turn(60);
+					pause(2.0);
+					drive(-63);
+					pause(3.0);
+					dropGear();
+					break;
+				case Red:
+					drive(-24);
+					pause(2.0);
+					turn(45);
+					pause(5.0);
+					drive(-60);
+					pause(3.0);
+					turn(-60);
+					pause(2.0);
+					drive(-63);
+					pause(3.0);
+					dropGear();
+					break;
+				}
+			break;
 			default:
 				RobotOutput.getInstance().setHoodSpeed(true);
 				System.out.println("INVALID STEP OR NULL. . ." + currentStep);
@@ -169,7 +210,7 @@ public class Auto {
 			}
 			previousModes.add(currentStep);
 		}
-		while(thread.isAlive()) {
+		while (thread.isAlive()) {
 			stop();
 		}
 	}
@@ -184,9 +225,9 @@ public class Auto {
 	}
 
 	public void autoShoot() {
-		if(previousModes.size() == 0) {
+		if (previousModes.size() == 0) {
 			System.out.println("METHOD6");
-			switch(DriverStation.getInstance().getAlliance()) {
+			switch (DriverStation.getInstance().getAlliance()) {
 			case Blue:
 				RobotOutput.getInstance().setHoodSpeed(true);
 				drive(-71);
@@ -250,26 +291,26 @@ public class Auto {
 				RobotOutput.getInstance().setIntakeSpeed(1);
 				Input.getInstance().setFW_gateSpeed(.6);
 				break;
-//				drive(-74);
-//				pause(4.0);
-//				turn(-90);
-//				pause(2.0);
-//				drive(34);
-//				pause(2.0);
-//				Input.getInstance().setFW_leftSetpoint(3400);
-//				Input.getInstance().setFW_rightSetpoint(3150);
-//				pause(1.0, false);
-//				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-//				RobotOutput.getInstance().setIntakeSpeed(1);
-//				pause(2.0, false);
-//				drive(-10);
-//				pause(.5);
-//				turn(72);
-//				pause(3.0);
-//				RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
-//				RobotOutput.getInstance().setIntakeSpeed(1);
-//				Input.getInstance().setFW_gateSpeed(.5);
-//				break;
+			// drive(-74);
+			// pause(4.0);
+			// turn(-90);
+			// pause(2.0);
+			// drive(34);
+			// pause(2.0);
+			// Input.getInstance().setFW_leftSetpoint(3400);
+			// Input.getInstance().setFW_rightSetpoint(3150);
+			// pause(1.0, false);
+			// RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
+			// RobotOutput.getInstance().setIntakeSpeed(1);
+			// pause(2.0, false);
+			// drive(-10);
+			// pause(.5);
+			// turn(72);
+			// pause(3.0);
+			// RobotOutput.getInstance().setTwinstersSpeed(1, 1, .3);
+			// RobotOutput.getInstance().setIntakeSpeed(1);
+			// Input.getInstance().setFW_gateSpeed(.5);
+			// break;
 			}
 		} else {
 			switch (previousModes.get(previousModes.size() - 1)) {
@@ -437,7 +478,7 @@ public class Auto {
 	}
 
 	private void scurry2() {
-		switch(DriverStation.getInstance().getAlliance()) {
+		switch (DriverStation.getInstance().getAlliance()) {
 		case Red:
 			drive(40);
 			pause(2.0);
@@ -459,11 +500,11 @@ public class Auto {
 			pause(6.0);
 			break;
 		}
-		
+
 	}
 
 	private void scurry4() {
-		switch(DriverStation.getInstance().getAlliance()) {
+		switch (DriverStation.getInstance().getAlliance()) {
 		case Red:
 			drive(40);
 			pause(2.0);
@@ -520,7 +561,7 @@ public class Auto {
 	 */
 	private void turn(double angle) {
 		DriveBase.getInstance().setType(DriveType.AUTOTURN);
-//		Feedback.getInstance().resetDB_gyro();
+		// Feedback.getInstance().resetDB_gyro();
 		Input.getInstance().setDB_turnSetpoint(angle);
 	}
 
@@ -531,7 +572,7 @@ public class Auto {
 	public void setActionDone() {
 		isActionDone = true;
 	}
-	
+
 	public synchronized Thread getThread() {
 		return thread;
 	}

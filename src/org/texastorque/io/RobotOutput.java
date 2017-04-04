@@ -115,9 +115,6 @@ public class RobotOutput {
 	}
 
 	public void setGateSpeed(double leftSpeed, double rightSpeed) {
-		leftSpeed -= .2;
-		if(leftSpeed < 0)
-			leftSpeed = 0;
 		FW_gateLeft.set(leftSpeed);
 		FW_gateRight.set(rightSpeed);
 	}
