@@ -42,6 +42,8 @@ public class Input {
 		DB_rightSpeed = 0.0;
 	}
 
+	
+//	drivebase
 	public double getDB_leftSpeed() {
 		return DB_leftSpeed;
 	}
@@ -49,31 +51,37 @@ public class Input {
 	public double getDB_rightSpeed() {
 		return DB_rightSpeed;
 	}
-
-	public double getFW_leftSetpoint() {
-		return FW_leftSetpoint;
+	
+	public double getDB_setpoint() {
+		return DB_setpoint;
 	}
 
-	public void setFW_leftSetpoint(double speed) {
-		FW_leftSetpoint = speed;
+	public double getDB_turnSetpoint() {
+		return DB_turnSetpoint;
+	}
+	
+	public boolean getUpShift() {
+		return DB_shiftSole;
+	}
+
+//  flywheel
+	public double getFW_leftSetpoint() {
+		return FW_leftSetpoint;
 	}
 
 	public double getFW_rightSetpoint() {
 		return FW_rightSetpoint;
 	}
 
-	public void setFW_rightSetpoint(double speed) {
-		FW_rightSetpoint = speed;
-	}
-
 	public double getFW_gateSpeed() {
 		return FW_gateSpeed;
 	}
 
-	public void setFW_gateSpeed(double speed) {
-		FW_gateSpeed = speed;
+	public boolean getFW_hood() {
+		return FW_hood;
 	}
 
+//	intake
 	public double getIN_lowerSpeed() {
 		return IN_lowerSpeed;
 	}
@@ -82,26 +90,21 @@ public class Input {
 		return IN_upperSpeed;
 	}
 
+//	twinsters
 	public double getTW_rightSpeed() {
 		return TW_rightSpeed;
-	}
-
-	public void setTW_rightSpeed(double speed) {
-		TW_rightSpeed = speed;
 	}
 
 	public double getTW_leftSpeed() {
 		return TW_leftSpeed;
 	}
 
-	public void setTW_leftSpeed(double speed) {
-		TW_leftSpeed = speed;
-	}
-
+//	climber
 	public double getCL_speed() {
 		return CL_speed;
 	}
 
+//	gear
 	public boolean getGR_open() {
 		return GR_open;
 	}
@@ -110,42 +113,53 @@ public class Input {
 		return GH_extended;
 	}
 
-	public void setGC_down(boolean down) {
-		GC_down = down;
+	public double getGC_setpoint() {
+		return GC_down ? 90 : -10;
 	}
 
 	public boolean getGC_down() {
 		return GC_down;
 	}
 
-	public boolean getUpShift() {
-		return DB_shiftSole;
-	}
-
-	public boolean getFW_hood() {
-		return FW_hood;
-	}
-
+//	drivebase
 	public void setDB_driveSetpoint(double setpoint) {
 		DB_setpoint = setpoint;
 	}
-
-	public double getDB_setpoint() {
-		return DB_setpoint;
-	}
-
+	
 	public void setDB_turnSetpoint(double setpoint) {
 		DB_turnSetpoint = setpoint + Feedback.getInstance().getDB_angle();
 	}
 
-	public double getGC_setpoint() {
-		return GC_down ? 90 : -10;
+//	flywheel
+	public void setFW_leftSetpoint(double speed) {
+		FW_leftSetpoint = speed;
+	}
+	
+	public void setFW_rightSetpoint(double speed) {
+		FW_rightSetpoint = speed;
 	}
 
-	public double getDB_turnSetpoint() {
-		return DB_turnSetpoint;
+	public void setFW_gateSpeed(double speed) {
+		FW_gateSpeed = speed;
 	}
 
+//	intake
+	
+//	twinsters
+	public void setTW_rightSpeed(double speed) {
+		TW_rightSpeed = speed;
+	}
+
+	public void setTW_leftSpeed(double speed) {
+		TW_leftSpeed = speed;
+	}
+
+//	gear
+	public void setGC_down(boolean down) {
+		GC_down = down;
+	}
+
+//	misc
 	public void setRumble(boolean rumble) {
 		doRumble = rumble;
 	}
