@@ -69,7 +69,14 @@ public class DriveBase extends Subsystem {
 		init();
 	}
 
+	@Override
+	public void disabledInit() {
+		leftSpeed = 0;
+		rightSpeed = 0;
+	}
+	
 	private void init() {
+		
 		tmp = new TorqueTMP(Constants.DB_MVELOCITY.getDouble(), Constants.DB_MACCELERATION.getDouble());
 		turnProfile = new TorqueTMP(Constants.DB_MAVELOCITY.getDouble(), Constants.DB_MAACCELERATION.getDouble());
 		leftPV = new TorquePV();
@@ -187,6 +194,10 @@ public class DriveBase extends Subsystem {
 		run();
 	}
 
+	public void disabledContinuous() {
+		output();
+	}
+	
 	private void run() {
 		if (kiddieMode) {
 			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .3);
