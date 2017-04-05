@@ -45,12 +45,17 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void disabledInit() {
-		RobotOutput.getInstance().setLight(true);
+		for(Subsystem system : subsystems ) {
+			system.disabledInit();
+			system.setInput(HumanInput.getInstance());
+		}
 	}
 	
 	@Override
 	public void disabledContinuous() {
-		AutoManager.getInstance().stop();
+		for(Subsystem system : subsystems ) {
+			system.disabledContinuous();
+		}
 	}
 	
 	@Override
