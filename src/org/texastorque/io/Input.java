@@ -6,11 +6,13 @@ public class Input {
 
 	private static Input instance;
 
-	protected volatile double DB_setpoint;
-	protected volatile double DB_turnSetpoint;
 	protected double DB_leftSpeed;
 	protected double DB_rightSpeed;
 	protected boolean DB_shiftSole = true;
+	
+	protected volatile double DB_setpoint;
+	protected volatile double DB_turnSetpoint;
+	protected volatile double DB_precision;
 
 	protected double FW_leftSetpoint;
 	protected double FW_rightSetpoint;
@@ -54,6 +56,10 @@ public class Input {
 
 	public double getDB_turnSetpoint() {
 		return DB_turnSetpoint;
+	}
+	
+	public double getDB_precision() {
+		return DB_precision;
 	}
 	
 	public boolean getUpShift() {
@@ -118,12 +124,14 @@ public class Input {
 	}
 
 //	drivebase
-	public void setDB_driveSetpoint(double setpoint) {
+	public void setDB_driveSetpoint(double setpoint, double precision) {
 		DB_setpoint = setpoint;
+		DB_precision = precision;
 	}
 	
-	public void setDB_turnSetpoint(double setpoint) {
+	public void setDB_turnSetpoint(double setpoint, double precision) {
 		DB_turnSetpoint = setpoint + Feedback.getInstance().getDB_angle();
+		DB_precision = precision;
 	}
 
 //	flywheel

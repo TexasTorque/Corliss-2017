@@ -542,7 +542,7 @@ public class AutoManager {
 
 	/**
 	 * Executes an autonomous turn which goes the requested distance, which is
-	 * in Inches
+	 * in Inches.  Deprecated
 	 * 
 	 * @param distance
 	 *            - the distance which the robot should drive to. Positive
@@ -551,7 +551,7 @@ public class AutoManager {
 	private void drive(double distance) {
 		Feedback.getInstance().resetDB_encoders();
 		DriveBase.getInstance().setType(DriveType.AUTODRIVE);
-		Input.getInstance().setDB_driveSetpoint(distance);
+		Input.getInstance().setDB_driveSetpoint(distance, .5);
 	}
 
 	/**
@@ -564,7 +564,7 @@ public class AutoManager {
 	private void turn(double angle) {
 		DriveBase.getInstance().setType(DriveType.AUTOTURN);
 		// Feedback.getInstance().resetDB_gyro();
-		Input.getInstance().setDB_turnSetpoint(angle);
+		Input.getInstance().setDB_turnSetpoint(angle, .5);
 	}
 
 	/**
