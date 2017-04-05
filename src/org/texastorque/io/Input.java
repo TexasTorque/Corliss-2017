@@ -6,15 +6,11 @@ public class Input {
 
 	private static Input instance;
 
+	protected volatile double DB_setpoint;
+	protected volatile double DB_turnSetpoint;
 	protected double DB_leftSpeed;
 	protected double DB_rightSpeed;
 	protected boolean DB_shiftSole = true;
-
-	protected boolean doRumble;
-
-	// AUTO MODES
-	protected volatile double DB_setpoint;
-	protected volatile double DB_turnSetpoint;
 
 	protected double FW_leftSetpoint;
 	protected double FW_rightSetpoint;
@@ -36,12 +32,12 @@ public class Input {
 	protected boolean GC_override;
 
 	protected boolean flipCheck;
+	protected boolean doRumble;
 
 	public Input() {
 		DB_leftSpeed = 0.0;
 		DB_rightSpeed = 0.0;
 	}
-
 	
 //	drivebase
 	public double getDB_leftSpeed() {
@@ -144,6 +140,13 @@ public class Input {
 	}
 
 //	intake
+	public void setIN_lowerSpeed(double speed) {
+		IN_lowerSpeed = speed;
+	}
+	
+	public void setIN_upperSpeed(double speed) {
+		IN_upperSpeed = speed;
+	}
 	
 //	twinsters
 	public void setTW_rightSpeed(double speed) {
