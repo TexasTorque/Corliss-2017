@@ -17,6 +17,11 @@ public class Climber extends Subsystem {
 	public void teleopInit() {
 		init();
 	}
+	
+	@Override
+	public void disabledInit() {
+		speed = 0;
+	}
 
 	private void init() {
 	}
@@ -29,6 +34,11 @@ public class Climber extends Subsystem {
 	@Override
 	public void teleopContinuous() {
 		run();
+	}
+	
+	@Override
+	public void disabledContinuous() {
+		output();
 	}
 	
 	private void run() {

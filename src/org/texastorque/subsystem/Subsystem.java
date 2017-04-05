@@ -10,7 +10,7 @@ public abstract class Subsystem implements TorqueSubsystem {
 	protected Input i = Input.getInstance();
 	protected RobotOutput o = RobotOutput.getInstance();
 	protected Feedback f = Feedback.getInstance();
-	
+
 	public void setInput(Input i) {
 		this.i = i;
 	}

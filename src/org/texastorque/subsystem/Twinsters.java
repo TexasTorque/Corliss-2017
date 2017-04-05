@@ -20,6 +20,12 @@ public class Twinsters extends Subsystem {
 	public void teleopInit() {
 		init();
 	}
+	
+	@Override
+	public void disabledInit() {
+		leftSpeed = 0;
+		rightSpeed = 0;
+	}
 
 	private void init() {
 	}
@@ -32,6 +38,11 @@ public class Twinsters extends Subsystem {
 	@Override
 	public void teleopContinuous() {
 		run();
+	}
+	
+	@Override
+	public void disabledContinuous() {
+		output();
 	}
 
 	private void run() {

@@ -30,6 +30,7 @@ public class Gear extends Subsystem {
 	private double targetVelocity;
 	private double targetAcceleration;
 
+//	will be cleaned up later. . . 
 	private boolean outakeAngleGood;
 	private boolean collectingGear;
 	private boolean gearJammed;
@@ -44,6 +45,12 @@ public class Gear extends Subsystem {
 	@Override
 	public void teleopInit() {
 		init();
+	}
+	
+	public void disabledInit() {
+		open = false;
+		extended = false;
+		scoopDown = false;
 	}
 
 	public void init() {
@@ -63,6 +70,11 @@ public class Gear extends Subsystem {
 	@Override
 	public void teleopContinuous() {
 		run();
+	}
+	
+	@Override
+	public void disabledContinuous() {
+		output();
 	}
 
 	public void run() {

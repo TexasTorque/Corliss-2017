@@ -15,6 +15,8 @@ public class FlyWheel extends Subsystem {
 
 	private double leftSpeed = 0d;
 	private double rightSpeed = 0d;
+	private double gateSpeed;
+	private boolean hood = false;
 
 	private TorquePID leftFlywheelControl;
 	private TorquePID rightFlywheelControl;
@@ -30,11 +32,7 @@ public class FlyWheel extends Subsystem {
 	private double rightD = .0007741;
 
 	private double lt = Timer.getFPGATimestamp();
-
-	private boolean hood = false;
 	private boolean doLight;
-	
-	private double gateSpeed;
 
 	public FlyWheel() {
 		init();
@@ -48,6 +46,15 @@ public class FlyWheel extends Subsystem {
 	@Override
 	public void teleopInit() {
 		init();
+	}
+	
+	@Override
+	public void disabledInit() {
+		leftSpeed = 0;
+		rightSpeed = 0;
+		gateSpeed = 0;
+		hood = false;
+		doLight = false;
 	}
 
 	private void init() {
@@ -76,6 +83,11 @@ public class FlyWheel extends Subsystem {
 	@Override
 	public void teleopContinuous() {
 		run();
+	}
+	
+	@Override
+	public void disabledContinuous() {
+		output();
 	}
 
 	private void run() {
