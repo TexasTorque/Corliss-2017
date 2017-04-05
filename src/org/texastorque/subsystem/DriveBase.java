@@ -23,6 +23,7 @@ public class DriveBase extends Subsystem {
 	private double setpoint = 0;
 	private double previousSetpoint = 0;
 	private double prevTime;
+	private double precision;
 
 	private TorqueTMP tmp;
 	private TorquePV leftPV;
@@ -101,40 +102,28 @@ public class DriveBase extends Subsystem {
 	@Override
 
 	public void autoContinuous() {
-		run();
-	}
-
-	@Override
-
-	public void teleopContinuous() {
-		run();
-	}
-
-	private void run() {
 		switch (type) {
-		case TELEOPGEARPLACE:
-			break;
 		case AUTOIRDRIVE:
-			double error = Feedback.getInstance().getDB_distance() - 8;
+			double error = f.getDB_distance() - 8;
 			if (error >= 6 && error - previousError < 0) {
-				leftSpeed = leftRIMP.calculate(-error, Feedback.getInstance().getDB_leftRate());
-				rightSpeed = rightRIMP.calculate(-error, Feedback.getInstance().getDB_rightRate());
+				leftSpeed = leftRIMP.calculate(-error, f.getDB_leftRate());
+				rightSpeed = rightRIMP.calculate(-error, f.getDB_rightRate());
 			} else {
 				leftSpeed = 0;
 				rightSpeed = 0;
 			}
 			previousError = error;
-			output();
 			break;
 		case AUTODRIVE:
 			setpoint = i.getDB_setpoint();
 			if (setpoint != previousSetpoint) {
 				previousSetpoint = setpoint;
+				precision = i.getDB_precision();
 				tmp.generateTrapezoid(setpoint, 0d, 0d);
 				prevTime = Timer.getFPGATimestamp();
 			}
-			if (TorqueMathUtil.near(setpoint, Feedback.getInstance().getDB_leftDistance(), .5)
-					&& TorqueMathUtil.near(setpoint, Feedback.getInstance().getDB_rightDistance(), .5))
+			if (TorqueMathUtil.near(setpoint, f.getDB_leftDistance(), precision)
+					&& TorqueMathUtil.near(setpoint, f.getDB_rightDistance(), precision))
 				AutoManager.getInstance().setActionDone();
 			double dt = Timer.getFPGATimestamp() - prevTime;
 			prevTime = Timer.getFPGATimestamp();
@@ -144,21 +133,19 @@ public class DriveBase extends Subsystem {
 			targetVelocity = tmp.getCurrentVelocity();
 			targetAcceleration = tmp.getCurrentAcceleration();
 
-			leftSpeed = leftPV.calculate(tmp, Feedback.getInstance().getDB_leftDistance(),
-					Feedback.getInstance().getDB_leftRate());
-			rightSpeed = rightPV.calculate(tmp, Feedback.getInstance().getDB_rightDistance(),
-					Feedback.getInstance().getDB_rightRate());
+			leftSpeed = leftPV.calculate(tmp, f.getDB_leftDistance(), f.getDB_leftRate());
+			rightSpeed = rightPV.calculate(tmp, f.getDB_rightDistance(), f.getDB_rightRate());
 			upShift = false;
-			output();
 			break;
 		case AUTOTURN:
 			turnSetpoint = i.getDB_turnSetpoint();
 			if (turnSetpoint != turnPreviousSetpoint) {
 				turnPreviousSetpoint = turnSetpoint;
+				precision = i.getDB_precision();
 				turnProfile.generateTrapezoid(turnSetpoint, 0.0, 0.0);
 				prevTime = Timer.getFPGATimestamp();
 			}
-			if (TorqueMathUtil.near(turnSetpoint, Feedback.getInstance().getDB_angle(), .5))
+			if (TorqueMathUtil.near(turnSetpoint, f.getDB_angle(), precision))
 				AutoManager.getInstance().setActionDone();
 			dt = Timer.getFPGATimestamp() - prevTime;
 			prevTime = Timer.getFPGATimestamp();
@@ -167,26 +154,40 @@ public class DriveBase extends Subsystem {
 			targetAngle = turnProfile.getCurrentPosition();
 			targetAngularVelocity = turnProfile.getCurrentVelocity();
 
-			leftSpeed = turnPV.calculate(turnProfile, Feedback.getInstance().getDB_angle(),
-					Feedback.getInstance().getDB_angleRate());
+			leftSpeed = turnPV.calculate(turnProfile, f.getDB_angle(), f.getDB_angleRate());
 			rightSpeed = -leftSpeed;
 			upShift = false;
-			output();
+			break;
+			default:
+				leftSpeed = 0;
+				rightSpeed = 0;
+				break;
+		}
+		run();
+	}
+
+	@Override
+
+	public void teleopContinuous() {
+		switch (type) {
+		case TELEOPGEARPLACE:
 			break;
 		case TELEOP:
 			leftSpeed = i.getDB_leftSpeed();
 			rightSpeed = i.getDB_rightSpeed();
-			if (Feedback.getInstance().getDB_leftRate() < -20 && Feedback.getInstance().getDB_rightRate() < -20
-					&& i.flipCheck()) {
+			if (f.getDB_leftRate() < -20 && f.getDB_rightRate() < -20 && i.flipCheck()) {
 				leftSpeed = rightSpeed = 0.0;
 			}
 			upShift = i.getUpShift();
-			output();
+			break;
+		default:
+			type = DriveType.TELEOP;
 			break;
 		}
+		run();
 	}
 
-	private void output() {
+	private void run() {
 		if (kiddieMode) {
 			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .3);
 			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .3);
@@ -194,8 +195,12 @@ public class DriveBase extends Subsystem {
 			leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
 			rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
 		}
-		RobotOutput.getInstance().upShift(upShift);
-		RobotOutput.getInstance().setDriveBaseSpeed(leftSpeed, rightSpeed);
+		output();
+	}
+
+	private void output() {
+		o.upShift(upShift);
+		o.setDriveBaseSpeed(leftSpeed, rightSpeed);
 	}
 
 	public void setType(DriveType type) {
@@ -206,14 +211,14 @@ public class DriveBase extends Subsystem {
 	public void smartDashboard() {
 		SmartDashboard.putNumber("DB_LEFTSPEED", leftSpeed);
 		SmartDashboard.putNumber("DB_RIGHTSPEED", rightSpeed);
-		SmartDashboard.putBoolean("UPSHIFTED", upShift);
-		SmartDashboard.putString("DB_TYPE", type.toString());
-		SmartDashboard.putNumber("DB_TARGETPOSITION", targetPosition);
-		SmartDashboard.putNumber("DB_TARGETVELOCITY", targetVelocity);
-		SmartDashboard.putNumber("DB_TARGETACCELERATION", targetAcceleration);
+		SmartDashboard.putBoolean("DB_UPSHIFTED", upShift);
 
-		SmartDashboard.putNumber("DB_TARGETANGLE", targetAngle);
-		SmartDashboard.putNumber("DB_TARGETANGULARVELOCITY", targetAngularVelocity);
+		SmartDashboard.putString("DBA_TYPE", type.toString());
+		SmartDashboard.putNumber("DBA_TARGETPOSITION", targetPosition);
+		SmartDashboard.putNumber("DBA_TARGETVELOCITY", targetVelocity);
+		SmartDashboard.putNumber("DBA_TARGETACCELERATION", targetAcceleration);
+		SmartDashboard.putNumber("DBA_TARGETANGLE", targetAngle);
+		SmartDashboard.putNumber("DBA_TARGETANGULARVELOCITY", targetAngularVelocity);
 	}
 
 	public static DriveBase getInstance() {
