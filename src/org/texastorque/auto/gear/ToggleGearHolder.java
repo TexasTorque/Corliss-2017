@@ -3,11 +3,17 @@ package org.texastorque.auto.gear;
 import org.texastorque.auto.AutoManager;
 import org.texastorque.auto.AutonomousCommand;
 
-public class PlaceGear extends AutonomousCommand {
+public class ToggleGearHolder extends AutonomousCommand {
 
+	boolean open;
+	
+	public ToggleGearHolder(boolean open) {
+		this.open = open;
+	}
+	
 	@Override
 	public void run() {
-		output.extendGearHolder(true);
+		output.extendGearHolder(open);
 		AutoManager.pause(.0125);
 	}
 	

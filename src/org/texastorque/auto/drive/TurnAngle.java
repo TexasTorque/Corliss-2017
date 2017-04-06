@@ -9,10 +9,14 @@ public class TurnAngle extends AutonomousCommand {
 	private double precision;
 	
 	private final double TCONSTANT = .25;
-	
+	private final double DPRECISION = .0625;
 	public TurnAngle(double theta, double precision) {
 		this.theta = theta;
 		this.precision = precision;
+	}
+	public TurnAngle(double theta) {
+		this.theta = theta;
+		precision = DPRECISION;
 	}
 	
 	@Override
