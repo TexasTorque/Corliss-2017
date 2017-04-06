@@ -131,7 +131,7 @@ public class DriveBase extends Subsystem {
 			}
 			if (TorqueMathUtil.near(setpoint, f.getDB_leftDistance(), precision)
 					&& TorqueMathUtil.near(setpoint, f.getDB_rightDistance(), precision))
-				AutoManager.getInstance().setActionDone();
+				AutoManager.interruptThread();
 			double dt = Timer.getFPGATimestamp() - prevTime;
 			prevTime = Timer.getFPGATimestamp();
 			tmp.calculateNextSituation(dt);
@@ -153,7 +153,7 @@ public class DriveBase extends Subsystem {
 				prevTime = Timer.getFPGATimestamp();
 			}
 			if (TorqueMathUtil.near(turnSetpoint, f.getDB_angle(), precision))
-				AutoManager.getInstance().setActionDone();
+				AutoManager.interruptThread();
 			dt = Timer.getFPGATimestamp() - prevTime;
 			prevTime = Timer.getFPGATimestamp();
 			turnProfile.calculateNextSituation(dt);

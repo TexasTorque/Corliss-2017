@@ -1,5 +1,7 @@
 package org.texastorque.auto;
 
+import java.util.LinkedList;
+
 import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
 import org.texastorque.subsystem.DriveBase;
@@ -19,6 +21,10 @@ public abstract class AutonomousCommand {
 	protected Intake intake;
 	protected Twinsters twinsters;
 	
+	public AutonomousCommand() {
+		init();
+	}
+	
 	public void init() {
 		output = RobotOutput.getInstance();
 		input = Input.getInstance();
@@ -33,4 +39,5 @@ public abstract class AutonomousCommand {
 	public abstract void run();
 	
 	public abstract void reset();
+	
 }
