@@ -23,6 +23,7 @@ public class Robot extends TorqueIterative {
 
 	private ArrayList<Subsystem> subsystems;
 	private double time;
+	private boolean hasAlreadyStarted = false;
 	
 	@SuppressWarnings("serial")
 	@Override
@@ -41,6 +42,7 @@ public class Robot extends TorqueIterative {
 		}};
 		RobotOutput.getInstance().setLight(true);
 		Lights.getInstance();
+		AutoManager.init();
 	}
 
 	@Override
@@ -53,6 +55,7 @@ public class Robot extends TorqueIterative {
 	
 	@Override
 	public void disabledContinuous() {
+		hasAlreadyStarted = false;
 		for(Subsystem system : subsystems ) {
 			system.disabledContinuous();
 		}
@@ -66,7 +69,8 @@ public class Robot extends TorqueIterative {
 			system.autoInit();
 			system.setInput(Input.getInstance());
 		}
-		AutoManager.getInstance().init();
+		AutoManager.beginAuto();
+		hasAlreadyStarted = true;
 	}
 
 	@Override
@@ -81,6 +85,10 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void autonomousContinuous() {
+		if(!hasAlreadyStarted && AutoManager.isDone()) {
+			AutoManager.beginAuto();
+			hasAlreadyStarted = true;
+		}
 		Feedback.getInstance().update();
 		for(Subsystem system : subsystems ) {
 			system.autoContinuous();
@@ -106,7 +114,7 @@ public class Robot extends TorqueIterative {
 			SmartDashboard.putNumber("Time", time++);
 		HumanInput.getInstance().smartDashboard();
 		Feedback.getInstance().smartDashboard();
-		AutoManager.getInstance().smartDashboard();
+		AutoManager.SmartDashboard();
 		Lights.getInstance().update();
 	}
 	
