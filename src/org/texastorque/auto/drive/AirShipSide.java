@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class AirShipSide extends AutonomousSequence {
 
-	private Alliance alliance = DriverStation.getInstance().getAlliance();
+	private Alliance alliance;
 	private boolean doCorner;
 	private boolean doGear;
 
@@ -19,6 +19,7 @@ public class AirShipSide extends AutonomousSequence {
 		this.doCorner = doCorner;
 		this.doGear = doGear;
 		this.side = side;
+		alliance = DriverStation.getInstance().getAlliance();
 		init();
 	}
 	
