@@ -45,7 +45,7 @@ public class RobotOutput {
 	private Solenoid GR_sole;
 	
 	private boolean flipDriveTrain = false;
-	private boolean flipShooter = true;
+	private boolean flipShooter = false;
 	private boolean flipIntake = true;
 	private boolean flipFeeder = true;
 	private boolean flipTwinsters = false;
@@ -60,8 +60,8 @@ public class RobotOutput {
 
 		FW_leftSole = new TorqueMotor(new VictorSP(Ports.FW_LEFT), flipShooter);
 		FW_rightSole = new TorqueMotor(new VictorSP(Ports.FW_RIGHT), !flipShooter);
-		FW_gateLeft = new TorqueMotor(new VictorSP(Ports.FW_GATEL), !flipShooter);
-		FW_gateRight = new TorqueMotor(new VictorSP(Ports.FW_GATER), flipShooter);
+		FW_gateLeft = new TorqueMotor(new VictorSP(Ports.FW_GATEL), flipShooter);
+		FW_gateRight = new TorqueMotor(new VictorSP(Ports.FW_GATER), !flipShooter);
 		FW_hood = new Solenoid(Ports.FW_HOOD);
 
 		FW_light = new Relay(Ports.FW_LIGHT, Relay.Direction.kBoth);
@@ -117,6 +117,11 @@ public class RobotOutput {
 	public void setGateSpeed(double leftSpeed, double rightSpeed) {
 		FW_gateLeft.set(leftSpeed);
 		FW_gateRight.set(rightSpeed);
+	}
+	
+	public void setGateSpeed(double gateSpeed) {
+		FW_gateLeft.set(gateSpeed);
+		FW_gateRight.set(gateSpeed);
 	}
 
 	public void setHoodSpeed(boolean hood) {
