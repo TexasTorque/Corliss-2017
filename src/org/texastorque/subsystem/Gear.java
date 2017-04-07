@@ -141,11 +141,13 @@ public class Gear extends Subsystem {
 	}
 
 	public void output() {
-		RobotOutput.getInstance().openGearRamp(open);
-		RobotOutput.getInstance().extendGearHolder(extended);
-		if(collectorSpeed != 0)
-			collectorSpeed -= .1;
-		RobotOutput.getInstance().setGearCollectorSpeed(collectorSpeed, intakeSpeed);
+		if(i instanceof HumanInput) {
+			RobotOutput.getInstance().openGearRamp(open);
+			RobotOutput.getInstance().extendGearHolder(extended);
+			if(collectorSpeed != 0)
+				collectorSpeed -= .1;
+			RobotOutput.getInstance().setGearCollectorSpeed(collectorSpeed, intakeSpeed);
+		}
 	}
 
 	public static Gear getInstance() {
