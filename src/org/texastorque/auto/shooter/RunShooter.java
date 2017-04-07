@@ -7,7 +7,7 @@ public class RunShooter extends AutonomousCommand {
 	private double setpoint;
 	
 	public enum Setpoints {
-		LAYUP(3200), LONGSHOT(3200);
+		LAYUP(3200), LONGSHOT(3200), IDLE(0);
 		
 		Setpoints(double setpoint) {
 			this.setpoint = setpoint;

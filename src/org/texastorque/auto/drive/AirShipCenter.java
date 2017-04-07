@@ -9,11 +9,12 @@ public class AirShipCenter extends AutonomousSequence {
 	
 	public AirShipCenter(boolean dropGear) {
 		this.dropGear = dropGear;
+		init();
 	}
 	
 	@Override
 	public void init() {
-		commandList.add(new DistanceDrive(-76, .125));
+		commandList.add(new RunDrive(-76, .125));
 		commandList.addAll(new PlaceGearSequence().getCommands());
 	}
 	

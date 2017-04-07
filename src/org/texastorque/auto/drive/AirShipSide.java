@@ -19,6 +19,7 @@ public class AirShipSide extends AutonomousSequence {
 		this.doCorner = doCorner;
 		this.doGear = doGear;
 		this.side = side;
+		init();
 	}
 	
 	@Override
@@ -27,30 +28,31 @@ public class AirShipSide extends AutonomousSequence {
 		switch (alliance) {
 		case Red:
 			if (doCorner) {
-				commandList.add(new DistanceDrive(-83));
-				commandList.add(new TurnAngle(87));
-				commandList.add(new DistanceDrive(-69));
+				commandList.add(new RunDrive(-83));
+				commandList.add(new RunTurn(87));
+				commandList.add(new RunDrive(-69));
 			} else {
-				commandList.add(new DistanceDrive(-76));
-				commandList.add(new TurnAngle(87));
-				commandList.add(new DistanceDrive(-66));
+				commandList.add(new RunDrive(-76));
+				commandList.add(new RunTurn(87));
+				commandList.add(new RunDrive(-66));
 			}
 			break;
 		case Blue:
 			if (doCorner) {
-				commandList.add(new DistanceDrive(-61));
-				commandList.add(new TurnAngle(60));
-				commandList.add(new DistanceDrive(-78));
+				commandList.add(new RunDrive(-61));
+				commandList.add(new RunTurn(60));
+				commandList.add(new RunDrive(-78));
 			} else {
-				commandList.add(new DistanceDrive(-88));
-				commandList.add(new TurnAngle(111.25));
-				commandList.add(new DistanceDrive(-85));
+				commandList.add(new RunDrive(-88));
+				commandList.add(new RunTurn(111.25));
+				commandList.add(new RunDrive(-85));
 			}
 			break;
 		default:
 			break;
 		}
 		if (doGear) {
+			commandList.addAll(new PlaceGearSequence().getCommands());
 			commandList.addAll(new PlaceGearSequence().getCommands());
 		}
 	}

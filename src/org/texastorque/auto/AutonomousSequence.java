@@ -6,10 +6,6 @@ public abstract class AutonomousSequence {
 
 	protected LinkedList<AutonomousCommand> commandList = new LinkedList<>();
 	
-	public AutonomousSequence() {
-		init();
-	}
-	
 	public abstract void init();
 	
 	public LinkedList<AutonomousCommand> getCommands() {

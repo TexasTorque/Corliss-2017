@@ -2,7 +2,7 @@ package org.texastorque.auto.intake;
 
 import org.texastorque.auto.AutonomousCommand;
 
-public class FloorIntakeSet extends AutonomousCommand {
+public class RunFloorIntake extends AutonomousCommand {
 
 	private IntakeState state;
 	
@@ -10,7 +10,7 @@ public class FloorIntakeSet extends AutonomousCommand {
 		INTAKE, OUTAKE, IDLE;
 	}
 	
-	public FloorIntakeSet(IntakeState state) {
+	public RunFloorIntake(IntakeState state) {
 		this.state = state;
 	}
 	
