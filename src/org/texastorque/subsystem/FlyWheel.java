@@ -117,6 +117,10 @@ public class FlyWheel extends Subsystem {
 			leftSpeed = leftRIMP.calculate(error, f.getFW_leftRate());
 			error = i.getFW_rightSetpoint() - f.getFW_rightRate();
 			rightSpeed = rightRIMP.calculate(error, f.getFW_rightRate());
+			if(leftSpeed < 0)
+				leftSpeed = 0;
+			if(rightSpeed < 0)
+				rightSpeed = 0;
 		} else {
 			setpointLeft = i.getFW_leftSetpoint();
 			setpointRight = i.getFW_rightSetpoint();
