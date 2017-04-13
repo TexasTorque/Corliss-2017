@@ -2,6 +2,7 @@ package org.texastorque.torquelib.controlLoop;
 
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -9,7 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
  *
  * @author TexasTorque
  */
-public class TorquePID {
+public class TorquePID extends ControlLoop {
 
 	// Settings
 	private double kP;
@@ -169,6 +170,7 @@ public class TorquePID {
 	 * @return Motor output to the system.
 	 */
 	public double calculate(double currentValue) {
+		double voltageAdjustment = tunedVoltage / ds.getBatteryVoltage();
 		if (firstCycle) {
 			lastTime = Timer.getFPGATimestamp();
 			lastLimitedTime = Timer.getFPGATimestamp();
@@ -201,8 +203,9 @@ public class TorquePID {
 
 		// ----- D Calculation -----
 		output += kD * (2*error - prevError) * dt;
-
-		// ----- Limit Output ------
+//		output *= voltageAdjustment;
+//		System.out.println(voltageAdjustment);
+//		 ----- Limit Output ------
 		if (speedController) {
 			output += prevOutput;
 		}
@@ -214,14 +217,14 @@ public class TorquePID {
 		if (speedController && output < 0) {
 			output = 0;
 		}
-
+		
 		if (initialLimited && Timer.getFPGATimestamp() - lastLimitedTime < initialLimitedTime) {
 			output = TorqueMathUtil.constrain(output, initialLimitedOutput);
 		}
 
 		// ----- Save Time -----
 		lastTime = Timer.getFPGATimestamp();
-
+		
 		return output;
 	}
 

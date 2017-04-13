@@ -32,6 +32,7 @@ public class Input {
 	protected boolean GH_extended;
 	protected boolean GC_down;
 	protected boolean GC_override;
+	protected boolean G_press = false;
 
 	protected boolean flipCheck;
 	protected boolean doRumble;
@@ -81,6 +82,10 @@ public class Input {
 
 	public boolean getFW_hood() {
 		return FW_hood;
+	}
+	
+	public boolean getG_press() {
+		return G_press;
 	}
 
 //	intake

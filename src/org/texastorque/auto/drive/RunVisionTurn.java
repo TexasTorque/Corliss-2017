@@ -5,18 +5,18 @@ import org.texastorque.auto.AutonomousCommand;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.subsystem.DriveBase.DriveType;
 
-public class RunTurn extends AutonomousCommand {
+public class RunVisionTurn extends AutonomousCommand {
 
 	private double theta;
 	private double precision;
 	
-	private final double TCONSTANT = .025;
+	private final double TCONSTANT = .25;
 	private final double DPRECISION = .0625;
-	public RunTurn(double theta, double precision) {
+	public RunVisionTurn(double theta, double precision) {
 		this.theta = theta;
 		this.precision = precision;
 	}
-	public RunTurn(double theta) {
+	public RunVisionTurn(double theta) {
 		this.theta = theta;
 		precision = DPRECISION;
 	}
@@ -25,9 +25,10 @@ public class RunTurn extends AutonomousCommand {
 	public void run() {
 		Feedback.getInstance().resetDB_gyro();
 		Feedback.getInstance().resetDB_encoders();
+		driveBase.setType(DriveType.AUTOVISIONTURN);
 		input.setDB_turnSetpoint(theta, precision);
-		driveBase.setType(DriveType.AUTOTURN);
-		AutoManager.pause(theta*TCONSTANT);
+		AutoManager.pause(5);
+//		driveBase.setType(DriveType.TELEOP);
 	}
 	
 	@Override

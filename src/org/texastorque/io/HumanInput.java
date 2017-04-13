@@ -77,7 +77,6 @@ public class HumanInput extends Input {
 	}// update
 
 	public void updateDrive() {
-		DB_rightSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
 		DB_leftSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
 
 		driverFineControl.calc(driver.getRightStickClick());
@@ -122,7 +121,7 @@ public class HumanInput extends Input {
 		if (FW_setpointShift < 0) {
 			FW_setpointShift = 0;
 		}
-		FW_leftSetpoint = FW_setpointShift;
+		FW_leftSetpoint = FW_setpointShift-300;
 		FW_rightSetpoint = FW_setpointShift-150;
 		if (FW_rightSetpoint < 0) {
 			FW_rightSetpoint = 0;
@@ -166,7 +165,7 @@ public class HumanInput extends Input {
 		}
 		RobotOutput.getInstance().setFlyWheelSpeed(FW_setpointShift, FW_setpointShift);
 	}
-
+	
 	public void updateShooterDeprecated() {
 		dT = Timer.getFPGATimestamp() - lT;
 		if (dT >= Constants.HI_DBDT.getDouble()) {
@@ -245,13 +244,16 @@ public class HumanInput extends Input {
 		}
 	}
 
+	
 	public void updateGates() {
 		if (operator.getXButton()) {
-			FW_gateSpeed = 1; // + (getFW_leftSetpoint() -
+			FW_gateSpeed = .8; // + (getFW_leftSetpoint() -
 								// Feedback.getInstance().getFW_leftRate()) *
 								// .01;
+			G_press = true;
 		} else {
 			FW_gateSpeed = 0d;
+			G_press = false;
 		}
 	}
 

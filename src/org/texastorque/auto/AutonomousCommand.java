@@ -1,7 +1,6 @@
 package org.texastorque.auto;
 
-import java.util.LinkedList;
-
+import org.texastorque.feedback.Feedback;
 import org.texastorque.io.Input;
 import org.texastorque.io.RobotOutput;
 import org.texastorque.subsystem.DriveBase;
@@ -20,6 +19,7 @@ public abstract class AutonomousCommand {
 	protected Gear gearSystem;
 	protected Intake intake;
 	protected Twinsters twinsters;
+	protected Feedback feedback;
 	
 	public AutonomousCommand() {
 		init();
@@ -28,6 +28,7 @@ public abstract class AutonomousCommand {
 	public void init() {
 		output = RobotOutput.getInstance();
 		input = Input.getInstance();
+		feedback = Feedback.getInstance();
 		
 		flyWheel = FlyWheel.getInstance();
 		driveBase = DriveBase.getInstance();

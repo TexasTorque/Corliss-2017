@@ -17,6 +17,7 @@ import org.texastorque.subsystem.Subsystem;
 import org.texastorque.subsystem.Twinsters;
 import org.texastorque.torquelib.base.TorqueIterative;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TorqueIterative {
@@ -43,6 +44,7 @@ public class Robot extends TorqueIterative {
 		RobotOutput.getInstance().setLight(true);
 		Lights.getInstance();
 		AutoManager.init();
+		CameraServer.getInstance().addAxisCamera("10.14.77.10");
 	}
 
 	@Override

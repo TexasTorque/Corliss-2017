@@ -19,6 +19,14 @@ public class Constants {
 	public static final Constant FW_R_P = new Constant("FW_R_P",0);
 	public static final Constant FW_ACCEPTABLE = new Constant("FW_ACCEPTABLE", 50);
 	
+	public static final Constant FW_RIMP_P = new Constant("FW_RIMP_P", .078);
+	public static final Constant FW_RIMP_V = new Constant("FW_RIMP_V", 0);
+	public static final Constant FW_RIMP_ffV = new Constant("FW_RIMP_ffV", 0);
+	public static final Constant FW_RIMP_ffA = new Constant("FW_RIMP_ffA", 0);
+	public static final Constant FW_MVELOCITY = new Constant("FW_MVELOCITY",100d);
+	public static final Constant FW_MACCELERATION = new Constant("FW_MACCELERATION",200d);
+	
+	
 //	intake
 	public static final Constant IN_LIMIT = new Constant("IN_LIMIT", .75);
 	

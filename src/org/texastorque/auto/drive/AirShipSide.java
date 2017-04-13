@@ -29,9 +29,9 @@ public class AirShipSide extends AutonomousSequence {
 		switch (alliance) {
 		case Red:
 			if (doCorner) {
-				commandList.add(new RunDrive(-83));
-				commandList.add(new RunTurn(87));
-				commandList.add(new RunDrive(-69));
+				commandList.add(new RunDrive(-79));
+				commandList.add(new RunTurn(-89));
+				commandList.add(new RunDrive(-66));
 			} else {
 				commandList.add(new RunDrive(-76));
 				commandList.add(new RunTurn(87));
@@ -40,7 +40,7 @@ public class AirShipSide extends AutonomousSequence {
 			break;
 		case Blue:
 			if (doCorner) {
-				commandList.add(new RunDrive(-61));
+				commandList.add(new RunDrive(-65));
 				commandList.add(new RunTurn(60));
 				commandList.add(new RunDrive(-78));
 			} else {

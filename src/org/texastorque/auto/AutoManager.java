@@ -5,10 +5,10 @@ import java.util.LinkedList;
 
 import org.texastorque.auto.drive.AirShipCenter;
 import org.texastorque.auto.drive.AirShipSide;
+import org.texastorque.auto.shooter.VisionTest;
 import org.texastorque.auto.util.Side;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.HumanInput;
-import org.texastorque.io.RobotOutput;
 import org.texastorque.subsystem.Climber;
 import org.texastorque.subsystem.DriveBase;
 import org.texastorque.subsystem.FlyWheel;
@@ -96,6 +96,7 @@ public class AutoManager {
 			case 6:
 				break;
 			case 7:
+				commandList.addAll(new VisionTest().getCommands());
 				break;
 			}
 			prevCommandNum.addLast(autoMode % 10);

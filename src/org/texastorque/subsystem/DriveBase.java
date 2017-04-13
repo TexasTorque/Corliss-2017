@@ -49,7 +49,7 @@ public class DriveBase extends Subsystem {
 	private boolean kiddieMode = false;
 
 	public enum DriveType {
-		TELEOP, TELEOPGEARPLACE, AUTODRIVE, AUTOTURN, AUTOOVERRIDE, AUTOIRDRIVE;
+		TELEOP, TELEOPGEARPLACE, AUTODRIVE, AUTOTURN, AUTOOVERRIDE, AUTOVISIONTURN, AUTOIRDRIVE;
 	}
 
 	private DriveType type = DriveType.TELEOP;
@@ -119,6 +119,14 @@ public class DriveBase extends Subsystem {
 				leftSpeed = 0;
 				rightSpeed = 0;
 			}
+			previousError = error;
+			break;
+		case AUTOVISIONTURN:
+			error = -f.getPX_HorizontalDegreeOff();
+			System.out.println("db_angle: " + f.getDB_angle());
+			leftSpeed = leftRIMP.calculate(-error, f.getDB_angleRate());
+			rightSpeed = -leftSpeed;
+			System.out.println("leftSpeed: " + leftSpeed);
 			previousError = error;
 			break;
 		case AUTODRIVE:
@@ -200,8 +208,8 @@ public class DriveBase extends Subsystem {
 	
 	private void run() {
 		if (kiddieMode) {
-			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .3);
-			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .3);
+			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .45);
+			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .45);
 		} else {
 			leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
 			rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);

@@ -66,8 +66,8 @@ public class RobotOutput {
 
 		FW_light = new Relay(Ports.FW_LIGHT, Relay.Direction.kBoth);
 		
-		IN_upper = new TorqueMotor(new VictorSP(Ports.IN_UPPER), flipIntake);
-		IN_lower = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
+		IN_upper = new TorqueMotor(new VictorSP(Ports.IN_LOWER), flipIntake);
+		IN_lower = new TorqueMotor(new VictorSP(Ports.IN_UPPER), flipIntake);
 
 		TW_leftSole = new TorqueMotor(new VictorSP(Ports.TW_LEFT), flipTwinsters);
 		TW_rightSole = new TorqueMotor(new VictorSP(Ports.TW_RIGHT), !flipTwinsters);
@@ -140,6 +140,7 @@ public class RobotOutput {
 	public void setIntakeSpeed(double upperSpeed, double lowerSpeed) {
 		upperSpeed = TorqueMathUtil.constrain(upperSpeed, Constants.IN_LIMIT.getDouble());
 		IN_upper.set(upperSpeed);
+		IN_lower.set(lowerSpeed);
 	}
 
 	/**
