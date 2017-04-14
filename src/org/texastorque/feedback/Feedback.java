@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueEncoder;
+import org.texastorque.torquelib.util.TorqueMathUtil;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -75,8 +76,12 @@ public class Feedback {
 	private boolean PX_goodPacket = false;
 	
 	private int leftRateLogSize = 20;
-	private ArrayList<Double> leftRateLog = new ArrayList<>(leftRateLogSize);
-		
+	private ArrayList<Double> leftRateLog;
+	
+	private int rightRateLogSize = 20;
+	private ArrayList<Double> rightRateLog;
+	
+	
 	public Feedback() {
 		init();
 	}
@@ -94,6 +99,18 @@ public class Feedback {
 		GC_encoder = new TorqueEncoder(Ports.GC_A, Ports.GC_B, false, EncodingType.k4X);
 		
 		pixy = new Pixy();
+
+		leftRateLog = new ArrayList<Double>(leftRateLogSize);
+		rightRateLog = new ArrayList<Double>(rightRateLogSize);
+		
+		initializeLists();
+	}
+	
+	public void disableInit() {
+//		leftRateLog = new ArrayList<Double>(leftRateLogSize);
+//		rightRateLog = new ArrayList<Double>(rightRateLogSize);
+//		
+//		initializeLists();
 	}
 	
 	public void update() {
@@ -125,9 +142,6 @@ public class Feedback {
 			DB_distance = -1;
 		}
 		
-		SmartDashboard.putNumber("DB_DISTANCE", DB_distance);
-		SmartDashboard.putNumber("DB_ULTRASONIC", DB_ultrasonic.getAverageVoltage());
-		
 		FW_leftDistance = FW_leftEncoder.getDistance();
 		FW_rightDistance = FW_rightEncoder.getDistance();
 		
@@ -135,6 +149,20 @@ public class Feedback {
 		FW_leftRate = FW_leftEncoder.getAverageRate() * C_FLYWHEEL;
 		FW_rightRate = FW_rightEncoder.getAverageRate() * C_FLYWHEEL;
 		
+		if(FW_leftRate != 0) {
+			leftRateLog.remove(leftRateLogSize - 1);
+			leftRateLog.add(0,FW_leftRate);
+			FW_leftRate = sumLeftRate();
+		} else {
+			FW_leftRate = sumLeftRate();
+		}
+		if(FW_rightRate != 0) {
+			rightRateLog.remove(rightRateLogSize-1);
+			rightRateLog.add(0,FW_rightRate);
+			FW_rightRate = sumRightRate();
+		} else {
+			FW_rightRate = sumRightRate();
+		}
 		
 		try {
 			PixyPacket one = pixy.readPacket(1);
@@ -159,6 +187,29 @@ public class Feedback {
 //	public double getFW_LeftRateAverage() {
 //		leftRateLog.add(0,FW_leftEncoder.getA)
 //	}
+	
+	private void initializeLists() {
+		for(int x = 0; x < leftRateLogSize; x++) {
+			leftRateLog.add(0d);
+		}
+		for(int x = 0; x < rightRateLogSize; x++) {
+			rightRateLog.add(0d);
+		}
+	}
+	
+	private double sumLeftRate() {
+		double sum = 0;
+		for(double num : leftRateLog)
+			sum+=num;
+		return sum/leftRateLogSize;
+	}
+	
+	private double sumRightRate() {
+		double sum = 0;
+		for(double num : rightRateLog)
+			sum+=num;
+		return sum/rightRateLogSize;
+	}
 	
 	public double getDB_distance() {
 		return DB_distance;
@@ -226,8 +277,6 @@ public class Feedback {
 	}
 	
 	public void smartDashboard() {
-		
-		leftRateLogSize = (int)SmartDashboard.getNumber("DB_SAMPLESIZE", leftRateLogSize);
 		
 		SmartDashboard.putNumber("DB_LEFTPOSITION", DB_leftDistance);
 		SmartDashboard.putNumber("DB_RIGHTPOSITION", DB_rightDistance);

@@ -38,10 +38,10 @@ public class FlyWheel extends Subsystem {
 //	temporary vars for experimentation with flywheel
 	private boolean hasTriggered = false;
 	private double cachedTime;
-	private boolean temporaryOverride = true;
+	private boolean temporaryOverride = false;
 	private TorqueRIMP leftRIMP;
 	private TorqueRIMP rightRIMP;
-	private boolean temporaryRIMPTest;
+	private boolean temporaryRIMPTest = true;
 
 	public FlyWheel() {
 		init();
@@ -113,14 +113,21 @@ public class FlyWheel extends Subsystem {
 
 	private void run() {
 		if(temporaryRIMPTest) {
-			double error = i.getFW_leftSetpoint() - f.getFW_leftRate();
+			double error;
+			setpointLeft = i.getFW_leftSetpoint();
+			setpointRight = i.getFW_rightSetpoint();
+			error = setpointLeft - f.getFW_leftRate();
 			leftSpeed = leftRIMP.calculate(error, f.getFW_leftRate());
-			error = i.getFW_rightSetpoint() - f.getFW_rightRate();
+			error = setpointRight - f.getFW_rightRate();
 			rightSpeed = rightRIMP.calculate(error, f.getFW_rightRate());
+			System.out.println(leftSpeed);
 			if(leftSpeed < 0)
 				leftSpeed = 0;
 			if(rightSpeed < 0)
 				rightSpeed = 0;
+			gateSpeed = i.getFW_gateSpeed();
+			hood = i.getFW_hood();
+			
 		} else {
 			setpointLeft = i.getFW_leftSetpoint();
 			setpointRight = i.getFW_rightSetpoint();
@@ -183,10 +190,10 @@ public class FlyWheel extends Subsystem {
 					add = .54;
 			}
 			System.out.println(add);
-			RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
 			RobotOutput.getInstance().setFlyWheelSpeed(.53 + add , .53 + add);
 		} else {
 //			RobotOutput.getInstance().setFlyWheelSpeed(.2, .2);
+			RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
 			RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
 			if(!DriverStation.getInstance().isAutonomous())
 				RobotOutput.getInstance().setHoodSpeed(hood);

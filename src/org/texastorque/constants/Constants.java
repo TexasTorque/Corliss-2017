@@ -19,7 +19,7 @@ public class Constants {
 	public static final Constant FW_R_P = new Constant("FW_R_P",0);
 	public static final Constant FW_ACCEPTABLE = new Constant("FW_ACCEPTABLE", 50);
 	
-	public static final Constant FW_RIMP_P = new Constant("FW_RIMP_P", .078);
+	public static final Constant FW_RIMP_P = new Constant("FW_RIMP_P", .001); //.001
 	public static final Constant FW_RIMP_V = new Constant("FW_RIMP_V", 0);
 	public static final Constant FW_RIMP_ffV = new Constant("FW_RIMP_ffV", 0);
 	public static final Constant FW_RIMP_ffA = new Constant("FW_RIMP_ffA", 0);

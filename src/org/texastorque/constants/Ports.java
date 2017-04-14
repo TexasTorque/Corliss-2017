@@ -10,8 +10,8 @@ public class Ports {
 	// drivebase ports
 	public static final int DB_LEFTFORE = isAlpha ? 3 : 18;
 	public static final int DB_LEFTREAR = isAlpha ? 2 : 7;
-	public static final int DB_RIGHTFORE = isAlpha ? 1 : 17;
-	public static final int DB_RIGHTREAR = isAlpha ? 0 : 16;
+	public static final int DB_RIGHTFORE = isAlpha ? 1 : 17; //17
+	public static final int DB_RIGHTREAR = isAlpha ? 0 : 16; //16
 	public static final int DB_SHIFT_A = 0;
 	public static final int DB_SHIFT_B = 1;
 	// shooter ports

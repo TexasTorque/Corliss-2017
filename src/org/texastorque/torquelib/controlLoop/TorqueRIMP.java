@@ -48,7 +48,7 @@ public class TorqueRIMP extends ControlLoop {
 	}
 
 	public double calculate(double currentError, double currentVelocity) {
-		double voltageAdjustment = tunedVoltage / ds.getBatteryVoltage();
+		double voltageAdjustment = 1; // tunedVoltage / ds.getBatteryVoltage();
 
 		calculateDT();
 		
