@@ -1,5 +1,6 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.io.HumanInput;
 import org.texastorque.io.RobotOutput;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,7 +54,8 @@ public class Twinsters extends Subsystem {
 	}
 	
 	private void output() {
-		RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed);
+		if(i instanceof HumanInput)
+			RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed);
 	}
 	
 	@Override

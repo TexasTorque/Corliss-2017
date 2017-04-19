@@ -2,6 +2,7 @@ package org.texastorque.auto.drive;
 
 import org.texastorque.auto.AutonomousSequence;
 import org.texastorque.auto.gear.PlaceGearSequence;
+import org.texastorque.auto.util.Pause;
 
 public class AirShipCenter extends AutonomousSequence {
 
@@ -14,7 +15,7 @@ public class AirShipCenter extends AutonomousSequence {
 	
 	@Override
 	public void init() {
-		commandList.add(new RunDrive(-76, .125));
+		commandList.add(new RunDrive(-79, .0125, 1.25));
 		commandList.addAll(new PlaceGearSequence().getCommands());
 	}
 	

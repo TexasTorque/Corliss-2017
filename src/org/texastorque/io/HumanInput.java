@@ -1,6 +1,8 @@
 package org.texastorque.io;
 
 import org.texastorque.constants.Constants;
+import org.texastorque.feedback.Feedback;
+import org.texastorque.subsystem.DriveBase;
 import org.texastorque.torquelib.util.GenericController;
 import org.texastorque.torquelib.util.TorqueToggle;
 
@@ -45,7 +47,6 @@ public class HumanInput extends Input {
 		doLayupShot = new TorqueToggle(false);
 		doLongShot = new TorqueToggle(false);
 		driverFineControl = new TorqueToggle(false);
-		System.out.println("INITED HUMAN INPUT");
 		intaking = false;
 	}
 
@@ -78,7 +79,8 @@ public class HumanInput extends Input {
 
 	public void updateDrive() {
 		DB_leftSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
-
+		DB_rightSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
+		
 		driverFineControl.calc(driver.getRightStickClick());
 		if (driverFineControl.get()) {
 			DB_rightSpeed *= .5;
@@ -121,8 +123,8 @@ public class HumanInput extends Input {
 		if (FW_setpointShift < 0) {
 			FW_setpointShift = 0;
 		}
-		FW_leftSetpoint = FW_setpointShift-300;
-		FW_rightSetpoint = FW_setpointShift-150;
+		FW_leftSetpoint = FW_setpointShift;
+		FW_rightSetpoint = FW_setpointShift;
 		if (FW_rightSetpoint < 0) {
 			FW_rightSetpoint = 0;
 		}
@@ -134,6 +136,9 @@ public class HumanInput extends Input {
 		} else {
 			RobotOutput.getInstance().setLight(false);
 		}
+//		if (operator.getRightStickClick()) {
+//			DriveBase.getInstance().visionAlign();
+//		}
 	}
 
 	public void updateShooterOverride() {
@@ -247,7 +252,7 @@ public class HumanInput extends Input {
 	
 	public void updateGates() {
 		if (operator.getXButton()) {
-			FW_gateSpeed = .8; // + (getFW_leftSetpoint() -
+			FW_gateSpeed = 1; // + (getFW_leftSetpoint() -
 								// Feedback.getInstance().getFW_leftRate()) *
 								// .01;
 			G_press = true;
@@ -287,18 +292,37 @@ public class HumanInput extends Input {
 		} else {
 			GR_open = false;
 		}
-		if (driver.getBButton()) {
-			GH_extended = true;
-			RobotOutput.getInstance().setGearCollectorSpeed(-1);
-			GC_override = true;
+		if (operator.getBButton()) {
+			setGC_down(true);
 		} else {
-			GH_extended = false;
-			GC_override = false;
+			setGC_down(false);
+		}
+		if(driver.getBButton()) {
+			GC_outakeSpeed = -1;
+			setGC_outake(true);
+		} else {
+			GC_outakeSpeed = 0;
+			setGC_outake(false);
 		}
 		if (operator.getBButton()) {
 			GC_down = true;
 		} else {
 			GC_down = false;
+		}
+		if(operator.getLeftStickClick()) {
+			GC_intake = true;
+		} else {
+			GC_intake = false;
+		}
+		if(operator.getRightStickClick() && !operator.getLeftBumper()) {
+			GC_reset = true;
+			hasGC_reset = true;
+		} else {
+			GC_reset = false;
+			if(hasGC_reset) {
+				Feedback.getInstance().resetGC_Encoder();
+				hasGC_reset = false;
+			}
 		}
 	}// update gear
 

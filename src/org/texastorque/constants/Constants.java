@@ -13,18 +13,25 @@ public class Constants {
 	public static final Constant FW_SS = new Constant("FW_SMALLSHIFT",10);
 	public static final Constant FW_LS = new Constant("FW_LARGESHIFT",100);
 	public static final Constant FW_LIMIT = new Constant("FW_LIMIT",1);
-	public static final Constant FW_LONGSHOT = new Constant("FW_LONGSHOT",3200);
+	public static final Constant FW_LONGSHOT = new Constant("FW_LONGSHOT",3900);
 	public static final Constant FW_LAYUPSHOT = new Constant("FW_LAYUP",3200);
 	
 	public static final Constant FW_R_P = new Constant("FW_R_P",0);
 	public static final Constant FW_ACCEPTABLE = new Constant("FW_ACCEPTABLE", 50);
 	
-	public static final Constant FW_RIMP_P = new Constant("FW_RIMP_P", .001); //.001
-	public static final Constant FW_RIMP_V = new Constant("FW_RIMP_V", 0);
-	public static final Constant FW_RIMP_ffV = new Constant("FW_RIMP_ffV", 0);
-	public static final Constant FW_RIMP_ffA = new Constant("FW_RIMP_ffA", 0);
-	public static final Constant FW_MVELOCITY = new Constant("FW_MVELOCITY",100d);
-	public static final Constant FW_MACCELERATION = new Constant("FW_MACCELERATION",200d);
+	public static final Constant FW_L_RIMP_P = new Constant("FW_L_RIMP_P", .0008); //.001
+	public static final Constant FW_L_RIMP_V = new Constant("FW_L_RIMP_V", 0);
+	public static final Constant FW_L_RIMP_ffV = new Constant("FW_L_RIMP_ffV", 0);
+	public static final Constant FW_L_RIMP_ffA = new Constant("FW_L_RIMP_ffA", 0);
+	public static final Constant FW_L_MVELOCITY = new Constant("FW_L_MVELOCITY",100d);
+	public static final Constant FW_L_MACCELERATION = new Constant("FW_L_MACCELERATION",200d);
+	
+	public static final Constant FW_R_RIMP_P = new Constant("FW_R_RIMP_P", .0008); //.001
+	public static final Constant FW_R_RIMP_V = new Constant("FW_R_RIMP_V", 0);
+	public static final Constant FW_R_RIMP_ffV = new Constant("FW_R_RIMP_ffV", 0);
+	public static final Constant FW_R_RIMP_ffA = new Constant("FW_R_RIMP_ffA", 0);
+	public static final Constant FW_R_MVELOCITY = new Constant("FW_R_MVELOCITY",100d);
+	public static final Constant FW_R_MACCELERATION = new Constant("FW_R_MACCELERATION",200d);
 	
 	
 //	intake
@@ -61,8 +68,8 @@ public class Constants {
 //	gear collector
 	public static final Constant GC_MVELOCITY = new Constant("GC_MVELOCITY",400d);
 	public static final Constant GC_MACCELERATION = new Constant("GC_MACCELERATION",1200d);
-	public static final Constant GC_LEFT_PV_P = new Constant("GC_LEFT_PV_P", .01);
-	public static final Constant GC_LEFT_PV_V = new Constant("GC_LEFT_PV_V", .0);
-	public static final Constant GC_LEFT_PV_ffV = new Constant("GC_LEFT_PV_ffV", 0.0);
-	public static final Constant GC_LEFT_PV_ffA = new Constant("GC_LEFT_PV_ffA", 0.0);
+	public static final Constant GC_PV_P = new Constant("GC_PV_P", .01);
+	public static final Constant GC_PV_V = new Constant("GC_PV_V", .0);
+	public static final Constant GC_PV_ffV = new Constant("GC_PV_ffV", 0.0);
+	public static final Constant GC_PV_ffA = new Constant("GC_PV_ffA", 0.0);
 }

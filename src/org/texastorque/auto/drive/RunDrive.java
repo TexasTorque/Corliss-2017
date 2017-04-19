@@ -10,8 +10,15 @@ public class RunDrive extends AutonomousCommand {
 	private double distance;
 	private double precision;
 	
-	private final double DCONSTANT = .028;
+	private final double DCONSTANT = .056;
 	private final double DPRECISION = .125;
+	private double dTime = -999;
+	
+	public RunDrive(double distance, double precision, double time) {
+		this.distance = distance;
+		this.precision = precision;
+		dTime = time;
+	}
 	
 	public RunDrive(double distance, double precision) {
 		this.distance = distance;
@@ -24,12 +31,16 @@ public class RunDrive extends AutonomousCommand {
 	}
 	
 	public void run() {
+		output.upShift(false);
 		Feedback.getInstance().resetDB_gyro();
 		Feedback.getInstance().resetDB_encoders();
 		output.upShift(false);
 		input.setDB_driveSetpoint(distance, precision);
 		driveBase.setType(DriveType.AUTODRIVE);
-		AutoManager.pause(distance*DCONSTANT);
+		if(dTime != -999)
+			AutoManager.pause(dTime);
+		else
+			AutoManager.pause(distance*DCONSTANT);
 	}
 	
 	public void reset() {

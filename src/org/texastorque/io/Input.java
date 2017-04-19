@@ -32,7 +32,12 @@ public class Input {
 	protected boolean GH_extended;
 	protected boolean GC_down;
 	protected boolean GC_override;
+	protected boolean GC_reset;
+	protected boolean hasGC_reset = false;
 	protected boolean G_press = false;
+	protected boolean GC_outake;
+	protected boolean GC_intake;
+	protected double GC_outakeSpeed;
 
 	protected boolean flipCheck;
 	protected boolean doRumble;
@@ -69,11 +74,11 @@ public class Input {
 
 //  flywheel
 	public double getFW_leftSetpoint() {
-		return FW_leftSetpoint;
+		return FW_leftSetpoint-175;
 	}
 
 	public double getFW_rightSetpoint() {
-		return FW_rightSetpoint;
+		return FW_rightSetpoint-175;
 	}
 
 	public double getFW_gateSpeed() {
@@ -121,11 +126,31 @@ public class Input {
 	}
 
 	public double getGC_setpoint() {
-		return GC_down ? 90 : -10;
+		return GC_down ? 100 : 0;
+	}
+	
+	public double getGC_outakeSetpoint() {
+		return GC_outake ? 60 : 0;
 	}
 
 	public boolean getGC_down() {
 		return GC_down;
+	}
+	
+	public boolean getGC_outake() {
+		return GC_outake;
+	}
+	
+	public double getGC_outakeSpeed() {
+		return GC_outakeSpeed;
+	}
+	
+	public boolean getGC_intake() {
+		return GC_intake;
+	}
+	
+	public boolean getGC_reset() {
+		return GC_reset;
 	}
 
 //	drivebase
@@ -137,6 +162,10 @@ public class Input {
 	public void setDB_turnSetpoint(double setpoint, double precision) {
 		DB_turnSetpoint = setpoint + Feedback.getInstance().getDB_angle();
 		DB_precision = precision;
+	}
+	
+	public void setUpShift(boolean shift) {
+		DB_shiftSole = shift;
 	}
 
 //	flywheel
@@ -173,6 +202,14 @@ public class Input {
 //	gear
 	public void setGC_down(boolean down) {
 		GC_down = down;
+	}
+	
+	public void setGC_outake(boolean out) {
+		GC_outake = out;
+	}
+	
+	public void setGC_outakeSpeed(double speed) {
+		GC_outakeSpeed = speed;
 	}
 
 //	misc

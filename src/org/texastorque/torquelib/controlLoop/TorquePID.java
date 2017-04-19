@@ -170,7 +170,6 @@ public class TorquePID extends ControlLoop {
 	 * @return Motor output to the system.
 	 */
 	public double calculate(double currentValue) {
-		double voltageAdjustment = tunedVoltage / ds.getBatteryVoltage();
 		if (firstCycle) {
 			lastTime = Timer.getFPGATimestamp();
 			lastLimitedTime = Timer.getFPGATimestamp();
@@ -184,7 +183,7 @@ public class TorquePID extends ControlLoop {
 
 		// ----- Error -----
 		prevError = error;
-		error = (setpoint - currentValue) / setpoint;
+		error = setpoint - currentValue;
 
 		// ----- P Calculation -----
 		output += kP * error;

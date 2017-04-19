@@ -29,31 +29,47 @@ public class AirShipSide extends AutonomousSequence {
 		switch (alliance) {
 		case Red:
 			if (doCorner) {
-				commandList.add(new RunDrive(-79));
-				commandList.add(new RunTurn(-89));
-				commandList.add(new RunDrive(-66));
+				commandList.add(new RunDrive(-81, .125, 2));
+				switch(side) {
+				case LEFT:
+					commandList.add(new RunTurn(89, .125, 2));
+					commandList.add(new RunDrive(-64, 0, 1.5));
+					break;
+				case RIGHT:
+					commandList.add(new RunTurn(-89, .125, 2));
+					commandList.add(new RunDrive(-61, 0, 1.5));
+					break;
+				}
 			} else {
-				commandList.add(new RunDrive(-76));
-				commandList.add(new RunTurn(87));
-				commandList.add(new RunDrive(-66));
+				commandList.add(new RunDrive(-80, .125, 2));
+				commandList.add(new RunTurn(87, .125, 2));
+				commandList.add(new RunDrive(-65, 0, 2));
 			}
 			break;
 		case Blue:
 			if (doCorner) {
-				commandList.add(new RunDrive(-65));
-				commandList.add(new RunTurn(60));
-				commandList.add(new RunDrive(-78));
+				switch(side) {
+				case LEFT:
+					commandList.add(new RunDrive(-65, .125, 2.5));
+					commandList.add(new RunTurn(60, .125, 1));
+					commandList.add(new RunDrive(-80, 0, 2.5));
+					break;
+				case RIGHT:
+					commandList.add(new RunDrive(-67, .125, 2.5));
+					commandList.add(new RunTurn(-57, .125, 1));
+					commandList.add(new RunDrive(-73, 0, 2.5));
+					break;
+				}
 			} else {
-				commandList.add(new RunDrive(-88));
-				commandList.add(new RunTurn(111.25));
-				commandList.add(new RunDrive(-85));
+				commandList.add(new RunDrive(-88, .125));
+				commandList.add(new RunTurn(111.25, .125, 2));
+				commandList.add(new RunDrive(-85, 0));
 			}
 			break;
 		default:
 			break;
 		}
 		if (doGear) {
-			commandList.addAll(new PlaceGearSequence().getCommands());
 			commandList.addAll(new PlaceGearSequence().getCommands());
 		}
 	}

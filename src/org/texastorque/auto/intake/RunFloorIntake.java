@@ -7,7 +7,7 @@ public class RunFloorIntake extends AutonomousCommand {
 	private IntakeState state;
 	
 	public enum IntakeState {
-		INTAKE, OUTAKE, IDLE;
+		INTAKE, OUTAKE, IDLE, INTAKEHOPPER;
 	}
 	
 	public RunFloorIntake(IntakeState state) {
@@ -18,7 +18,10 @@ public class RunFloorIntake extends AutonomousCommand {
 	public void run() {
 		switch(state) {
 			case INTAKE:
-				output.setIntakeSpeed(1, 1);
+				output.setIntakeSpeed(1, -1);
+				break;
+			case INTAKEHOPPER:
+				output.setIntakeSpeed(1, .3);
 				break;
 			case OUTAKE:
 				output.setIntakeSpeed(-1, -1);

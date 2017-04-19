@@ -5,10 +5,12 @@ import java.util.LinkedList;
 
 import org.texastorque.auto.drive.AirShipCenter;
 import org.texastorque.auto.drive.AirShipSide;
+import org.texastorque.auto.shooter.DriveToHopper;
 import org.texastorque.auto.shooter.VisionTest;
 import org.texastorque.auto.util.Side;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.HumanInput;
+import org.texastorque.io.RobotOutput;
 import org.texastorque.subsystem.Climber;
 import org.texastorque.subsystem.DriveBase;
 import org.texastorque.subsystem.FlyWheel;
@@ -62,7 +64,23 @@ public class AutoManager {
 			}
 		}
 		isFinished = false;
-		System.out.println("FINISHED, TIME LEFT: " + (Timer.getFPGATimestamp() - startTime));
+		aggregateTime = Timer.getFPGATimestamp() - startTime;
+	}
+	
+	public static void pauseTeleop(double time) {
+		double startTime = Timer.getFPGATimestamp();
+		time = Math.abs(time);
+		while (DriverStation.getInstance().isOperatorControl() && !isFinished && Timer.getFPGATimestamp() - startTime < time) {
+			Feedback.getInstance().update();
+			HumanInput.getInstance().smartDashboard();
+			Feedback.getInstance().smartDashboard();
+			AutoManager.SmartDashboard();
+			for(Subsystem system : subsystems) {
+				system.autoContinuous();
+				system.smartDashboard();
+			}
+		}
+		isFinished = false;
 		aggregateTime = Timer.getFPGATimestamp() - startTime;
 	}
 
@@ -75,7 +93,7 @@ public class AutoManager {
 
 		LinkedList<Integer> prevCommandNum = new LinkedList<>();
 		commandList = new LinkedList<>();
-
+		RobotOutput.getInstance().setGearCollectorSpeed(0);
 		while (autoMode > 0) {
 			switch (autoMode % 10) {
 			case 0:
@@ -92,6 +110,7 @@ public class AutoManager {
 				commandList.addAll(new AirShipSide(true, true, Side.RIGHT).getCommands());
 				break;
 			case 5:
+				commandList.addAll(new DriveToHopper().getCommands());
 				break;
 			case 6:
 				break;

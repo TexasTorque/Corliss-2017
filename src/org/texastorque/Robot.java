@@ -53,7 +53,6 @@ public class Robot extends TorqueIterative {
 			system.disabledInit();
 			system.setInput(HumanInput.getInstance());
 		}
-		Feedback.getInstance().disableInit();
 	}
 	
 	@Override

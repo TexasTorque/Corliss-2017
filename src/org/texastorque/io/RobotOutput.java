@@ -79,7 +79,7 @@ public class RobotOutput {
 		GH_sole = new Solenoid(Ports.GH_SOLE);
 		
 		GC_angleMotor = new TorqueMotor(new VictorSP(Ports.GC_ANGLE), false);
-		GC_intakeMotor = new TorqueMotor(new VictorSP(Ports.GC_INTAKE), false);
+		GC_intakeMotor = new TorqueMotor(new VictorSP(Ports.GC_INTAKE), true);
 	}
 
 	/**

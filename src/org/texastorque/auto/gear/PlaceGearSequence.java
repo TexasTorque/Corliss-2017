@@ -2,6 +2,7 @@ package org.texastorque.auto.gear;
 
 import org.texastorque.auto.AutonomousSequence;
 import org.texastorque.auto.drive.RunDrive;
+import org.texastorque.auto.util.Pause;
 
 public class PlaceGearSequence extends AutonomousSequence {
 
@@ -11,9 +12,9 @@ public class PlaceGearSequence extends AutonomousSequence {
 	
 	@Override
 	public void init() {
-		System.out.println("INITIALIZED");
 		commandList.addLast(new ToggleGearHolder(true));
-		commandList.addLast(new RunDrive(12));
+		commandList.addLast(new Pause(1.25));
+		commandList.addLast(new RunDrive(12, .125, 2));
 		commandList.addLast(new ToggleGearHolder(false));
 	}
 	

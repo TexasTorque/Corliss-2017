@@ -86,13 +86,13 @@ public class FlyWheel extends Subsystem {
 		leftFlywheelControl.setTunedVoltage(Constants.TUNED_VOLTAGE.getDouble());
 		rightFlywheelControl.setTunedVoltage(Constants.TUNED_VOLTAGE.getDouble());
 		
-		rightRIMP = new TorqueRIMP(Constants.FW_MVELOCITY.getDouble(), Constants.FW_MACCELERATION.getDouble(), 0);
-		leftRIMP = new TorqueRIMP(Constants.FW_MVELOCITY.getDouble(), Constants.FW_MACCELERATION.getDouble(), 0);
+		rightRIMP = new TorqueRIMP(Constants.FW_R_MVELOCITY.getDouble(), Constants.FW_R_MACCELERATION.getDouble(), 0);
+		leftRIMP = new TorqueRIMP(Constants.FW_L_MVELOCITY.getDouble(), Constants.FW_L_MACCELERATION.getDouble(), 0);
 		
-		leftRIMP.setGains(Constants.FW_RIMP_P.getDouble(), Constants.FW_RIMP_V.getDouble(),
-				Constants.FW_RIMP_ffV.getDouble(), Constants.FW_RIMP_ffA.getDouble());
-		rightRIMP.setGains(Constants.FW_RIMP_P.getDouble(), Constants.FW_RIMP_V.getDouble(),
-				Constants.FW_RIMP_ffV.getDouble(), Constants.FW_RIMP_ffA.getDouble());
+		leftRIMP.setGains(Constants.FW_L_RIMP_P.getDouble(), Constants.FW_L_RIMP_V.getDouble(),
+				Constants.FW_L_RIMP_ffV.getDouble(), Constants.FW_L_RIMP_ffA.getDouble());
+		rightRIMP.setGains(Constants.FW_R_RIMP_P.getDouble(), Constants.FW_R_RIMP_V.getDouble(),
+				Constants.FW_R_RIMP_ffV.getDouble(), Constants.FW_R_RIMP_ffA.getDouble());
 
 	}
 
@@ -133,8 +133,8 @@ public class FlyWheel extends Subsystem {
 			setpointRight = i.getFW_rightSetpoint();
 			if (setpointLeft != 0) {
 				doLight = true;
-				leftFlywheelControl.setSetpoint(1);
-				leftSpeed = leftFlywheelControl.calculate(Feedback.getInstance().getFW_leftRate() / setpointLeft);
+				leftFlywheelControl.setSetpoint(setpointLeft);
+				leftSpeed = leftFlywheelControl.calculate(Feedback.getInstance().getFW_leftRate());
 				if (leftSpeed < 0)
 					leftSpeed = 0;
 			} else {
@@ -144,8 +144,8 @@ public class FlyWheel extends Subsystem {
 			}
 			if (setpointRight != 0) {
 				doLight = true;
-				rightFlywheelControl.setSetpoint(1);
-				rightSpeed = rightFlywheelControl.calculate(Feedback.getInstance().getFW_rightRate() / setpointRight);
+				rightFlywheelControl.setSetpoint(setpointRight);
+				rightSpeed = rightFlywheelControl.calculate(Feedback.getInstance().getFW_rightRate());
 				if (rightSpeed < 0)
 					rightSpeed = 0;
 			} else {
@@ -194,9 +194,10 @@ public class FlyWheel extends Subsystem {
 		} else {
 //			RobotOutput.getInstance().setFlyWheelSpeed(.2, .2);
 			RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
-			RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
-			if(!DriverStation.getInstance().isAutonomous())
+			if(!DriverStation.getInstance().isAutonomous()) {
+				RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
 				RobotOutput.getInstance().setHoodSpeed(hood);
+			}
 		}
 	}
 

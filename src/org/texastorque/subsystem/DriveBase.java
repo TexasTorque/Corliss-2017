@@ -3,7 +3,7 @@ package org.texastorque.subsystem;
 import org.texastorque.auto.AutoManager;
 import org.texastorque.constants.Constants;
 import org.texastorque.feedback.Feedback;
-import org.texastorque.io.RobotOutput;
+import org.texastorque.io.HumanInput;
 import org.texastorque.torquelib.controlLoop.TorquePV;
 import org.texastorque.torquelib.controlLoop.TorqueRIMP;
 import org.texastorque.torquelib.controlLoop.TorqueTMP;
@@ -49,7 +49,7 @@ public class DriveBase extends Subsystem {
 	private boolean kiddieMode = false;
 
 	public enum DriveType {
-		TELEOP, TELEOPGEARPLACE, AUTODRIVE, AUTOTURN, AUTOOVERRIDE, AUTOVISIONTURN, AUTOIRDRIVE;
+		TELEOP, TELEOPGEARPLACE, AUTODRIVE, AUTOTURN, AUTOOVERRIDE, AUTOVISIONTURN, AUTOIRDRIVE, WAIT;
 	}
 
 	private DriveType type = DriveType.TELEOP;
@@ -123,10 +123,8 @@ public class DriveBase extends Subsystem {
 			break;
 		case AUTOVISIONTURN:
 			error = -f.getPX_HorizontalDegreeOff();
-			System.out.println("db_angle: " + f.getDB_angle());
 			leftSpeed = leftRIMP.calculate(-error, f.getDB_angleRate());
 			rightSpeed = -leftSpeed;
-			System.out.println("leftSpeed: " + leftSpeed);
 			previousError = error;
 			break;
 		case AUTODRIVE:
@@ -190,9 +188,6 @@ public class DriveBase extends Subsystem {
 		case TELEOP:
 			leftSpeed = i.getDB_leftSpeed();
 			rightSpeed = i.getDB_rightSpeed();
-			if (f.getDB_leftRate() < -20 && f.getDB_rightRate() < -20 && i.flipCheck()) {
-				leftSpeed = rightSpeed = 0.0;
-			}
 			upShift = i.getUpShift();
 			break;
 		default:
@@ -207,18 +202,37 @@ public class DriveBase extends Subsystem {
 	}
 	
 	private void run() {
-		if (kiddieMode) {
-			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .45);
-			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .45);
-		} else {
-			leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
-			rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
+//		if (kiddieMode) {
+//			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .45);
+//			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .45);
+//		} else {
+//			leftSpeed = TorqueMathUtil.constrain(leftSpeed, 1.0);
+//			rightSpeed = TorqueMathUtil.constrain(rightSpeed, 1.0);
+//		}
+		if(type == DriveType.WAIT) {
+			leftSpeed = 0;
+			rightSpeed = 0;
 		}
 		output();
 	}
 
+	public void visionAlign() {
+		Feedback.getInstance().resetDB_gyro();
+		Feedback.getInstance().resetDB_encoders();
+		setType(DriveType.AUTOVISIONTURN);
+		i.setDB_turnSetpoint(Feedback.getInstance().getPX_HorizontalDegreeOff(), precision);
+		AutoManager.pauseTeleop(.5);
+		setType(DriveType.TELEOP);
+		leftSpeed = 0;
+		rightSpeed = 0;
+	}
+	
 	private void output() {
-		o.upShift(upShift);
+		if(i instanceof HumanInput) {
+			o.upShift(upShift);
+		} else {
+			o.upShift(false);
+		}
 		o.setDriveBaseSpeed(leftSpeed, rightSpeed);
 	}
 

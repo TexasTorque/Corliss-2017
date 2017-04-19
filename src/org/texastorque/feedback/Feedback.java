@@ -75,10 +75,10 @@ public class Feedback {
 	
 	private boolean PX_goodPacket = false;
 	
-	private int leftRateLogSize = 20;
+	private int leftRateLogSize = 10;
 	private ArrayList<Double> leftRateLog;
 	
-	private int rightRateLogSize = 20;
+	private int rightRateLogSize = 10;
 	private ArrayList<Double> rightRateLog;
 	
 	
@@ -104,13 +104,6 @@ public class Feedback {
 		rightRateLog = new ArrayList<Double>(rightRateLogSize);
 		
 		initializeLists();
-	}
-	
-	public void disableInit() {
-//		leftRateLog = new ArrayList<Double>(leftRateLogSize);
-//		rightRateLog = new ArrayList<Double>(rightRateLogSize);
-//		
-//		initializeLists();
 	}
 	
 	public void update() {
@@ -146,8 +139,8 @@ public class Feedback {
 		FW_rightDistance = FW_rightEncoder.getDistance();
 		
 		
-		FW_leftRate = FW_leftEncoder.getAverageRate() * C_FLYWHEEL;
-		FW_rightRate = FW_rightEncoder.getAverageRate() * C_FLYWHEEL;
+		FW_leftRate = FW_leftEncoder.getRate() * C_FLYWHEEL;
+		FW_rightRate = FW_rightEncoder.getRate() * C_FLYWHEEL;
 		
 		if(FW_leftRate != 0) {
 			leftRateLog.remove(leftRateLogSize - 1);

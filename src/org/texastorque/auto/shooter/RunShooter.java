@@ -1,13 +1,14 @@
 package org.texastorque.auto.shooter;
 
 import org.texastorque.auto.AutonomousCommand;
+import org.texastorque.constants.Constants;
 
 public class RunShooter extends AutonomousCommand {
 
 	private double setpoint;
 	
 	public enum Setpoints {
-		LAYUP(3200), LONGSHOT(3200), IDLE(0);
+		LAYUP(Constants.FW_LAYUPSHOT.getDouble()), LONGSHOT(Constants.FW_LONGSHOT.getDouble()+25), IDLE(0);
 		
 		Setpoints(double setpoint) {
 			this.setpoint = setpoint;
