@@ -54,8 +54,13 @@ public class Twinsters extends Subsystem {
 	}
 	
 	private void output() {
-		if(i instanceof HumanInput)
-			RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed);
+		if(i instanceof HumanInput) {
+			if(i.getVI_rpmsGood()) {
+				RobotOutput.getInstance().setTwinstersSpeed(1, 1);
+			} else {
+				RobotOutput.getInstance().setTwinstersSpeed(leftSpeed, rightSpeed);
+			}
+		}
 	}
 	
 	@Override

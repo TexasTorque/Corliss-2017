@@ -1,5 +1,6 @@
 package org.texastorque.subsystem;
 
+import org.texastorque.auto.shooter.RunShooter.Setpoints;
 import org.texastorque.constants.Constants;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.RobotOutput;
@@ -42,6 +43,8 @@ public class FlyWheel extends Subsystem {
 	private TorqueRIMP leftRIMP;
 	private TorqueRIMP rightRIMP;
 	private boolean temporaryRIMPTest = true;
+	private boolean isFirstVision = true;
+	private double visionDt;
 
 	public FlyWheel() {
 		init();
@@ -127,7 +130,6 @@ public class FlyWheel extends Subsystem {
 				rightSpeed = 0;
 			gateSpeed = i.getFW_gateSpeed();
 			hood = i.getFW_hood();
-			
 		} else {
 			setpointLeft = i.getFW_leftSetpoint();
 			setpointRight = i.getFW_rightSetpoint();
@@ -195,12 +197,28 @@ public class FlyWheel extends Subsystem {
 //			RobotOutput.getInstance().setFlyWheelSpeed(.2, .2);
 			RobotOutput.getInstance().setFlyWheelSpeed(leftSpeed, rightSpeed);
 			if(!DriverStation.getInstance().isAutonomous()) {
-				RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
+				if(i.getVI_rpmsGood()) {
+					RobotOutput.getInstance().setGateSpeed(1);
+				} else {
+					RobotOutput.getInstance().setGateSpeed(gateSpeed, gateSpeed);
+				}
 				RobotOutput.getInstance().setHoodSpeed(hood);
 			}
 		}
 	}
 
+	public void visionShots() {
+		setpointLeft = Setpoints.LONGSHOT.getSetpoint();
+		setpointRight = Setpoints.LAYUP.getSetpoint();
+		if(isFirstVision) {
+			isFirstVision = false;
+			visionDt = Timer.getFPGATimestamp();
+		}
+		if(Timer.getFPGATimestamp() - visionDt >= 1) {
+			i.setVI_rpmsGood(true);
+		}
+	}
+	
 	public void updatePID() {
 		leftP = SmartDashboard.getNumber("FW_PIDL_P", leftP);
 		leftI = SmartDashboard.getNumber("FW_PIDL_I", leftI);

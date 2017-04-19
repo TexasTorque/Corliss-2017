@@ -9,6 +9,8 @@ public class Input {
 	protected double DB_leftSpeed;
 	protected double DB_rightSpeed;
 	protected boolean DB_shiftSole = true;
+	protected boolean DB_runningVision = false;
+	protected boolean VI_rpmsGood = false;
 	
 	protected volatile double DB_setpoint;
 	protected volatile double DB_turnSetpoint;
@@ -152,7 +154,7 @@ public class Input {
 	public boolean getGC_reset() {
 		return GC_reset;
 	}
-
+	
 //	drivebase
 	public void setDB_driveSetpoint(double setpoint, double precision) {
 		DB_setpoint = setpoint;
@@ -215,6 +217,14 @@ public class Input {
 //	misc
 	public void setRumble(boolean rumble) {
 		doRumble = rumble;
+	}
+	
+	public void setVI_rpmsGood(boolean good) {
+		VI_rpmsGood = good;
+	}
+	
+	public boolean getVI_rpmsGood() {
+		return VI_rpmsGood;
 	}
 
 	public boolean flipCheck() {

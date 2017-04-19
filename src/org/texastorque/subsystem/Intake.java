@@ -51,8 +51,13 @@ public class Intake extends Subsystem {
 	}
 	
 	private void output() {
-		if(i instanceof HumanInput)
-			RobotOutput.getInstance().setIntakeSpeed(upperSpeed, lowerSpeed);
+		if(i instanceof HumanInput) {
+			if(i.getVI_rpmsGood()) {
+				RobotOutput.getInstance().setIntakeSpeed(1, .3);
+			} else {
+				RobotOutput.getInstance().setIntakeSpeed(upperSpeed, lowerSpeed);
+			}
+		}
 	}
 	
 	@Override

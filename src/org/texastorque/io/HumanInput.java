@@ -3,7 +3,9 @@ package org.texastorque.io;
 import org.texastorque.constants.Constants;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.subsystem.DriveBase;
+import org.texastorque.subsystem.FlyWheel;
 import org.texastorque.torquelib.util.GenericController;
+import org.texastorque.torquelib.util.TorqueMathUtil;
 import org.texastorque.torquelib.util.TorqueToggle;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -80,7 +82,7 @@ public class HumanInput extends Input {
 	public void updateDrive() {
 		DB_leftSpeed = -driver.getLeftYAxis() + driver.getRightXAxis();
 		DB_rightSpeed = -driver.getLeftYAxis() - driver.getRightXAxis();
-		
+
 		driverFineControl.calc(driver.getRightStickClick());
 		if (driverFineControl.get()) {
 			DB_rightSpeed *= .5;
@@ -92,6 +94,23 @@ public class HumanInput extends Input {
 		}
 		if (driver.getRightBumper()) {
 			DB_shiftSole = true;
+		}
+		if (driver.getYButton()) {
+			DB_runningVision = true;
+			DriveBase.getInstance().visionAlignment();
+			if (TorqueMathUtil.near(Feedback.getInstance().getPX_HorizontalDegreeOff(), 0, 2)) {
+				FlyWheel.getInstance().visionShots();
+			}
+		} else {
+			if (driver.getAButton()) {
+				DB_runningVision = true;
+				DriveBase.getInstance().visionAlignment();
+			} else {
+				if (DB_runningVision) {
+					DriveBase.getInstance().relinquishVision();
+					DB_runningVision = false;
+				}
+			}
 		}
 	}
 
@@ -136,9 +155,9 @@ public class HumanInput extends Input {
 		} else {
 			RobotOutput.getInstance().setLight(false);
 		}
-//		if (operator.getRightStickClick()) {
-//			DriveBase.getInstance().visionAlign();
-//		}
+		// if (operator.getRightStickClick()) {
+		// DriveBase.getInstance().visionAlign();
+		// }
 	}
 
 	public void updateShooterOverride() {
@@ -170,7 +189,7 @@ public class HumanInput extends Input {
 		}
 		RobotOutput.getInstance().setFlyWheelSpeed(FW_setpointShift, FW_setpointShift);
 	}
-	
+
 	public void updateShooterDeprecated() {
 		dT = Timer.getFPGATimestamp() - lT;
 		if (dT >= Constants.HI_DBDT.getDouble()) {
@@ -220,7 +239,7 @@ public class HumanInput extends Input {
 
 	public void updateHood() {
 		switchShooter.calc(operator.getXButton());
-//		hood.calc(operator.getBButton());
+		// hood.calc(operator.getBButton());
 
 		if (hood.get()) {
 			FW_hood = true;
@@ -249,7 +268,6 @@ public class HumanInput extends Input {
 		}
 	}
 
-	
 	public void updateGates() {
 		if (operator.getXButton()) {
 			FW_gateSpeed = 1; // + (getFW_leftSetpoint() -
@@ -297,7 +315,7 @@ public class HumanInput extends Input {
 		} else {
 			setGC_down(false);
 		}
-		if(driver.getBButton()) {
+		if (driver.getBButton()) {
 			GC_outakeSpeed = -1;
 			setGC_outake(true);
 		} else {
@@ -309,17 +327,17 @@ public class HumanInput extends Input {
 		} else {
 			GC_down = false;
 		}
-		if(operator.getLeftStickClick()) {
+		if (operator.getLeftStickClick()) {
 			GC_intake = true;
 		} else {
 			GC_intake = false;
 		}
-		if(operator.getRightStickClick() && !operator.getLeftBumper()) {
+		if (operator.getRightStickClick() && !operator.getLeftBumper()) {
 			GC_reset = true;
 			hasGC_reset = true;
 		} else {
 			GC_reset = false;
-			if(hasGC_reset) {
+			if (hasGC_reset) {
 				Feedback.getInstance().resetGC_Encoder();
 				hasGC_reset = false;
 			}

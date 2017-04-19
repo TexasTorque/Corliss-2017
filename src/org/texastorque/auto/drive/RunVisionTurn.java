@@ -29,7 +29,6 @@ public class RunVisionTurn extends AutonomousCommand {
 		input.setDB_turnSetpoint(theta, precision);
 		AutoManager.pause(2);
 		driveBase.setType(DriveType.WAIT);
-//		driveBase.setType(DriveType.TELEOP);
 	}
 	
 	@Override
