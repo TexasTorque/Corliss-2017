@@ -120,8 +120,14 @@ public class Gear extends Subsystem {
 			} else {
 				if(i.getGC_outake()) {
 					dt = Timer.getFPGATimestamp() - cachedTime;
-					if(dt > .75) {
-						intakeSpeed = -1;
+					if(i instanceof HumanInput) {
+						if(dt > .4) {
+							intakeSpeed = -1;
+						}
+					} else {
+						if(dt > .75) {
+							intakeSpeed = -1;
+						}
 					}
 				}
 			}

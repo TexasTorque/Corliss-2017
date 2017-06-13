@@ -222,7 +222,7 @@ public class DriveBase extends Subsystem {
 			Feedback.getInstance().resetDB_encoders();
 			setType(DriveType.AUTOVISIONTURN);
 			i.setDB_turnSetpoint(Feedback.getInstance().getPX_HorizontalDegreeOff(), precision);
-			AutoManager.pauseTeleop(1);
+			AutoManager.pauseTeleop(.1);
 		} else {
 			setType(DriveType.WAIT);
 		}

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import org.texastorque.auto.drive.AirShipCenter;
 import org.texastorque.auto.drive.AirShipSide;
+import org.texastorque.auto.drive.GearShoot;
 import org.texastorque.auto.shooter.DriveToHopper;
 import org.texastorque.auto.shooter.VisionTest;
 import org.texastorque.auto.util.Side;
@@ -116,6 +117,9 @@ public class AutoManager {
 				break;
 			case 7:
 				commandList.addAll(new VisionTest().getCommands());
+				break;
+			case 8:
+				commandList.addAll(new GearShoot().getCommands());
 				break;
 			}
 			prevCommandNum.addLast(autoMode % 10);

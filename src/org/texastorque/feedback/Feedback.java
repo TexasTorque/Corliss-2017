@@ -6,6 +6,7 @@ import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueEncoder;
 import org.texastorque.torquelib.util.TorqueMathUtil;
 
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -75,10 +76,10 @@ public class Feedback {
 	
 	private boolean PX_goodPacket = false;
 	
-	private int leftRateLogSize = 10;
+	private int leftRateLogSize = 3;
 	private ArrayList<Double> leftRateLog;
 	
-	private int rightRateLogSize = 10;
+	private int rightRateLogSize = 3;
 	private ArrayList<Double> rightRateLog;
 	
 	

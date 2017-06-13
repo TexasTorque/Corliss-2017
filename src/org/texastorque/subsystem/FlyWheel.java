@@ -4,6 +4,7 @@ import org.texastorque.auto.shooter.RunShooter.Setpoints;
 import org.texastorque.constants.Constants;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.io.RobotOutput;
+import org.texastorque.subsystem.DriveBase.DriveType;
 import org.texastorque.torquelib.controlLoop.TorquePID;
 import org.texastorque.torquelib.controlLoop.TorqueRIMP;
 
@@ -117,13 +118,14 @@ public class FlyWheel extends Subsystem {
 	private void run() {
 		if(temporaryRIMPTest) {
 			double error;
-			setpointLeft = i.getFW_leftSetpoint();
-			setpointRight = i.getFW_rightSetpoint();
+			if(isFirstVision) {
+				setpointLeft = i.getFW_leftSetpoint();
+				setpointRight = i.getFW_rightSetpoint()+150;
+			}
 			error = setpointLeft - f.getFW_leftRate();
 			leftSpeed = leftRIMP.calculate(error, f.getFW_leftRate());
 			error = setpointRight - f.getFW_rightRate();
 			rightSpeed = rightRIMP.calculate(error, f.getFW_rightRate());
-			System.out.println(leftSpeed);
 			if(leftSpeed < 0)
 				leftSpeed = 0;
 			if(rightSpeed < 0)
@@ -131,8 +133,10 @@ public class FlyWheel extends Subsystem {
 			gateSpeed = i.getFW_gateSpeed();
 			hood = i.getFW_hood();
 		} else {
-			setpointLeft = i.getFW_leftSetpoint();
-			setpointRight = i.getFW_rightSetpoint();
+			if(isFirstVision) {
+				setpointLeft = i.getFW_leftSetpoint();
+				setpointRight = i.getFW_rightSetpoint();
+			}
 			if (setpointLeft != 0) {
 				doLight = true;
 				leftFlywheelControl.setSetpoint(setpointLeft);
@@ -191,7 +195,6 @@ public class FlyWheel extends Subsystem {
 				if(add > .54)
 					add = .54;
 			}
-			System.out.println(add);
 			RobotOutput.getInstance().setFlyWheelSpeed(.53 + add , .53 + add);
 		} else {
 //			RobotOutput.getInstance().setFlyWheelSpeed(.2, .2);
@@ -209,7 +212,7 @@ public class FlyWheel extends Subsystem {
 
 	public void visionShots() {
 		setpointLeft = Setpoints.LONGSHOT.getSetpoint();
-		setpointRight = Setpoints.LAYUP.getSetpoint();
+		setpointRight = Setpoints.LONGSHOT.getSetpoint();
 		if(isFirstVision) {
 			isFirstVision = false;
 			visionDt = Timer.getFPGATimestamp();
@@ -217,6 +220,10 @@ public class FlyWheel extends Subsystem {
 		if(Timer.getFPGATimestamp() - visionDt >= 1) {
 			i.setVI_rpmsGood(true);
 		}
+	}
+	
+	public void relinquishVision() {
+		isFirstVision = true;
 	}
 	
 	public void updatePID() {

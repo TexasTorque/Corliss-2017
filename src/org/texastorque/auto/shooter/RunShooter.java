@@ -8,7 +8,7 @@ public class RunShooter extends AutonomousCommand {
 	private double setpoint;
 	
 	public enum Setpoints {
-		LAYUP(Constants.FW_LAYUPSHOT.getDouble()), LONGSHOT(Constants.FW_LONGSHOT.getDouble()+25), IDLE(0);
+		LAYUP(Constants.FW_LAYUPSHOT.getDouble()), LONGSHOT(Constants.FW_LONGSHOT.getDouble()+25), GEAR(Constants.FW_GEARSHOT.getDouble()),IDLE(0);
 		
 		Setpoints(double setpoint) {
 			this.setpoint = setpoint;

@@ -128,7 +128,7 @@ public class Input {
 	}
 
 	public double getGC_setpoint() {
-		return GC_down ? 100 : 0;
+		return GC_down ? 110 : 2;
 	}
 	
 	public double getGC_outakeSetpoint() {

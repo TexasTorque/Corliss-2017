@@ -20,13 +20,5 @@ public class ShootHopper extends AutonomousSequence {
 		commandList.add(new Pause(.5));
 		commandList.add(new RunTwinster(1));
 		commandList.add(new RunGate(1));
-		commandList.add(new Pause(2));
-		commandList.add(new Pause(2));
-		commandList.add(new Pause(2));
-		commandList.add(new Pause(2));
-		commandList.add(new Pause(2));
-		commandList.add(new RunShooter(Setpoints.IDLE));
-		commandList.add(new RunGate(0));
-		commandList.add(new RunTwinster(0));
 	}
 }

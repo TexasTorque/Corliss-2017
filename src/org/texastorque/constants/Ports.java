@@ -36,8 +36,6 @@ public class Ports {
 	public static final int GR_SOLE = 5;
 	public static final int GC_ANGLE = 15;
 	public static final int GC_INTAKE = 14;
-	public static final int GC_A = 8;
-	public static final int GC_B = 9;
 
 	// Sensors
 	// ==================
@@ -50,7 +48,8 @@ public class Ports {
 	public static final int FW_LEFTENCODER_B = 7;
 	public static final int FW_RIGHTENCODER_A = 4;
 	public static final int FW_RIGHTENCODER_B = 5;
-
+	public static final int GC_A = 8;
+	public static final int GC_B = 9;
 	// MISC
 
 	public static final int LI_ARDUINO = 0;

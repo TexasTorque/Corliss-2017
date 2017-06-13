@@ -108,6 +108,7 @@ public class HumanInput extends Input {
 			} else {
 				if (DB_runningVision) {
 					DriveBase.getInstance().relinquishVision();
+					FlyWheel.getInstance().relinquishVision();
 					DB_runningVision = false;
 				}
 			}
@@ -254,7 +255,7 @@ public class HumanInput extends Input {
 			IN_lowerSpeed = .3d;
 			intaking = true;
 		} else if (operator.getLeftBumper()) {
-			IN_upperSpeed = .5d;
+			IN_upperSpeed = 1d;
 			IN_lowerSpeed = -1;
 			intaking = true;
 		} else if (operator.getRightBumper()) {
@@ -285,8 +286,8 @@ public class HumanInput extends Input {
 			TW_leftSpeed = 1d;
 			TW_rightSpeed = 1d;
 		} else if (operator.getRightTrigger()) {
-			TW_leftSpeed = -1d;
-			TW_rightSpeed = -1d;
+			TW_leftSpeed = -.5d;
+			TW_rightSpeed = -.5d;
 		} else {
 			TW_leftSpeed = 0d;
 			TW_rightSpeed = 0d;
