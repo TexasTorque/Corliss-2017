@@ -7,6 +7,7 @@ import org.texastorque.auto.intake.RunFloorIntake.IntakeState;
 import org.texastorque.auto.shooter.RunGate;
 import org.texastorque.auto.shooter.RunShooter;
 import org.texastorque.auto.shooter.RunShooter.Setpoints;
+import org.texastorque.auto.shooter.ShootBoilerLayup;
 import org.texastorque.auto.twinsters.RunTwinster;
 import org.texastorque.auto.util.Pause;
 
@@ -31,7 +32,7 @@ public class GearShoot extends AutonomousSequence {
 			commandList.add(new RunDrive(-30, 0, 2));
 			commandList.addAll(new PlaceGearSequence().getCommands());
 			commandList.add(new RunDrive(55, .125, 2.5));
-			commandList.add(new RunTurn(45, .125, 1));
+			commandList.add(new RunTurn(45, .125, 1));  //RunTurn(45, .125, 1);
 			break;
 		case Blue:
 			commandList.add(new RunDrive(-94, .125, 2.5));
@@ -39,7 +40,7 @@ public class GearShoot extends AutonomousSequence {
 			commandList.add(new RunDrive(-30, 0, 2));
 			commandList.addAll(new PlaceGearSequence().getCommands());
 			commandList.add(new RunDrive(55, .125, 2.5));
-			commandList.add(new RunTurn(-45, .125, 1));
+			commandList.add(new RunTurn(-45, .125, 1));  
 			break;
 		}// TODO Auto-generated method stub
 

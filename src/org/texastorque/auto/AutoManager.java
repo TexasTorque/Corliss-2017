@@ -99,7 +99,7 @@ public class AutoManager {
 			switch (autoMode % 10) {
 			case 0:
 				break;
-			case 1:
+			case 1: 
 				break;
 			case 2:
 				commandList.addAll(new AirShipSide(true, true, Side.LEFT).getCommands());

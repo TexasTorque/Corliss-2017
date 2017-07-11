@@ -1,6 +1,7 @@
 package org.texastorque.auto.shooter;
 
 import org.texastorque.auto.AutonomousSequence;
+
 import org.texastorque.auto.intake.RunFloorIntake;
 import org.texastorque.auto.intake.RunFloorIntake.IntakeState;
 import org.texastorque.auto.shooter.RunShooter.Setpoints;
