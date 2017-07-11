@@ -52,7 +52,7 @@ public class HumanInput extends Input {
 		intaking = false;
 	}
 
-	public void update() {
+	public void updateValues() {
 
 		// operator hood control
 		updateHood();
@@ -77,6 +77,10 @@ public class HumanInput extends Input {
 
 		// operator gate speed control
 		updateGates();
+		
+		// for auto-tracking
+		updateSpecial(driver);
+		updateSpecial(operator);
 	}// update
 
 	public void updateDrive() {
@@ -344,7 +348,26 @@ public class HumanInput extends Input {
 			}
 		}
 	}// update gear
-
+	
+	public void updateSpecial(GenericController con) {
+		leftStickX.add(con.getLeftXAxis());
+		leftStickY.add(con.getLeftYAxis());
+		rightStickX.add(con.getRightXAxis());
+		rightStickY.add(con.getRightYAxis());
+		xButton.add(con.getXButton());
+		yButton.add(con.getYButton());
+		bButton.add(con.getBButton());
+		aButton.add(con.getAButton());
+		lTrig.add(con.getLeftTrigger());
+		lBumper.add(con.getLeftBumper());
+		rTrig.add(con.getRightTrigger());
+		rBumper.add(con.getRightBumper());
+		dPadW.add(con.getDPADLeft());
+		dPadN.add(con.getDPADUp());
+		dPadE.add(con.getDPADRight());
+		dPadS.add(con.getDPADDown());
+	}
+	
 	public void smartDashboard() {
 		SmartDashboard.putNumber("HI_DT", dT);
 		SmartDashboard.putNumber("FW_GATE", FW_gateSpeed);
