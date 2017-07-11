@@ -23,6 +23,7 @@ public class HumanInput extends Input {
 	private TorqueToggle climber;
 	private TorqueToggle hood;
 	private TorqueToggle driverFineControl;
+	private TorqueToggle tracking;
 
 	private TorqueToggle doLongShot;
 	private TorqueToggle doLayupShot;
@@ -32,6 +33,7 @@ public class HumanInput extends Input {
 
 	private boolean intaking;
 	private boolean shouldDoRumble = true;
+	private boolean hasBeenTracking;
 
 	public HumanInput() {
 		init();
@@ -51,9 +53,12 @@ public class HumanInput extends Input {
 		driverFineControl = new TorqueToggle(false);
 		intaking = false;
 	}
-
+	
 	public void updateValues() {
 
+		// check if tracking
+		updateTracking();
+		
 		// operator hood control
 		updateHood();
 
@@ -79,8 +84,11 @@ public class HumanInput extends Input {
 		updateGates();
 		
 		// for auto-tracking
-		updateSpecial(driver);
-		updateSpecial(operator);
+		if(tracking.get()) {
+			updateSpecial(driver);
+			updateSpecial(operator);
+			push();
+		}
 	}// update
 
 	public void updateDrive() {
@@ -119,6 +127,18 @@ public class HumanInput extends Input {
 		}
 	}
 
+	public void updateTracking() {
+		tracking.calc(driver.getLeftCenterButton());
+		if(tracking.get()) {
+			hasBeenTracking = true;
+		} else {
+			if(hasBeenTracking) {
+				hasBeenTracking = false;
+				finish();
+			}
+		}
+	}
+	
 	public void updateShooter() {
 		dT = Timer.getFPGATimestamp() - lT;
 		doLayupShot.calc(operator.getDPADDown());
@@ -352,8 +372,10 @@ public class HumanInput extends Input {
 	public void updateSpecial(GenericController con) {
 		leftStickX.add(con.getLeftXAxis());
 		leftStickY.add(con.getLeftYAxis());
+		leftStickClick.add(con.getLeftStickClick());
 		rightStickX.add(con.getRightXAxis());
 		rightStickY.add(con.getRightYAxis());
+		rightStickClick.add(con.getRightStickClick());
 		xButton.add(con.getXButton());
 		yButton.add(con.getYButton());
 		bButton.add(con.getBButton());
