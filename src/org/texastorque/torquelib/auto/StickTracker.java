@@ -12,4 +12,5 @@ public class StickTracker extends Tracker{
 		data = new HashMap<>();
 	}
 	
+	
 }
