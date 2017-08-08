@@ -1,11 +1,13 @@
 package org.texastorque.auto;
 
 import java.util.ArrayList;
+
 import java.util.LinkedList;
 
 import org.texastorque.auto.drive.AirShipCenter;
 import org.texastorque.auto.drive.AirShipSide;
 import org.texastorque.auto.drive.GearShoot;
+import org.texastorque.auto.drive.ThirtyThreeTen;
 import org.texastorque.auto.shooter.DriveToHopper;
 import org.texastorque.auto.shooter.VisionTest;
 import org.texastorque.auto.util.Side;
@@ -116,7 +118,7 @@ public class AutoManager {
 			case 6:
 				break;
 			case 7:
-				commandList.addAll(new VisionTest().getCommands());
+				commandList.addAll(new ThirtyThreeTen().getCommands());
 				break;
 			case 8:
 				commandList.addAll(new GearShoot().getCommands());

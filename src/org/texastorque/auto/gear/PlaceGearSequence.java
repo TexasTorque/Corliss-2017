@@ -14,7 +14,7 @@ public class PlaceGearSequence extends AutonomousSequence {
 	public void init() {
 		commandList.addLast(new ToggleGearHolder(true));
 		commandList.addLast(new Pause(1.25));
-		commandList.addLast(new RunDrive(12, .125, 2));
+		commandList.addLast(new RunDrive(40, .125, 1));
 		commandList.addLast(new ToggleGearHolder(false));
 	}
 	

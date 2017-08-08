@@ -3,10 +3,13 @@ package org.texastorque.auto.drive;
 import org.texastorque.auto.AutoManager;
 import org.texastorque.auto.AutonomousCommand;
 import org.texastorque.feedback.Feedback;
+import org.texastorque.io.Input;
 import org.texastorque.subsystem.DriveBase.DriveType;
 
 public class RunVisionTurn extends AutonomousCommand {
 
+	protected Input i = Input.getInstance();
+	
 	private double theta;
 	private double precision;
 	
@@ -26,8 +29,8 @@ public class RunVisionTurn extends AutonomousCommand {
 		Feedback.getInstance().resetDB_gyro();
 		Feedback.getInstance().resetDB_encoders();
 		driveBase.setType(DriveType.AUTOVISIONTURN);
-		input.setDB_turnSetpoint(theta, precision);
-		AutoManager.pause(2);
+		i.setDB_turnSetpoint(Feedback.getInstance().getPX_HorizontalDegreeOff(), precision);
+		AutoManager.pause(1.5);
 		driveBase.setType(DriveType.WAIT);
 	}
 	

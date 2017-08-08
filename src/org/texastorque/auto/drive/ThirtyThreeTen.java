@@ -1,4 +1,4 @@
-/*package org.texastorque.auto.drive;
+package org.texastorque.auto.drive;
 
 import org.texastorque.auto.AutonomousSequence;
 
@@ -14,11 +14,11 @@ import org.texastorque.auto.util.Side;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class BoilerGear extends AutonomousSequence {
+public class ThirtyThreeTen extends AutonomousSequence {
 
 	private Alliance alliance;
 	
-	public BoilerGear() {
+	public ThirtyThreeTen() {
 		alliance = DriverStation.getInstance().getAlliance();
 
 		init();
@@ -28,13 +28,16 @@ public class BoilerGear extends AutonomousSequence {
 	public void init() {
 		switch(alliance) {
 		case Blue:
-			
+			commandList.addAll(new AirShipSide(true, true, Side.LEFT).getCommands());
+			commandList.add(new RunShooter(Setpoints.GEAR));	
+			commandList.add(new RunDrive(50, .125, 1.5));
+			commandList.add(new RunVisionTurn(10));		
 			break;
 		case Red:
-			commandList.addAll(new AirShipSide(true, true, Side.RIGHT).getCommands());
-			commandList.add(new RunShooter(Setpoints.LAYUP));
-			commandList.add(new RunTurn(10, .125, 1));			
+			commandList.addAll(new AirShipSide(true, true, Side.RIGHT).getCommands());					
+			commandList.add(new RunShooter(Setpoints.GEAR));
 			commandList.add(new RunDrive(50, .125, 1.5));
+			commandList.add(new RunVisionTurn(-8));	
 			break;
 		}
 
@@ -42,7 +45,7 @@ public class BoilerGear extends AutonomousSequence {
 		commandList.add(new RunGate(1));
 		commandList.add(new RunFloorIntake(IntakeState.INTAKE));
 
+		
 	}
 	
 }
-*/
