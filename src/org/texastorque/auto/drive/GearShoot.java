@@ -40,8 +40,8 @@ public class GearShoot extends AutonomousSequence {
 			commandList.add(new RunShooter(Setpoints.LAYUP));
 			commandList.add(new RunTurn(-90, .125, 1.25));
 			commandList.add(new RunDrive(110, .125, 2));
-			commandList.add(new RunVisionTurn(45));
-			commandList.add(new RunDrive(-5, .0625, 1));
+			commandList.add(new RunTurn(49, .125, 1.5));
+			commandList.add(new RunDrive(-10.5, .0625, 1));
 			break;
 		case Blue:
 			/*
@@ -58,8 +58,8 @@ public class GearShoot extends AutonomousSequence {
 			commandList.add(new RunShooter(Setpoints.LAYUP));
 			commandList.add(new RunTurn(90, .125, 1.25));
 			commandList.add(new RunDrive(110, .125, 2));
-			commandList.add(new RunVisionTurn(-45));
-			commandList.add(new RunDrive(-5, .0625, 1));
+			commandList.add(new RunTurn(-56, .125, 1.5));
+			commandList.add(new RunDrive(-10.5, .0625, 1));
 			break;
 		}// TODO Auto-generated method stub
 

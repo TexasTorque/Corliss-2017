@@ -20,10 +20,10 @@ public class AirShipCenter extends AutonomousSequence {
 	public void init() {
 		switch(DriverStation.getInstance().getAlliance()) {
 			case Red:
-				commandList.add(new RunDrive(-78.5, .0125, 1.25));
+				commandList.add(new RunDrive(-79, .0125, 1.25));
 				break;
 			case Blue:
-				commandList.add(new RunDrive(-78, .0125, 1.25));
+				commandList.add(new RunDrive(-78, .0125, 1.5));
 				break;
 		}
 		commandList.addAll(new PlaceGearSequence().getCommands());
