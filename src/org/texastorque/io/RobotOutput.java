@@ -1,5 +1,6 @@
 package org.texastorque.io;
 
+import org.texastorque.Robot;
 import org.texastorque.constants.Constants;
 import org.texastorque.constants.Ports;
 import org.texastorque.torquelib.component.TorqueMotor;
@@ -92,8 +93,7 @@ public class RobotOutput {
 	 *            - The speed the rightside motors should be set to.
 	 */
 	public void setDriveBaseSpeed(double leftSpeed, double rightSpeed) {
-		boolean kiddieMode = true;
-		if (!kiddieMode) {
+		if (!Robot.demoMode) {
 			DB_leftFore.set(leftSpeed);
 			DB_leftRear.set(leftSpeed);
 			DB_rightFore.set(rightSpeed);

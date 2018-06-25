@@ -1,5 +1,6 @@
 package org.texastorque.io;
 
+import org.texastorque.Robot;
 import org.texastorque.constants.Constants;
 import org.texastorque.feedback.Feedback;
 import org.texastorque.subsystem.DriveBase;
@@ -89,38 +90,35 @@ public class HumanInput extends Input {
 			DB_leftSpeed *= .5;
 		}
 		
-		/*
-		// Removed for demo safety
-		if (driver.getLeftBumper()) {
-			DB_shiftSole = false;
-		}
-		if (driver.getRightBumper()) {
-			DB_shiftSole = true;
-		}
-		//*/
-		
-		
-		/*
-		// Removed for demo safety
-		if (driver.getYButton()) {
-			DB_runningVision = true;
-			DriveBase.getInstance().visionAlignment();
-			if (TorqueMathUtil.near(Feedback.getInstance().getPX_HorizontalDegreeOff(), 0, 2)) {
-				FlyWheel.getInstance().visionShots();
+		if(Robot.demoMode) {
+			if (driver.getLeftBumper()) {
+				DB_shiftSole = false;
 			}
-		} else {
-			if (driver.getAButton()) {
+			if (driver.getRightBumper()) {
+				DB_shiftSole = true;
+			}
+		}
+		
+		if (Robot.demoMode) {
+			if (driver.getYButton()) {
 				DB_runningVision = true;
 				DriveBase.getInstance().visionAlignment();
+				if (TorqueMathUtil.near(Feedback.getInstance().getPX_HorizontalDegreeOff(), 0, 2)) {
+					FlyWheel.getInstance().visionShots();
+				}
 			} else {
-				if (DB_runningVision) {
-					DriveBase.getInstance().relinquishVision();
-					FlyWheel.getInstance().relinquishVision();
-					DB_runningVision = false;
+				if (driver.getAButton()) {
+					DB_runningVision = true;
+					DriveBase.getInstance().visionAlignment();
+				} else {
+					if (DB_runningVision) {
+						DriveBase.getInstance().relinquishVision();
+						FlyWheel.getInstance().relinquishVision();
+						DB_runningVision = false;
+					}
 				}
 			}
 		}
-		//*/
 	}
 
 	public void updateShooter() {

@@ -26,6 +26,8 @@ public class Robot extends TorqueIterative {
 	private double time;
 	private boolean hasAlreadyStarted = false;
 	
+	public static boolean demoMode = true;
+	
 	@SuppressWarnings("serial")
 	@Override
 	public void robotInit() {
@@ -70,17 +72,16 @@ public class Robot extends TorqueIterative {
 	
 	@Override
 	public void autonomousInit() {
-		/*
-		// Disabled for demo safety
-		time = 0;
-		RobotOutput.getInstance().setLight(false);
-		for(Subsystem system : subsystems ) {
-			system.autoInit();
-			system.setInput(Input.getInstance());
+		if(demoMode) {
+			time = 0;
+			RobotOutput.getInstance().setLight(false);
+			for(Subsystem system : subsystems ) {
+				system.autoInit();
+				system.setInput(Input.getInstance());
+			}
+			AutoManager.beginAuto();
+			hasAlreadyStarted = true;
 		}
-		AutoManager.beginAuto();
-		hasAlreadyStarted = true;
-		//*/
 	}
 
 	@Override
@@ -95,17 +96,16 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void autonomousContinuous() {
-		/*
-		// Disabled for demo safety
-		if(!hasAlreadyStarted && AutoManager.isDone()) {
-			AutoManager.beginAuto();
-			hasAlreadyStarted = true;
+		if(demoMode) {
+			if(!hasAlreadyStarted && AutoManager.isDone()) {
+				AutoManager.beginAuto();
+				hasAlreadyStarted = true;
+			}
+			Feedback.getInstance().update();
+			for(Subsystem system : subsystems ) {
+				system.autoContinuous();
+			}
 		}
-		Feedback.getInstance().update();
-		for(Subsystem system : subsystems ) {
-			system.autoContinuous();
-		}
-		//*/
 	}
 
 	@Override
