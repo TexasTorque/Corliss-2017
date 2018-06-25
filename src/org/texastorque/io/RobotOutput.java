@@ -92,10 +92,20 @@ public class RobotOutput {
 	 *            - The speed the rightside motors should be set to.
 	 */
 	public void setDriveBaseSpeed(double leftSpeed, double rightSpeed) {
-		DB_leftFore.set(leftSpeed);
-		DB_leftRear.set(leftSpeed);
-		DB_rightFore.set(rightSpeed);
-		DB_rightRear.set(rightSpeed);
+		boolean kiddieMode = true;
+		if (!kiddieMode) {
+			DB_leftFore.set(leftSpeed);
+			DB_leftRear.set(leftSpeed);
+			DB_rightFore.set(rightSpeed);
+			DB_rightRear.set(rightSpeed);
+		} else {
+			leftSpeed = TorqueMathUtil.constrain(leftSpeed, .5);
+			rightSpeed = TorqueMathUtil.constrain(rightSpeed, .5);
+			DB_leftFore.set(leftSpeed);
+			DB_leftRear.set(leftSpeed);
+			DB_rightFore.set(rightSpeed);
+			DB_rightRear.set(rightSpeed);	
+		}
 	}
 
 	/**

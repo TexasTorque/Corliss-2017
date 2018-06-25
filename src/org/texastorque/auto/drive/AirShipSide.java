@@ -4,14 +4,11 @@ import org.texastorque.auto.AutonomousSequence;
 import org.texastorque.auto.gear.PlaceGearSequence;
 import org.texastorque.auto.util.Side;
 
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class AirShipSide extends AutonomousSequence {
 
-	XMLSerializer s = new XMLSerializer(); 
 	private Alliance alliance;
 	private boolean doCorner;
 	private boolean doGear;

@@ -88,13 +88,20 @@ public class HumanInput extends Input {
 			DB_rightSpeed *= .5;
 			DB_leftSpeed *= .5;
 		}
-
+		
+		/*
+		// Removed for demo safety
 		if (driver.getLeftBumper()) {
 			DB_shiftSole = false;
 		}
 		if (driver.getRightBumper()) {
 			DB_shiftSole = true;
 		}
+		//*/
+		
+		
+		/*
+		// Removed for demo safety
 		if (driver.getYButton()) {
 			DB_runningVision = true;
 			DriveBase.getInstance().visionAlignment();
@@ -113,6 +120,7 @@ public class HumanInput extends Input {
 				}
 			}
 		}
+		//*/
 	}
 
 	public void updateShooter() {
@@ -151,11 +159,15 @@ public class HumanInput extends Input {
 		if (FW_leftSetpoint < 0) {
 			FW_leftSetpoint = 0;
 		}
+		/*
+		// Deprecated code from previous flashlight
 		if (operator.getLeftStickClick()) {
 			RobotOutput.getInstance().setLight(true);
 		} else {
 			RobotOutput.getInstance().setLight(false);
 		}
+		//*/
+		
 		// if (operator.getRightStickClick()) {
 		// DriveBase.getInstance().visionAlign();
 		// }
