@@ -70,6 +70,8 @@ public class Robot extends TorqueIterative {
 	
 	@Override
 	public void autonomousInit() {
+		/*
+		// Disabled for demo safety
 		time = 0;
 		RobotOutput.getInstance().setLight(false);
 		for(Subsystem system : subsystems ) {
@@ -78,6 +80,7 @@ public class Robot extends TorqueIterative {
 		}
 		AutoManager.beginAuto();
 		hasAlreadyStarted = true;
+		//*/
 	}
 
 	@Override
@@ -92,6 +95,8 @@ public class Robot extends TorqueIterative {
 
 	@Override
 	public void autonomousContinuous() {
+		/*
+		// Disabled for demo safety
 		if(!hasAlreadyStarted && AutoManager.isDone()) {
 			AutoManager.beginAuto();
 			hasAlreadyStarted = true;
@@ -100,6 +105,7 @@ public class Robot extends TorqueIterative {
 		for(Subsystem system : subsystems ) {
 			system.autoContinuous();
 		}
+		//*/
 	}
 
 	@Override
